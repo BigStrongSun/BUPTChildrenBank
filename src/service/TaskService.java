@@ -24,7 +24,7 @@ public class TaskService {
     private boolean doAdd;
 
     /**
-     *  Initialize service.TaskService
+     *  Initialize TaskService
      */
     public TaskService() {
         tasks = json.readArray(Task.class);
