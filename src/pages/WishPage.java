@@ -6,6 +6,7 @@ import service.TempService;
 import util.BtnOrange;
 import util.JSONController;
 import util.TopPanel;
+import util.WishComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ public class WishPage extends JFrame {
     private JLabel lblTotalTarget;
 
     private JButton btnCreate;
+    private WishComponent wishComponent;
 
     public WishPage() {
         parentId = tempService.getTemp().getParentId();
@@ -50,7 +52,6 @@ public class WishPage extends JFrame {
         linePanel.setOpaque(true);
         linePanel.setBounds(500, 20, 1, 640);
         getContentPane().add(linePanel);
-        revalidate();
 
         lblChildName = new JLabel(childName + "'s");
         lblChildName.setFont(new Font("Arial", Font.PLAIN, 50));
@@ -87,9 +88,12 @@ public class WishPage extends JFrame {
         lblTotalTarget.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         btnCreate= new BtnOrange("Create Wish");
-        btnCreate.setBounds(1050,20,150,25);
+        btnCreate.setBounds(1070,20,150,25);
         getContentPane().add(btnCreate);
 
+        wishComponent = new WishComponent(1);
+        wishComponent.setBounds(550,50,670,100);
+        getContentPane().add(wishComponent);
 
     }
 }

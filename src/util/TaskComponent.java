@@ -108,7 +108,7 @@ public class TaskComponent extends JPanel {
         moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         module3.add(moneyLabel);
         module3.setOpaque(false); // 设置透明背景
-//        module3.setBorder(BorderFactory.createLineBorder(Color.red, 1));
+        module3.setBorder(BorderFactory.createLineBorder(Color.red, 1));
 
         // 将各模块添加到主面板
         add(Box.createHorizontalStrut(20));
