@@ -67,7 +67,7 @@ public class TaskCreateAndModifyPage extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        TopPanel topPanel = new TopPanel("Task Distribution", this, new TaskPage());
+        TopPanel topPanel = new TopPanel("Task Detail", this, new TaskPage());
         topPanel.setBackground(new Color(255, 248, 239));
         topPanel.setBounds(0, 0, 1280, 50);
         getContentPane().add(topPanel);

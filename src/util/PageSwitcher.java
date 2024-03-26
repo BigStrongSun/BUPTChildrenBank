@@ -1,6 +1,7 @@
 package util;
 
 import pages.TaskPage;
+import pages.WishPage;
 
 import javax.swing.*;
 
@@ -30,6 +31,12 @@ public class PageSwitcher {
             frameToOpen.dispose();
             TaskPage taskPage = new TaskPage();
             taskPage.setVisible(true);
+        }
+
+        if (frameToOpen.getTitle().equals("pages.WishPage")) {
+            frameToOpen.dispose();
+            WishPage wishPage = new WishPage();
+            wishPage.setVisible(true);
         }
 
         System.out.println("关闭了" + frameToClose.getTitle() + "页面,打开了" + frameToOpen.getTitle() + "页面");

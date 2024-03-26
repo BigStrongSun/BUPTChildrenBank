@@ -54,11 +54,12 @@ public class TaskComponent extends JPanel {
         // 设置主面板的布局为水平排列
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBackground(new Color(255, 235, 156)); // 背景色设置为浅黄色
+        //        module3.setBorder(BorderFactory.createLineBorder(Color.red, 1));
 
         //创建模块0_1，包含 startTime 和 EndTime
         JPanel module0_1 = new JPanel();
         module0_1.setLayout(new FlowLayout(FlowLayout.CENTER));
-        module0_1.setPreferredSize(new Dimension(600, 20));
+        module0_1.setPreferredSize(new Dimension(400, 20));
         module0_1.add(new JLabel(startTime));
         module0_1.add(new JLabel("-"));
         module0_1.add(new JLabel(endTime));
@@ -67,14 +68,14 @@ public class TaskComponent extends JPanel {
 
         //创建模块0_2，包含taskName
         JPanel module0_2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        module0_2.setPreferredSize(new Dimension(600, 20));
+        module0_2.setPreferredSize(new Dimension(400, 20));
         module0_2.add(new JLabel(taskName));
         module0_2.setOpaque(false);
 
         // 创建模块1并添加到主面板，模块1内部垂直排列taskName和time
         JPanel module1 = new JPanel();
         module1.setLayout(new BoxLayout(module1, BoxLayout.Y_AXIS));
-        module1.setPreferredSize(new Dimension(600, 50));
+        module1.setPreferredSize(new Dimension(400, 50));
         module1.add(module0_2);
         module1.add(module0_1);
         module1.setOpaque(false); // 设置透明背景
@@ -115,9 +116,9 @@ public class TaskComponent extends JPanel {
         add(module1);
         add(Box.createHorizontalStrut(20));
         add(module2);
-        add(Box.createHorizontalStrut(120)); // 添加间距
+        add(Box.createHorizontalStrut(50)); // 添加间距
         add(module3);
-        add(Box.createHorizontalStrut(60));
+        add(Box.createHorizontalStrut(50));
 
         // 添加鼠标点击事件监听器
         addMouseListener(new MouseAdapter() {

@@ -23,7 +23,7 @@ public class WishCreateAndModifyPage extends JFrame {
     private JTextArea textArea_wishDescription;
     private JTextField textField_wishStatus;
     private JTextField textField_wishProgress;
-
+    private JTextField textField_wishTarget;
     private JTextField textField_deadLine;
 
     private JButton btnCreate;
@@ -38,6 +38,7 @@ public class WishCreateAndModifyPage extends JFrame {
     private JLabel lblWishStatus;
     private JLabel lblWishProgress;
     private JLabel lblDeadLine;
+    private JLabel lblWishTarget;
 
     /**
      * Constructs a new pages.WishCreateAndModifyPage object with the given wishId, parent flag, and modification flag.
@@ -63,7 +64,7 @@ public class WishCreateAndModifyPage extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        TopPanel topPanel = new TopPanel("Wish Distribution", this, new WishPage());
+        TopPanel topPanel = new TopPanel("Wish Detail", this, new WishPage());
         topPanel.setBackground(new Color(255, 248, 239));
         topPanel.setBounds(0, 0, 1280, 50);
         getContentPane().add(topPanel);
@@ -98,19 +99,26 @@ public class WishCreateAndModifyPage extends JFrame {
         lblDeadLine.setBounds(136, 440, 300, 28);
         getContentPane().add(lblDeadLine);
 
+        lblWishTarget = new JLabel("Wish Target");
+        lblWishTarget.setForeground(new Color(0, 0, 0));
+        lblWishTarget.setFont(new Font("Arial", Font.PLAIN, 20));
+        lblWishTarget.setBounds(136, 510, 300, 28);
+        getContentPane().add(lblWishTarget);
 
         if (wishId == wishService.getMaxWishId() + 1) {//说明是点击“Create Wish”按钮进来的，这是不能用getWishById，因为会新建Wish
             textField_wishName = new JTextField();
             textArea_wishDescription = new JTextArea();
-            textField_wishStatus = new JTextField();
+            textField_wishStatus = new JTextField("undone");
             textField_wishProgress = new JTextField();
             textField_deadLine = new JTextField();
+            textField_wishTarget = new JTextField("0");
         } else {//说明是点击WishComponent进来的
             textField_wishName = new JTextField(wishService.getWishById(wishId).getWishName());
             textArea_wishDescription = new JTextArea(wishService.getWishById(wishId).getWishDescription());
             textField_wishStatus = new JTextField(wishService.getWishById(wishId).getWishStatus());
             textField_wishProgress = new JTextField(wishService.getWishById(wishId).getWishProgress());
             textField_deadLine = new JTextField(wishService.getWishById(wishId).getDeadline());
+            textField_wishTarget=new JTextField(wishService.getWishById(wishId).getWishTarget());
         }
         if (!isParent) {//如果是孩子身份的话，限制不能修改
             textField_wishName.setEditable(false);
@@ -118,6 +126,7 @@ public class WishCreateAndModifyPage extends JFrame {
             textField_wishStatus.setEditable(false);
             textField_wishProgress.setEditable(false);
             textField_deadLine.setEditable(false);
+            textField_wishTarget.setEditable(false);
         }
 
         textField_wishName.setBounds(400, 120, 600, 37);
@@ -159,6 +168,9 @@ public class WishCreateAndModifyPage extends JFrame {
                 }
             });
         }
+        textField_wishTarget.setBounds(400, 510, 600, 37);
+        getContentPane().add(textField_wishTarget);
+        textField_wishTarget.setColumns(10);
 
         btnCreate = new BtnOrange("Create Wish");
         btnCreate.setBounds(535, 600, 150, 25);
@@ -196,6 +208,7 @@ public class WishCreateAndModifyPage extends JFrame {
                     wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
                     wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
                     wish.setDeadline(String.valueOf(textField_deadLine.getText()));
+                    wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
                     wishService.modifyWish(wish);
                     PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
                 }
@@ -217,7 +230,7 @@ public class WishCreateAndModifyPage extends JFrame {
                     wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
                     wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
                     wish.setDeadline(String.valueOf(textField_deadLine.getText()));
-                    wish.setWishStatus(wishService.getWishById(wishId).getWishStatus());
+                    wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
                     wishService.modifyWish(wish);
                     PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
                 }
@@ -246,7 +259,8 @@ public class WishCreateAndModifyPage extends JFrame {
                     Wish wish = new Wish();
                     wish.setWishId(wishId);
                     wish.setWishStatus("done");
-                    wishService.modifyWishStatus(wish);
+                    wish.setWishProgress("100");
+                    wishService.modifyWishStatusAndProgress(wish);
                     PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
                 }
             }
@@ -255,12 +269,12 @@ public class WishCreateAndModifyPage extends JFrame {
 
 }
 
-class Main {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            WishCreateAndModifyPage frame = new WishCreateAndModifyPage(1, true, true);
-            frame.setVisible(true);
-        });
-    }
-}
+//class Main {
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            WishCreateAndModifyPage frame = new WishCreateAndModifyPage(1, true, true);
+//            frame.setVisible(true);
+//        });
+//    }
+//}
 

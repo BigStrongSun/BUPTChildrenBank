@@ -14,11 +14,12 @@ public class WishService {
     private Wish wish;
 
     /**
-     *  Initialize WishService
+     * Initialize WishService
      */
     public WishService() {
         wishes = json.readArray(Wish.class);
     }
+
     /**
      * Retrieves the maximum wish ID from the wish list.
      *
@@ -53,6 +54,9 @@ public class WishService {
             existingWish.setChildId(wish.getChildId());
             existingWish.setWishDescription(wish.getWishDescription());
             existingWish.setDeadline(wish.getDeadline());
+            existingWish.setWishStatus(wish.getWishStatus());
+            existingWish.setWishTarget(wish.getWishTarget());
+            existingWish.setWishProgress(wish.getWishProgress());
             if (saveWishes()) {
                 System.out.println("修改成功");
                 JOptionPane.showMessageDialog(null, "Success", "Tips", JOptionPane.INFORMATION_MESSAGE);
@@ -73,12 +77,13 @@ public class WishService {
      * @param wish The wish object containing the modified status.
      * @return 1 if the modification is successful, 0 otherwise.
      */
-    public int modifyWishStatus(Wish wish) {
+    public int modifyWishStatusAndProgress(Wish wish) {
         int wishId = wish.getWishId();
         if (wish != null) {
             // 根据任务id查找对应的任务对象
             Wish existingWish = getWishById(wishId);
             existingWish.setWishStatus(wish.getWishStatus());
+            existingWish.setWishProgress(wish.getWishProgress());
             if (saveWishes()) {
                 System.out.println("确认成功");
                 JOptionPane.showMessageDialog(null, "Confirmation success", "Tips", JOptionPane.INFORMATION_MESSAGE);
@@ -159,5 +164,21 @@ public class WishService {
         wishes.add(newWish);
         json.writeArray(wishes);
         return newWish; // 返回新创建的任务对象
+    }
+
+    public int getTotalWishTarget() {
+        int totalWishTarget = 0;
+        int wishTarget;
+        if (wishes != null && !wishes.isEmpty()) {
+            for (Wish wish : wishes) {
+                if (wish.getWishTarget() == null || wish.getWishTarget().equals("")) {
+                    wishTarget = 0;
+                } else {
+                    wishTarget = Integer.parseInt(wish.getWishTarget());
+                }
+                totalWishTarget += wishTarget;
+            }
+        }
+        return totalWishTarget;
     }
 }
