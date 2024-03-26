@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -135,5 +137,18 @@ public class TaskPage extends JFrame {
         if (isParent) {
             mainPanel.add(southPanel, BorderLayout.SOUTH);
         }
+        // 添加组件完成布局的监听器
+//        mainPanel.addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                // 获取滚动面板的高度
+//                int scrollPaneHeight = scrollPane.getViewport().getHeight();
+//                System.out.println("滚动面板的高度：" + scrollPaneHeight);
+//
+//                // 获取主面板的高度
+//                int mainPanelHeight = contentPanel.getHeight();
+//                System.out.println("主面板的高度：" + mainPanelHeight);
+//            }
+//        });
     }
 }

@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -84,7 +86,7 @@ public class WishPage extends JFrame {
         wishDifferencePanel.add(lblCurrentMoney);
 //        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-        lblCurrentMoneyValue = new JLabel( "$100");
+        lblCurrentMoneyValue = new JLabel("$100");
         lblCurrentMoneyValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblCurrentMoneyValue.setForeground(Color.WHITE);
         lblCurrentMoneyValue.setBounds(180, 60, 80, 28);
@@ -97,7 +99,7 @@ public class WishPage extends JFrame {
         wishDifferencePanel.add(lblTotalTarget);
 //        lblTotalTarget.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-        lblTotalTargetValue = new JLabel("$ "+wishService.getTotalWishTarget());
+        lblTotalTargetValue = new JLabel("$ " + wishService.getTotalWishTargetBeforeDeadLine());
         lblTotalTargetValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblTotalTargetValue.setForeground(Color.WHITE);
         lblTotalTargetValue.setBounds(180, 160, 80, 28);
@@ -119,6 +121,7 @@ public class WishPage extends JFrame {
             getContentPane().add(btnCreate);
         }
 
+        LocalDateTime now = LocalDateTime.now();
         wishes = json.readArray(Wish.class);
         int x = 0;
         if (wishes != null) {
@@ -130,10 +133,13 @@ public class WishPage extends JFrame {
             });
             for (Wish wish : wishes) {
                 if (wish.getParentId() == parentId && wish.getChildId() == childId) {
-                    WishComponent wishComponent = new WishComponent(wish.getWishId(), this, isParent, true);
-                    wishComponent.setBounds(550, 50 + x, 670, 100);
-                    getContentPane().add(wishComponent);
-                    x += 120;
+                    LocalDateTime dateTime = LocalDateTime.parse(wish.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                    if (dateTime.isAfter(now)) {
+                        WishComponent wishComponent = new WishComponent(wish.getWishId(), this, isParent, true);
+                        wishComponent.setBounds(550, 50 + x, 670, 100);
+                        getContentPane().add(wishComponent);
+                        x += 120;
+                    }
                 }
             }
         }

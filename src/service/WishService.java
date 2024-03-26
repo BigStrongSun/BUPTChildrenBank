@@ -4,6 +4,8 @@ import domain.Wish;
 import util.JSONController;
 
 import javax.swing.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -166,12 +168,14 @@ public class WishService {
         return newWish; // 返回新创建的任务对象
     }
 
-    public int getTotalWishTarget() {
+    public int getTotalWishTargetBeforeDeadLine() {
+        LocalDateTime now = LocalDateTime.now();
         int totalWishTarget = 0;
         int wishTarget;
         if (wishes != null && !wishes.isEmpty()) {
             for (Wish wish : wishes) {
-                if (wish.getWishTarget() == null || wish.getWishTarget().equals("")) {
+                LocalDateTime dateTime = LocalDateTime.parse(wish.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                if (wish.getWishTarget() == null || wish.getWishTarget().equals("") || dateTime.isBefore(now)) {
                     wishTarget = 0;
                 } else {
                     wishTarget = Integer.parseInt(wish.getWishTarget());
