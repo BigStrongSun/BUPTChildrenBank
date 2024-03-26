@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class WishCreateAndModifyPage extends JFrame {
     private WishCreateAndModifyPage wishCreateAndModifyPage;
@@ -105,12 +107,16 @@ public class WishCreateAndModifyPage extends JFrame {
         lblWishTarget.setBounds(136, 510, 300, 28);
         getContentPane().add(lblWishTarget);
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String nowString = now.format(formatter)+" 23:59";
+
         if (wishId == wishService.getMaxWishId() + 1) {//说明是点击“Create Wish”按钮进来的，这是不能用getWishById，因为会新建Wish
             textField_wishName = new JTextField();
             textArea_wishDescription = new JTextArea();
             textField_wishStatus = new JTextField("undone");
             textField_wishProgress = new JTextField();
-            textField_deadLine = new JTextField();
+            textField_deadLine = new JTextField(nowString);
             textField_wishTarget = new JTextField("0");
         } else {//说明是点击WishComponent进来的
             textField_wishName = new JTextField(wishService.getWishById(wishId).getWishName());
