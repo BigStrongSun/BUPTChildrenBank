@@ -37,19 +37,19 @@ public class TaskComponent extends JPanel {
      * @param isModify      true if the task can be modified, false otherwise
      */
     public TaskComponent(int taskId, JFrame mainMenuFrame, boolean isParent, boolean isModify) {
-        parentId=tempService.getTemp().getParentId();
-        childId=tempService.getTemp().getChildId();
+        parentId = tempService.getTemp().getParentId();
+        childId = tempService.getTemp().getChildId();
         this.mainMenuFrame = mainMenuFrame;
         String taskName = taskService.getTaskById(taskId).getTaskName();
-        taskName = (taskName == null || taskName == "") ? "？？？" : taskName;
+        taskName = (taskName == null || taskName.equals("")) ? "？？？" : taskName;
         String startTime = taskService.getTaskById(taskId).getStartTime();
-        startTime = (startTime == null || startTime == "") ? "？？？" : startTime;
+        startTime = (startTime == null || startTime.equals("")) ? "？？？" : startTime;
         String endTime = taskService.getTaskById(taskId).getEndTime();
-        endTime = (endTime == null || endTime == "") ? "？？？" : endTime;
+        endTime = (endTime == null || endTime.equals("")) ? "？？？" : endTime;
         String taskStatus = taskService.getTaskById(taskId).getTaskStatus();
-        taskStatus = (taskStatus == null || taskStatus == "") ? "undone" : taskStatus;
+        taskStatus = (taskStatus == null || taskStatus.equals("")) ? "undone" : taskStatus;
         String money = taskService.getTaskById(taskId).getMoney();
-        money = (money == null || money == "") ? "？？？" : money;
+        money = (money == null || money.equals("")) ? "？？？" : money;
 
         // 设置主面板的布局为水平排列
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
