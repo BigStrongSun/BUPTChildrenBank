@@ -1,5 +1,6 @@
 # BUPTChildrenBank
 This is CourseWork of EBU6304 Software Engineering 
+- 我才发现如果把这个clone下来是没有lib的，如果没有可以在src的同级目录下创建文件夹lib, 把projectRamen中的lib的fastjson-1.2.68.jar copy进来。然后再把整个lib Add as library就可以了。
 
 - BtnGray和BtnOrange定义好了橙色和灰色的按钮样式，可直接使用。
   - 使用方法：JButton createTaskButton = new BtnOrange("BtnName");
