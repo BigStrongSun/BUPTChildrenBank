@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class represents a JFrame for creating and modifying tasks.
@@ -208,17 +210,19 @@ public class TaskCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认创建任务?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    Task task = new Task();
-                    task.setParentId(parentId);
-                    task.setChildId(childId);
-                    task.setTaskId(taskId);
-                    task.setTaskName(String.valueOf(textField_taskName.getText()));
-                    task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
-                    task.setStartTime(String.valueOf(textField_startTime.getText()));
-                    task.setEndTime(String.valueOf(textField_endTime.getText()));
-                    task.setMoney(String.valueOf(textField_money.getText()));
-                    taskService.modifyTask(task);
-                    PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                    if(isValidated()){
+                        Task task = new Task();
+                        task.setParentId(parentId);
+                        task.setChildId(childId);
+                        task.setTaskId(taskId);
+                        task.setTaskName(String.valueOf(textField_taskName.getText()));
+                        task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
+                        task.setStartTime(String.valueOf(textField_startTime.getText()));
+                        task.setEndTime(String.valueOf(textField_endTime.getText()));
+                        task.setMoney(String.valueOf(textField_money.getText()));
+                        taskService.modifyTask(task);
+                        PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                    }
                 }
             }
         });
@@ -229,18 +233,20 @@ public class TaskCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认修改任务?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    Task task = new Task();
-                    task.setParentId(parentId);
-                    task.setChildId(childId);
-                    task.setTaskId(taskId);
-                    task.setTaskName(String.valueOf(textField_taskName.getText()));
-                    task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
-                    task.setStartTime(String.valueOf(textField_startTime.getText()));
-                    task.setEndTime(String.valueOf(textField_endTime.getText()));
-                    task.setMoney(String.valueOf(textField_money.getText()));
-                    task.setTaskStatus(taskService.getTaskById(taskId).getTaskStatus());
-                    taskService.modifyTask(task);
-                    PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                    if(isValidated()){
+                        Task task = new Task();
+                        task.setParentId(parentId);
+                        task.setChildId(childId);
+                        task.setTaskId(taskId);
+                        task.setTaskName(String.valueOf(textField_taskName.getText()));
+                        task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
+                        task.setStartTime(String.valueOf(textField_startTime.getText()));
+                        task.setEndTime(String.valueOf(textField_endTime.getText()));
+                        task.setMoney(String.valueOf(textField_money.getText()));
+                        task.setTaskStatus(taskService.getTaskById(taskId).getTaskStatus());
+                        taskService.modifyTask(task);
+                        PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                    }
                 }
             }
         });
@@ -273,6 +279,41 @@ public class TaskCreateAndModifyPage extends JFrame {
             }
         });
     }
+    public boolean isValidated() {
+        boolean isValidated = true;
+        String type=null;
+        LocalDateTime endTime = LocalDateTime.parse(textField_endTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime startTime = LocalDateTime.parse(textField_startTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
+        if(textField_taskName.getText()==null|| textField_taskName.getText().isEmpty()){
+            isValidated = false;
+            type="empty";
+        }
+        if(textField_startTime.getText()==null|| textField_startTime.getText().isEmpty()){
+            isValidated = false;
+            type="empty";
+        }
+        if(textField_endTime.getText()==null|| textField_endTime.getText().isEmpty()){
+            isValidated = false;
+            type="empty";
+        }        
+        if(textField_money.getText()==null|| textField_money.getText().isEmpty()){
+            isValidated = false;
+            type="empty";
+        }
+        if(startTime.isAfter(endTime)){
+            isValidated=false;
+            type="invalid_date";
+        }
 
+        if(!isValidated){
+            if(type.equals("empty")){
+                JOptionPane.showMessageDialog(null, "You should not create empty inputs", "Alert",JOptionPane.WARNING_MESSAGE);
+            }
+            if(type.equals("invalid_date")){
+                JOptionPane.showMessageDialog(null, "start date ate should not be after end date", "Alert",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        return isValidated;
+    }
 }

@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -40,16 +42,25 @@ public class TaskComponent extends JPanel {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         this.mainMenuFrame = mainMenuFrame;
+
+        LocalDateTime now = LocalDateTime.now();
+
         String taskName = taskService.getTaskById(taskId).getTaskName();
-        taskName = (taskName == null || taskName.equals("")) ? "？？？" : taskName;
+        taskName = (taskName == null || taskName.isEmpty()) ? "？？？" : taskName;
         String startTime = taskService.getTaskById(taskId).getStartTime();
-        startTime = (startTime == null || startTime.equals("")) ? "？？？" : startTime;
+        startTime = (startTime == null || startTime.isEmpty()) ? "？？？" : startTime;
         String endTime = taskService.getTaskById(taskId).getEndTime();
-        endTime = (endTime == null || endTime.equals("")) ? "？？？" : endTime;
+        LocalDateTime dateTime = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        if (dateTime.isAfter(now)) {
+            endTime = (endTime == null || endTime.isEmpty()) ? "？？？" : endTime;
+        } else {
+            endTime = "";
+            startTime = "";
+        }
         String taskStatus = taskService.getTaskById(taskId).getTaskStatus();
-        taskStatus = (taskStatus == null || taskStatus.equals("")) ? "undone" : taskStatus;
+        taskStatus = (taskStatus == null || taskStatus.isEmpty()) ? "undone" : taskStatus;
         String money = taskService.getTaskById(taskId).getMoney();
-        money = (money == null || money.equals("")) ? "？？？" : money;
+        money = (money == null || money.isEmpty()) ? "？？？" : money;
 
         // 设置主面板的布局为水平排列
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -61,7 +72,13 @@ public class TaskComponent extends JPanel {
         module0_1.setLayout(new FlowLayout(FlowLayout.CENTER));
         module0_1.setPreferredSize(new Dimension(400, 20));
         module0_1.add(new JLabel(startTime));
-        module0_1.add(new JLabel("-"));
+        if (dateTime.isBefore(now)) {
+            JLabel lblExpired = new JLabel("Expired");
+            lblExpired.setForeground(Color.RED);
+            module0_1.add(lblExpired);
+        } else {
+            module0_1.add(new JLabel("-"));
+        }
         module0_1.add(new JLabel(endTime));
         module0_1.setOpaque(false);
 //        module0_1.setBorder(BorderFactory.createLineBorder(Color.red, 1));

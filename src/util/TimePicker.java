@@ -80,7 +80,7 @@ public class TimePicker extends JFrame {
         hourComboBox.setSelectedItem(currentTime.getHour());
         minuteComboBox.setSelectedItem(currentTime.getMinute());
 
-        JButton selectButton = new JButton("确定");
+        JButton selectButton = new JButton("Confirm");
         selectButton.setBounds(95, 100, 100, 30);
         selectButton.addActionListener(new ActionListener() {
             @Override
