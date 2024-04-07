@@ -109,7 +109,7 @@ public class WishCreateAndModifyPage extends JFrame {
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String nowString = now.format(formatter)+" 23:59";
+        String nowString = now.format(formatter) + " 23:59";
 
         if (wishId == wishService.getMaxWishId() + 1) {//说明是点击“Create Wish”按钮进来的，这是不能用getWishById，因为会新建Wish
             textField_wishName = new JTextField();
@@ -124,7 +124,7 @@ public class WishCreateAndModifyPage extends JFrame {
             textField_wishStatus = new JTextField(wishService.getWishById(wishId).getWishStatus());
             textField_wishProgress = new JTextField(wishService.getWishById(wishId).getWishProgress());
             textField_deadLine = new JTextField(wishService.getWishById(wishId).getDeadline());
-            textField_wishTarget=new JTextField(wishService.getWishById(wishId).getWishTarget());
+            textField_wishTarget = new JTextField(wishService.getWishById(wishId).getWishTarget());
         }
         if (!isParent) {//如果是孩子身份的话，限制不能修改
             textField_wishName.setEditable(false);
@@ -205,18 +205,20 @@ public class WishCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认创建愿望?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    Wish wish = new Wish();
-                    wish.setParentId(parentId);
-                    wish.setChildId(childId);
-                    wish.setWishId(wishId);
-                    wish.setWishName(String.valueOf(textField_wishName.getText()));
-                    wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
-                    wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
-                    wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
-                    wish.setDeadline(String.valueOf(textField_deadLine.getText()));
-                    wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
-                    wishService.modifyWish(wish);
-                    PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                    if (isValidated()) {
+                        Wish wish = new Wish();
+                        wish.setParentId(parentId);
+                        wish.setChildId(childId);
+                        wish.setWishId(wishId);
+                        wish.setWishName(String.valueOf(textField_wishName.getText()));
+                        wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
+                        wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
+                        wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
+                        wish.setDeadline(String.valueOf(textField_deadLine.getText()));
+                        wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
+                        wishService.modifyWish(wish);
+                        PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                    }
                 }
             }
         });
@@ -227,18 +229,20 @@ public class WishCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认修改愿望?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    Wish wish = new Wish();
-                    wish.setParentId(parentId);
-                    wish.setChildId(childId);
-                    wish.setWishId(wishId);
-                    wish.setWishName(String.valueOf(textField_wishName.getText()));
-                    wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
-                    wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
-                    wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
-                    wish.setDeadline(String.valueOf(textField_deadLine.getText()));
-                    wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
-                    wishService.modifyWish(wish);
-                    PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                    if (isValidated()) {
+                        Wish wish = new Wish();
+                        wish.setParentId(parentId);
+                        wish.setChildId(childId);
+                        wish.setWishId(wishId);
+                        wish.setWishName(String.valueOf(textField_wishName.getText()));
+                        wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
+                        wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
+                        wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
+                        wish.setDeadline(String.valueOf(textField_deadLine.getText()));
+                        wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
+                        wishService.modifyWish(wish);
+                        PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                    }
                 }
             }
         });
@@ -271,6 +275,40 @@ public class WishCreateAndModifyPage extends JFrame {
                 }
             }
         });
+    }
+
+    public boolean isValidated() {
+        boolean isValidated = true;
+        String type = null;
+        LocalDateTime deadLine = LocalDateTime.parse(textField_deadLine.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime now = LocalDateTime.now();
+
+        if (textField_wishName.getText() == null || textField_wishName.getText().isEmpty()) {
+            isValidated = false;
+            type = "empty";
+        }
+        if (textField_deadLine.getText() == null || textField_deadLine.getText().isEmpty()) {
+            isValidated = false;
+            type = "empty";
+        }
+        if (textField_wishTarget.getText() == null || textField_wishTarget.getText().isEmpty()) {
+            isValidated = false;
+            type = "empty";
+        }
+        if (deadLine.isBefore(now)) {
+            isValidated = false;
+            type = "invalid_date";
+        }
+
+        if (!isValidated) {
+            if (type.equals("empty")) {
+                JOptionPane.showMessageDialog(null, "You should not create empty inputs", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+            if (type.equals("invalid_date")) {
+                JOptionPane.showMessageDialog(null, "Deadline should not be before now", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        return isValidated;
     }
 
 }

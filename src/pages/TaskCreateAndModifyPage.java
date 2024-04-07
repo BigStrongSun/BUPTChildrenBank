@@ -311,7 +311,7 @@ public class TaskCreateAndModifyPage extends JFrame {
                 JOptionPane.showMessageDialog(null, "You should not create empty inputs", "Alert",JOptionPane.WARNING_MESSAGE);
             }
             if(type.equals("invalid_date")){
-                JOptionPane.showMessageDialog(null, "start date ate should not be after end date", "Alert",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Start date should not be after end date", "Alert",JOptionPane.WARNING_MESSAGE);
             }
         }
         return isValidated;
