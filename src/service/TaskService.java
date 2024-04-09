@@ -30,34 +30,6 @@ public class TaskService {
         tasks = json.readArray(Task.class);
     }
 
-//    public void addTaskById(int taskId) {
-//        // 检查任务列表是否为空
-//        if (tasks == null) {
-//            tasks = new ArrayList<>();
-//        }
-//
-//        // 检查指定的taskId是否已经存在
-//        boolean taskIdExists = false;
-//        for (Task task : tasks) {
-//            if (task.getTaskId() == taskId) {
-//                taskIdExists = true;
-//                break;
-//            }
-//        }
-//
-//        // 如果taskId不存在，则创建新任务并添加到任务列表中
-//        if (!taskIdExists) {
-//            Task newTask = new Task();
-//            newTask.setTaskId(taskId);
-//            // 设置其他新任务的属性
-//            tasks.add(newTask);
-//            json.writeArray(tasks);
-//            System.out.println("任务已成功添加！");
-//        } else {
-//            System.out.println("具有相同taskId的任务已存在！");
-//        }
-//    }
-
     /**
      * Retrieves the maximum task ID from the task list.
      *
@@ -153,7 +125,7 @@ public class TaskService {
         // 检查任务列表是否为空
         if (tasks == null) {
 //            tasks = new ArrayList<>();
-            System.out.println("任务列表为空，没有要删除的函数");
+            System.out.println("任务列表为空，没有要删除的任务");
             return;
         }
 
