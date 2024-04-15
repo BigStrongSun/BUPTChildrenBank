@@ -52,6 +52,21 @@ public class WishPage extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false); // 移除按钮的焦点框
+        backButton.setContentAreaFilled(false); // 不填充内容区域
+        backButton.setOpaque(true); // 不透明背景
+        backButton.setBounds(0,0,80,30);
+        getContentPane().add(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainPage window = new MainPage();
+                window.setVisible(true);
+                wishPage.dispose();
+            }
+        });
+
         JPanel linePanel = new JPanel();
         linePanel.setBackground(new Color(104, 75, 75));
         linePanel.setOpaque(true);
@@ -148,12 +163,3 @@ public class WishPage extends JFrame {
     }
 }
 
-
-class Main1 {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            WishPage frame = new WishPage();
-            frame.setVisible(true);
-        });
-    }
-}
