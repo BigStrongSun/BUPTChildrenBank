@@ -1,6 +1,8 @@
 package pages;
 
+import domain.Account;
 import domain.Wish;
+import service.AccountService;
 import service.TempService;
 import service.WishService;
 import util.*;
@@ -11,10 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class WishCreateAndModifyPage extends JFrame {
+    private JSONController jsonAccount = new JSONController("account.txt");
+    AccountService accountService = new AccountService();
+    private List<Account> accounts;
+
     private WishCreateAndModifyPage wishCreateAndModifyPage;
     private WishService wishService = new WishService();
     TempService tempService = new TempService();
@@ -42,6 +50,9 @@ public class WishCreateAndModifyPage extends JFrame {
     private JLabel lblDeadLine;
     private JLabel lblWishTarget;
 
+    private String wishProgress;
+    private double currentBalance;//孩子账户中所有的钱，不区分 current account和 saving account
+
     /**
      * Constructs a new pages.WishCreateAndModifyPage object with the given wishId, parent flag, and modification flag.
      *
@@ -57,6 +68,13 @@ public class WishCreateAndModifyPage extends JFrame {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         wishCreateAndModifyPage = this;
+        accounts = jsonAccount.readArray(Account.class);
+        currentBalance = 0;
+        for (Account account : accounts) {
+            if (account.getUserId() == childId) {
+                currentBalance += account.getBalance();
+            }
+        }
 ////        System.out.println("我进入了WishCreateAndModify页面的初始化函数");
         setTitle("pages.WishCreateAndModifyPage");
         getContentPane().setBackground(new Color(255, 248, 239));
@@ -115,26 +133,27 @@ public class WishCreateAndModifyPage extends JFrame {
             textField_wishName = new JTextField();
             textArea_wishDescription = new JTextArea();
             textField_wishStatus = new JTextField("undone");
-            textField_wishProgress = new JTextField();
+            textField_wishProgress = new JTextField("0");
             textField_deadLine = new JTextField(nowString);
-            textField_wishTarget = new JTextField("0");
+            textField_wishTarget = new JTextField();
         } else {//说明是点击WishComponent进来的
             textField_wishName = new JTextField(wishService.getWishById(wishId).getWishName());
             textArea_wishDescription = new JTextArea(wishService.getWishById(wishId).getWishDescription());
             textField_wishStatus = new JTextField(wishService.getWishById(wishId).getWishStatus());
-            textField_wishProgress = new JTextField(wishService.getWishById(wishId).getWishProgress());
             textField_deadLine = new JTextField(wishService.getWishById(wishId).getDeadline());
             textField_wishTarget = new JTextField(wishService.getWishById(wishId).getWishTarget());
+            String progressValue = calculateDivisionPercentage(currentBalance, Double.parseDouble(textField_wishTarget.getText()));
+            textField_wishProgress = new JTextField(progressValue);
         }
         if (!isParent) {//如果是孩子身份的话，限制不能修改
             textField_wishName.setEditable(false);
             textArea_wishDescription.setEditable(false);
             textField_wishStatus.setEditable(false);
-            textField_wishProgress.setEditable(false);
             textField_deadLine.setEditable(false);
             textField_wishTarget.setEditable(false);
         }
 
+        textField_wishProgress.setEditable(false);
         textField_wishName.setBounds(400, 120, 600, 37);
         getContentPane().add(textField_wishName);
         textField_wishName.setColumns(10);
@@ -213,7 +232,8 @@ public class WishCreateAndModifyPage extends JFrame {
                         wish.setWishName(String.valueOf(textField_wishName.getText()));
                         wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
                         wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
-                        wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
+                        String progressValue = calculateDivisionPercentage(currentBalance, Double.parseDouble(textField_wishTarget.getText()));
+                        wish.setWishProgress(progressValue);
                         wish.setDeadline(String.valueOf(textField_deadLine.getText()));
                         wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
                         wishService.modifyWish(wish);
@@ -237,7 +257,8 @@ public class WishCreateAndModifyPage extends JFrame {
                         wish.setWishName(String.valueOf(textField_wishName.getText()));
                         wish.setWishDescription(String.valueOf(textArea_wishDescription.getText()));
                         wish.setWishStatus(String.valueOf(textField_wishStatus.getText()));
-                        wish.setWishProgress(String.valueOf(textField_wishProgress.getText()));
+                        String progressValue = calculateDivisionPercentage(currentBalance, Double.parseDouble(textField_wishTarget.getText()));
+                        wish.setWishProgress(progressValue);
                         wish.setDeadline(String.valueOf(textField_deadLine.getText()));
                         wish.setWishTarget(String.valueOf(textField_wishTarget.getText()));
                         wishService.modifyWish(wish);
@@ -263,6 +284,10 @@ public class WishCreateAndModifyPage extends JFrame {
         btnConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (currentBalance < Double.parseDouble(textField_wishTarget.getText())) {
+                    JOptionPane.showMessageDialog(null, "余额不足!", "提示", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认完成愿望?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
@@ -270,8 +295,20 @@ public class WishCreateAndModifyPage extends JFrame {
                     wish.setWishId(wishId);
                     wish.setWishStatus("done");
                     wish.setWishProgress("100");
-                    wishService.modifyWishStatusAndProgress(wish);
-                    PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                    for (Account account : accounts) {
+                        if (account.getUserId() == childId && account.getAccountType().equals("current")) {
+                            int actionResult = accountService.addBalance(account.getAccountId(), -Math.abs(Double.parseDouble(textField_wishTarget.getText())));
+                            if (actionResult == 1) {
+                                wishService.modifyWishStatusAndProgress(wish);
+                                PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
+                                break;
+                            } else {
+                                System.out.println("余额不足");
+                            }
+                        }
+                    }
+
+
                 }
             }
         });
@@ -311,14 +348,19 @@ public class WishCreateAndModifyPage extends JFrame {
         return isValidated;
     }
 
+    public static String calculateDivisionPercentage(double double1, double double2) {
+        if (double2 != 0) {
+            double result = double1 / double2;
+            if (result > 1) {
+                return "100"; // 当结果大于1时，输出为100%
+            } else {
+                int roundedResult = (int) (Math.round(result * 10000.0) / 100.0); // 将结果四舍五入为两位小数
+                return String.valueOf(roundedResult);
+            }
+        } else {
+            return "0"; // 处理除数为零的情况
+        }
+    }
 }
 
-//class Main {
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            WishCreateAndModifyPage frame = new WishCreateAndModifyPage(1, true, true);
-//            frame.setVisible(true);
-//        });
-//    }
-//}
 

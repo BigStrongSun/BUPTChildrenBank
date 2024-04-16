@@ -59,8 +59,8 @@ public class TaskComponent extends JPanel {
         }
         String taskStatus = taskService.getTaskById(taskId).getTaskStatus();
         taskStatus = (taskStatus == null || taskStatus.isEmpty()) ? "undone" : taskStatus;
-        String money = taskService.getTaskById(taskId).getMoney();
-        money = (money == null || money.isEmpty()) ? "？？？" : money;
+        double money = taskService.getTaskById(taskId).getMoney();
+//        money = (money == null || money.isEmpty()) ? 0 : money;
 
         // 设置主面板的布局为水平排列
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -122,7 +122,7 @@ public class TaskComponent extends JPanel {
         JPanel module3 = new JPanel();
         module3.setLayout(new BoxLayout(module3, BoxLayout.Y_AXIS));
         module3.setPreferredSize(new Dimension(50, 50));
-        JLabel moneyLabel = new JLabel(money);
+        JLabel moneyLabel = new JLabel('$' + String.valueOf(money));
         moneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         module3.add(moneyLabel);
         module3.setOpaque(false); // 设置透明背景
@@ -149,3 +149,4 @@ public class TaskComponent extends JPanel {
 
     }
 }
+

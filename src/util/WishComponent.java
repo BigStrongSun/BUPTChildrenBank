@@ -1,8 +1,10 @@
 package util;
 
+import domain.Account;
 import pages.TaskCreateAndModifyPage;
 import pages.WishCreateAndModifyPage;
 import pages.WishPage;
+import service.AccountService;
 import service.TempService;
 import service.WishService;
 
@@ -11,12 +13,19 @@ import javax.swing.plaf.ProgressBarUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+
+import static pages.WishCreateAndModifyPage.calculateDivisionPercentage;
 
 public class WishComponent extends JPanel {
     private WishService wishService = new WishService();
     TempService tempService = new TempService();
     private int parentId;//父母的Id
     private int childId;//孩子的Id
+    private double currentBalance;//孩子账户中所有的钱，不区分 current account和 saving account
+    private JSONController jsonAccount = new JSONController("account.txt");
+    AccountService accountService = new AccountService();
+    private List<Account> accounts;
 
     public WishComponent(int wishId, JFrame wishPage, boolean isParent, boolean isModify) {
         parentId = tempService.getTemp().getParentId();
@@ -25,8 +34,14 @@ public class WishComponent extends JPanel {
         setSize(700, 100);
         setLayout(null);
 
-        //后期换成从txt读取
-        int currentMoney = 1;
+        accounts = jsonAccount.readArray(Account.class);
+        currentBalance = 0;
+        for (Account account : accounts) {
+            if (account.getUserId() == childId) {
+                currentBalance += account.getBalance();
+            }
+        }
+
         String wishName = wishService.getWishById(wishId).getWishName();
         wishName = (wishName == null || wishName.equals("")) ? "？？？" : wishName;
         String deadLine = wishService.getWishById(wishId).getDeadline();
@@ -35,8 +50,13 @@ public class WishComponent extends JPanel {
         wishStatus = (wishStatus == null || wishStatus.equals("")) ? "undone" : wishStatus;
         String wishTarget = wishService.getWishById(wishId).getWishTarget();
         wishTarget = (wishTarget == null || wishTarget.equals("")) ? "0" : wishTarget;
-        String wishProgress = wishService.getWishById(wishId).getWishProgress();
-        wishProgress = (wishProgress == null || wishProgress.equals("")) ? "0" : wishProgress;
+        String wishProgress = "0";
+        if (wishStatus.equals("undone")) {
+            wishProgress = calculateDivisionPercentage(currentBalance, Double.parseDouble(wishTarget));
+        } else {
+            wishProgress = "100";
+        }
+
 
         JLabel lblWishName = new JLabel(wishName);
         lblWishName.setBounds(60, 20, 340, 40);

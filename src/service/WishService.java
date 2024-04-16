@@ -168,19 +168,21 @@ public class WishService {
         return newWish; // 返回新创建的任务对象
     }
 
-    public int getTotalWishTargetBeforeDeadLine() {
+    public double getTotalWishTargetBeforeDeadLine() {
         LocalDateTime now = LocalDateTime.now();
-        int totalWishTarget = 0;
-        int wishTarget;
+        double totalWishTarget = 0;
+        double wishTarget;
         if (wishes != null && !wishes.isEmpty()) {
             for (Wish wish : wishes) {
-                LocalDateTime dateTime = LocalDateTime.parse(wish.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                if (wish.getWishTarget() == null || wish.getWishTarget().equals("") || dateTime.isBefore(now)) {
-                    wishTarget = 0;
-                } else {
-                    wishTarget = Integer.parseInt(wish.getWishTarget());
+                if (wish.getWishStatus().equals("undone")) {
+                    LocalDateTime dateTime = LocalDateTime.parse(wish.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                    if (wish.getWishTarget() == null || wish.getWishTarget().isEmpty() || dateTime.isBefore(now)) {
+                        wishTarget = 0;
+                    } else {
+                        wishTarget = Double.parseDouble(wish.getWishTarget());
+                    }
+                    totalWishTarget += wishTarget;
                 }
-                totalWishTarget += wishTarget;
             }
         }
         return totalWishTarget;

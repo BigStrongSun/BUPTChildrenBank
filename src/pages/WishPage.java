@@ -1,5 +1,6 @@
 package pages;
 
+import domain.Account;
 import domain.Task;
 import domain.Wish;
 import service.WishService;
@@ -18,9 +19,10 @@ import java.util.List;
 
 public class WishPage extends JFrame {
     private WishPage wishPage;
-
     private List<Wish> wishes;
-    private JSONController json = new JSONController("wish.txt");
+    private List<Account> accounts;
+    private JSONController jsonWish = new JSONController("wish.txt");
+    private JSONController jsonAccount = new JSONController("account.txt");
     WishService wishService = new WishService();
     TempService tempService = new TempService();
 
@@ -56,7 +58,7 @@ public class WishPage extends JFrame {
         backButton.setFocusable(false); // 移除按钮的焦点框
         backButton.setContentAreaFilled(false); // 不填充内容区域
         backButton.setOpaque(true); // 不透明背景
-        backButton.setBounds(0,0,80,30);
+        backButton.setBounds(0, 0, 80, 30);
         getContentPane().add(backButton);
 
         backButton.addActionListener(new ActionListener() {
@@ -101,10 +103,17 @@ public class WishPage extends JFrame {
         wishDifferencePanel.add(lblCurrentMoney);
 //        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-        lblCurrentMoneyValue = new JLabel("$100");
+        accounts = jsonAccount.readArray(Account.class);
+        double currentBalance = 0;
+        for (Account account : accounts) {
+            if ( account.getUserId() == childId) {
+                currentBalance += account.getBalance();
+            }
+        }
+        lblCurrentMoneyValue = new JLabel("$ "+String.valueOf(currentBalance));
         lblCurrentMoneyValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblCurrentMoneyValue.setForeground(Color.WHITE);
-        lblCurrentMoneyValue.setBounds(180, 60, 80, 28);
+        lblCurrentMoneyValue.setBounds(180, 60, 150, 28);
         wishDifferencePanel.add(lblCurrentMoneyValue);
 
         lblTotalTarget = new JLabel("Total Target : ");
@@ -117,7 +126,7 @@ public class WishPage extends JFrame {
         lblTotalTargetValue = new JLabel("$ " + wishService.getTotalWishTargetBeforeDeadLine());
         lblTotalTargetValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblTotalTargetValue.setForeground(Color.WHITE);
-        lblTotalTargetValue.setBounds(180, 160, 80, 28);
+        lblTotalTargetValue.setBounds(180, 160, 150, 28);
         wishDifferencePanel.add(lblTotalTargetValue);
 
         btnCreate = new BtnOrange("Create Wish");
@@ -137,7 +146,7 @@ public class WishPage extends JFrame {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        wishes = json.readArray(Wish.class);
+        wishes = jsonWish.readArray(Wish.class);
         int x = 0;
         if (wishes != null) {
             Collections.sort(wishes, new Comparator<Wish>() {

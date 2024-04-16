@@ -105,14 +105,14 @@ public class TaskTest {
     @Test
     public void getMoney() {
         Task task = new Task();
-        task.setMoney("$100");
+        task.setMoney(100);
         assertEquals("$100", task.getMoney());
     }
 
     @Test
     public void setMoney() {
         Task task = new Task();
-        task.setMoney("$100");
+        task.setMoney(100);
         assertEquals("$100", task.getMoney());
     }
 

@@ -37,7 +37,7 @@ public class TaskServiceTest {
         task.setStartTime("2024-04-09 14:04");
         task.setEndTime("2024-07-19 14:04");
         task.setTaskStatus("undone");
-        task.setMoney("$1");
+        task.setMoney(1);
         assertEquals(1, taskService.modifyTask(task));
         assertEquals("test_modifyTask_taskName", task.getTaskName());
         assertEquals("test_modifyTask_taskDescription", task.getTaskDescription());

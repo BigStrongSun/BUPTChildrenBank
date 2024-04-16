@@ -17,7 +17,7 @@ public class Task {
     private String startTime;
     private String endTime;
     private String taskStatus;
-    private String money;
+    private double money;
     private int parentId;
     private int childId;
 
@@ -124,7 +124,7 @@ public class Task {
      *
      * @return The monetary value associated with the task.
      */
-    public String getMoney() {
+    public double getMoney() {
         return money;
     }
     /**
@@ -132,7 +132,7 @@ public class Task {
      *
      * @param money The monetary value associated with the task.
      */
-    public void setMoney(String money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 

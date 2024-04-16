@@ -1,6 +1,8 @@
 package pages;
 
+import domain.Account;
 import domain.Task;
+import service.AccountService;
 import service.TaskService;
 import service.TempService;
 import util.*;
@@ -13,19 +15,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * This class represents a JFrame for creating and modifying tasks.
  *
  * @author Yuxinyue Qian
- *
  */
 public class TaskCreateAndModifyPage extends JFrame {
+    private JSONController jsonAccount = new JSONController("account.txt");
     private TaskCreateAndModifyPage taskCreateAndModifyPage;
     private TaskService taskService = new TaskService();
     TempService tempService = new TempService();
+    AccountService accountService = new AccountService();
     private int parentId;//父母的Id
     private int childId;//孩子的Id
+    private List<Account> accounts;
 
     private JTextField textField_taskName;
     private JTextArea textArea_taskDescription;
@@ -47,19 +52,20 @@ public class TaskCreateAndModifyPage extends JFrame {
     private JLabel lblMoney;
 
     /**
-     Constructs a new pages.TaskCreateAndModifyPage object with the given taskId, parent flag, and modification flag.
-     @param taskId the ID of the task
-     @param isParent true if the user is a parent, false otherwise
-     @param isModify true if the task can be modified, false otherwise
+     * Constructs a new pages.TaskCreateAndModifyPage object with the given taskId, parent flag, and modification flag.
+     *
+     * @param taskId   the ID of the task
+     * @param isParent true if the user is a parent, false otherwise
+     * @param isModify true if the task can be modified, false otherwise
      */
     public TaskCreateAndModifyPage(int taskId, boolean isParent, boolean isModify) {
         initialize(taskId, isParent, isModify);
     }
 
     private void initialize(int taskId, boolean isParent, boolean isModify) {
-        parentId=tempService.getTemp().getParentId();
-        childId=tempService.getTemp().getChildId();
-        taskCreateAndModifyPage =this;
+        parentId = tempService.getTemp().getParentId();
+        childId = tempService.getTemp().getChildId();
+        taskCreateAndModifyPage = this;
 //        System.out.println("我进入了TaskCreateAndModify页面的初始化函数");
         setTitle("pages.TaskCreateAndModifyPage");
         getContentPane().setBackground(new Color(255, 248, 239));
@@ -98,7 +104,7 @@ public class TaskCreateAndModifyPage extends JFrame {
         lblEndTime.setBounds(136, 370, 300, 28);
         getContentPane().add(lblEndTime);
 
-        lblMoney = new JLabel("Money");
+        lblMoney = new JLabel("Money($)");
         lblMoney.setForeground(new Color(0, 0, 0));
         lblMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblMoney.setBounds(136, 440, 300, 28);
@@ -115,7 +121,8 @@ public class TaskCreateAndModifyPage extends JFrame {
             textArea_taskDescription = new JTextArea(taskService.getTaskById(taskId).getTaskDescription());
             textField_startTime = new JTextField(taskService.getTaskById(taskId).getStartTime());
             textField_endTime = new JTextField(taskService.getTaskById(taskId).getEndTime());
-            textField_money = new JTextField(taskService.getTaskById(taskId).getMoney());
+            textField_money = new JTextField(String.valueOf(taskService.getTaskById(taskId).getMoney()));
+            String value = textField_money.getText();
         }
         if (!isParent) {//如果是孩子身份的话，限制不能修改
             textField_taskName.setEditable(false);
@@ -210,7 +217,7 @@ public class TaskCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认创建任务?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    if(isValidated()){
+                    if (isValidated()) {
                         Task task = new Task();
                         task.setParentId(parentId);
                         task.setChildId(childId);
@@ -219,9 +226,9 @@ public class TaskCreateAndModifyPage extends JFrame {
                         task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
                         task.setStartTime(String.valueOf(textField_startTime.getText()));
                         task.setEndTime(String.valueOf(textField_endTime.getText()));
-                        task.setMoney(String.valueOf(textField_money.getText()));
+                        task.setMoney(Double.parseDouble(textField_money.getText()));
                         taskService.modifyTask(task);
-                        PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                        PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
                     }
                 }
             }
@@ -233,7 +240,7 @@ public class TaskCreateAndModifyPage extends JFrame {
                 // 显示确认对话框
                 int option = JOptionPane.showConfirmDialog(null, "是否确认修改任务?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    if(isValidated()){
+                    if (isValidated()) {
                         Task task = new Task();
                         task.setParentId(parentId);
                         task.setChildId(childId);
@@ -242,10 +249,10 @@ public class TaskCreateAndModifyPage extends JFrame {
                         task.setTaskDescription(String.valueOf(textArea_taskDescription.getText()));
                         task.setStartTime(String.valueOf(textField_startTime.getText()));
                         task.setEndTime(String.valueOf(textField_endTime.getText()));
-                        task.setMoney(String.valueOf(textField_money.getText()));
+                        task.setMoney(Double.parseDouble(textField_money.getText()));
                         task.setTaskStatus(taskService.getTaskById(taskId).getTaskStatus());
                         taskService.modifyTask(task);
-                        PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                        PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
                     }
                 }
             }
@@ -258,7 +265,7 @@ public class TaskCreateAndModifyPage extends JFrame {
                 int option = JOptionPane.showConfirmDialog(null, "是否确认删除任务?", "确认", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     taskService.deleteTask(taskId);
-                    PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+                    PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
                 }
 
             }
@@ -273,45 +280,62 @@ public class TaskCreateAndModifyPage extends JFrame {
                     Task task = new Task();
                     task.setTaskId(taskId);
                     task.setTaskStatus("done");
-                    taskService.modifyTaskStatus(task);
-                    PageSwitcher.switchPages(taskCreateAndModifyPage,new TaskPage());
+
+                    accounts = jsonAccount.readArray(Account.class);
+                    for (Account account : accounts) {
+                        if (account.getUserId() == childId && account.getAccountType().equals("current")) {
+                            int actionresult = accountService.addBalance(account.getAccountId(), Double.parseDouble(textField_money.getText()));
+                            if (actionresult == 1) {
+                                taskService.modifyTaskStatus(task);
+                                PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
+                                return;
+                            } else {
+                                System.out.println("Something wrong");
+                                return;
+                            }
+
+
+                        }
+                    }
+                    System.out.println("似乎是没有绑定孩子");
                 }
             }
         });
     }
+
     public boolean isValidated() {
         boolean isValidated = true;
-        String type=null;
+        String type = null;
         LocalDateTime endTime = LocalDateTime.parse(textField_endTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         LocalDateTime startTime = LocalDateTime.parse(textField_startTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-        if(textField_taskName.getText()==null|| textField_taskName.getText().isEmpty()){
+        if (textField_taskName.getText() == null || textField_taskName.getText().isEmpty()) {
             isValidated = false;
-            type="empty";
+            type = "empty";
         }
-        if(textField_startTime.getText()==null|| textField_startTime.getText().isEmpty()){
+        if (textField_startTime.getText() == null || textField_startTime.getText().isEmpty()) {
             isValidated = false;
-            type="empty";
+            type = "empty";
         }
-        if(textField_endTime.getText()==null|| textField_endTime.getText().isEmpty()){
+        if (textField_endTime.getText() == null || textField_endTime.getText().isEmpty()) {
             isValidated = false;
-            type="empty";
-        }        
-        if(textField_money.getText()==null|| textField_money.getText().isEmpty()){
-            isValidated = false;
-            type="empty";
+            type = "empty";
         }
-        if(startTime.isAfter(endTime)){
-            isValidated=false;
-            type="invalid_date";
+        if (textField_money.getText() == null || textField_money.getText().isEmpty()) {
+            isValidated = false;
+            type = "empty";
+        }
+        if (startTime.isAfter(endTime)) {
+            isValidated = false;
+            type = "invalid_date";
         }
 
-        if(!isValidated){
-            if(type.equals("empty")){
-                JOptionPane.showMessageDialog(null, "You should not create empty inputs", "Alert",JOptionPane.WARNING_MESSAGE);
+        if (!isValidated) {
+            if (type.equals("empty")) {
+                JOptionPane.showMessageDialog(null, "You should not create empty inputs", "Alert", JOptionPane.WARNING_MESSAGE);
             }
-            if(type.equals("invalid_date")){
-                JOptionPane.showMessageDialog(null, "Start date should not be after end date", "Alert",JOptionPane.WARNING_MESSAGE);
+            if (type.equals("invalid_date")) {
+                JOptionPane.showMessageDialog(null, "Start date should not be after end date", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }
         return isValidated;
