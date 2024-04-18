@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * This class represents a JFrame for creating and modifying tasks.
@@ -303,12 +304,14 @@ public class TaskCreateAndModifyPage extends JFrame {
         });
     }
 
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
+    public static boolean isNumeric2(String str) {
+        return str != null && NUMBER_PATTERN.matcher(str).matches();
+    }
+
     public boolean isValidated() {
         boolean isValidated = true;
         String type = null;
-        LocalDateTime endTime = LocalDateTime.parse(textField_endTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        LocalDateTime startTime = LocalDateTime.parse(textField_startTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
         if (textField_taskName.getText() == null || textField_taskName.getText().isEmpty()) {
             isValidated = false;
             type = "empty";
@@ -325,10 +328,19 @@ public class TaskCreateAndModifyPage extends JFrame {
             isValidated = false;
             type = "empty";
         }
-        if (startTime.isAfter(endTime)) {
+        if(!isNumeric2(textField_money.getText())){
             isValidated = false;
-            type = "invalid_date";
+            type = "notNumber";
         }
+        if (!textField_startTime.getText().isEmpty() && !textField_endTime.getText().isEmpty()) {
+            LocalDateTime endTime = LocalDateTime.parse(textField_endTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            LocalDateTime startTime = LocalDateTime.parse(textField_startTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            if (startTime.isAfter(endTime)) {
+                isValidated = false;
+                type = "invalid_date";
+            }
+        }
+
 
         if (!isValidated) {
             if (type.equals("empty")) {
@@ -336,6 +348,9 @@ public class TaskCreateAndModifyPage extends JFrame {
             }
             if (type.equals("invalid_date")) {
                 JOptionPane.showMessageDialog(null, "Start date should not be after end date", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+            if(type.equals("notNumber")){
+                JOptionPane.showMessageDialog(null, "Money should be in Number type", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }
         return isValidated;

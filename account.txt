@@ -1,1 +1,1 @@
-[{"accountId":1,"accountType":"current","balance":100.0,"userId":1},{"accountId":2,"accountType":"saving","balance":150.0,"userId":1},{"accountId":3,"accountType":"saving","balance":10.0,"userId":2},{"accountId":4,"accountType":"current","balance":178.1,"userId":2}]
+[{"accountId":1,"accountType":"current","balance":100.0,"userId":1},{"accountId":2,"accountType":"saving","balance":150.0,"userId":1},{"accountId":3,"accountType":"saving","balance":10.0,"userId":2},{"accountId":4,"accountType":"current","balance":158.1,"userId":2}]
