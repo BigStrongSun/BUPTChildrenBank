@@ -35,6 +35,9 @@ public class WishPage extends JFrame {
     private JLabel lblChildName;
     private JLabel lblCurrentMoney;
     private JLabel lblCurrentMoneyValue;
+
+    private JLabel lblSavingMoney;
+    private JLabel lblSavingMoneyValue;
     private JLabel lblTotalTarget;
     private JLabel lblTotalTargetValue;
 
@@ -96,7 +99,7 @@ public class WishPage extends JFrame {
         getContentPane().add(wishDifferencePanel);
 
         //后续读取真实的current money
-        lblCurrentMoney = new JLabel("Current Money : ");
+        lblCurrentMoney = new JLabel("Current Balance : ");
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblCurrentMoney.setForeground(Color.WHITE);
         lblCurrentMoney.setBounds(20, 60, 150, 28);
@@ -106,7 +109,7 @@ public class WishPage extends JFrame {
         accounts = jsonAccount.readArray(Account.class);
         double currentBalance = 0;
         for (Account account : accounts) {
-            if ( account.getUserId() == childId) {
+            if ( account.getUserId() == childId && account.getAccountType().equals("current")) {
                 currentBalance += account.getBalance();
             }
         }
@@ -116,17 +119,37 @@ public class WishPage extends JFrame {
         lblCurrentMoneyValue.setBounds(180, 60, 150, 28);
         wishDifferencePanel.add(lblCurrentMoneyValue);
 
+        //后续读取真实的saving money
+        lblSavingMoney = new JLabel("Saving Balance : ");
+        lblSavingMoney.setFont(new Font("Arial", Font.PLAIN, 20));
+        lblSavingMoney.setForeground(Color.WHITE);
+        lblSavingMoney.setBounds(20, 120, 150, 28);
+        wishDifferencePanel.add(lblSavingMoney);
+//        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+        double savingBalance = 0;
+        for (Account account : accounts) {
+            if ( account.getUserId() == childId && account.getAccountType().equals("saving")) {
+                savingBalance += account.getBalance();
+            }
+        }
+        lblSavingMoneyValue = new JLabel("$ "+String.valueOf(savingBalance));
+        lblSavingMoneyValue.setFont(new Font("Arial", Font.PLAIN, 25));
+        lblSavingMoneyValue.setForeground(Color.WHITE);
+        lblSavingMoneyValue.setBounds(180, 120, 150, 28);
+        wishDifferencePanel.add(lblSavingMoneyValue);
+
         lblTotalTarget = new JLabel("Total Target : ");
         lblTotalTarget.setFont(new Font("Arial", Font.PLAIN, 20));
         lblTotalTarget.setForeground(Color.WHITE);
-        lblTotalTarget.setBounds(20, 160, 150, 28);
+        lblTotalTarget.setBounds(20, 180, 150, 28);
         wishDifferencePanel.add(lblTotalTarget);
 //        lblTotalTarget.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         lblTotalTargetValue = new JLabel("$ " + wishService.getTotalWishTargetBeforeDeadLine());
         lblTotalTargetValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblTotalTargetValue.setForeground(Color.WHITE);
-        lblTotalTargetValue.setBounds(180, 160, 150, 28);
+        lblTotalTargetValue.setBounds(180, 180, 150, 28);
         wishDifferencePanel.add(lblTotalTargetValue);
 
         btnCreate = new BtnOrange("Create Wish");
