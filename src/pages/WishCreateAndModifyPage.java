@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class WishCreateAndModifyPage extends JFrame {
     private JSONController jsonAccount = new JSONController("account.txt");
@@ -119,7 +120,7 @@ public class WishCreateAndModifyPage extends JFrame {
         lblDeadLine.setBounds(136, 440, 300, 28);
         getContentPane().add(lblDeadLine);
 
-        lblWishTarget = new JLabel("Wish Target");
+        lblWishTarget = new JLabel("Wish Target($)");
         lblWishTarget.setForeground(new Color(0, 0, 0));
         lblWishTarget.setFont(new Font("Arial", Font.PLAIN, 20));
         lblWishTarget.setBounds(136, 510, 300, 28);
@@ -314,11 +315,14 @@ public class WishCreateAndModifyPage extends JFrame {
         });
     }
 
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
+    public static boolean isNumeric2(String str) {
+        return str != null && NUMBER_PATTERN.matcher(str).matches();
+    }
+
     public boolean isValidated() {
         boolean isValidated = true;
         String type = null;
-        LocalDateTime deadLine = LocalDateTime.parse(textField_deadLine.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        LocalDateTime now = LocalDateTime.now();
 
         if (textField_wishName.getText() == null || textField_wishName.getText().isEmpty()) {
             isValidated = false;
@@ -332,9 +336,17 @@ public class WishCreateAndModifyPage extends JFrame {
             isValidated = false;
             type = "empty";
         }
-        if (deadLine.isBefore(now)) {
+        if(!isNumeric2(textField_wishTarget.getText())){
             isValidated = false;
-            type = "invalid_date";
+            type = "notNumber";
+        }
+        if(!textField_deadLine.getText().isEmpty()){
+            LocalDateTime deadLine = LocalDateTime.parse(textField_deadLine.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            LocalDateTime now = LocalDateTime.now();
+            if (deadLine.isBefore(now)) {
+                isValidated = false;
+                type = "invalid_date";
+            }
         }
 
         if (!isValidated) {
@@ -343,6 +355,9 @@ public class WishCreateAndModifyPage extends JFrame {
             }
             if (type.equals("invalid_date")) {
                 JOptionPane.showMessageDialog(null, "Deadline should not be before now", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+            if(type.equals("notNumber")){
+                JOptionPane.showMessageDialog(null, "Wish target should be in Number type", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }
         return isValidated;
