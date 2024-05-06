@@ -65,9 +65,12 @@ public class MainPage extends JFrame {
                 if (isParent) {
                     isParent = false;
                     displayChildView(childId);
+                    lblNameType.setText("<html>"+childName +"<br>Type:Child</html>");
+
                 } else {
                     isParent = true;
                     displayParentView(parentId);
+                    lblNameType.setText("<html>"+parentName +"<br>Type: Parent</html>");
                 }
                 add(btnSwitchUser); // 添加切换用户身份的按钮
                 add(lblNameType); // 添加用户简单信息
