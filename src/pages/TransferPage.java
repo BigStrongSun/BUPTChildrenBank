@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import util.BtnOrange;
 
 public class TransferPage extends JFrame {
     private JTextField textFieldAccountNumber;
@@ -66,11 +67,9 @@ public class TransferPage extends JFrame {
         passwordField.setBounds(520, 140, 250, 30); // 调整位置和大小
         mainPanel.add(passwordField);
 
-        add(mainPanel);
-
-        JButton btnTransfer = new JButton("Transfer");
+        JButton btnTransfer = new BtnOrange("Transfer");
         btnTransfer.setFont(new Font("Arial", Font.PLAIN, 24)); // 设置字体
-        btnTransfer.setBounds(550, 500, 200, 50); // 调整位置和大小
+        btnTransfer.setBounds(400, 300, 200, 50); // 调整位置和大小
         btnTransfer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,7 +84,28 @@ public class TransferPage extends JFrame {
                 // 如果转账失败，也需要给出相应的提示
             }
         });
-        add(btnTransfer);
+        mainPanel.add(btnTransfer); // 将按钮添加到大的 JPanel 中
+
+        add(mainPanel);
+
+//        JButton btnTransfer = new BtnOrange("Transfer");
+//        btnTransfer.setFont(new Font("Arial", Font.PLAIN, 24)); // 设置字体
+//        btnTransfer.setBounds(550, 500, 200, 50); // 调整位置和大小
+//        btnTransfer.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // 在这里添加转账逻辑
+//                String accountNumber = textFieldAccountNumber.getText();
+//                String amount = textFieldAmount.getText();
+//                String password = String.valueOf(passwordField.getPassword());
+//
+//                // 在这里处理转账逻辑，比如验证密码、检查金额等
+//                // 然后进行转账操作
+//                // 如果转账成功，可以添加相应的提示或者跳转到其他页面
+//                // 如果转账失败，也需要给出相应的提示
+//            }
+//        });
+//        add(btnTransfer);
 
         setLocationRelativeTo(null);
         setResizable(false);

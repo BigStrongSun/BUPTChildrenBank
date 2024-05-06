@@ -94,7 +94,7 @@ public class MainPage extends JFrame {
     private void displayParentView(int parentId) {
         // 创建一个背景色为橙色的 JPanel
         JPanel parentPanel = new JPanel();
-        parentPanel.setBackground(new Color(255, 169, 32, 87)); // 橙色背景
+        parentPanel.setBackground(new Color(255, 255, 255, 153)); // 橙色背景
         parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50)); // 设置布局为空，以便手动设置组件位置
         parentPanel.setBounds(100, 300, 1080, 300); // 设置面板大小与 JFrame 相同
         add(parentPanel);
@@ -156,7 +156,7 @@ public class MainPage extends JFrame {
 
         // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(255, 169, 32, 87));
+        buttonPanel.setBackground(new Color(255, 255, 255, 153));
         buttonPanel.setBounds(100, 300, 1080, 300);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 
