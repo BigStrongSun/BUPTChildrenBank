@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import util.BtnOrange;
+import util.GradientBackground;
 
 public class ChildMainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -15,13 +16,30 @@ public class ChildMainPage extends JFrame {
     private JFrame previousPage;
     private JLabel lblChildName;
 
+    private String parentName = "Doe";
+
     public ChildMainPage(int childId, JFrame previousPage) {
+//        this.previousPage = previousPage; // 初始化 previousPage 引用
+//
+//
+//        setTitle("Child Main Page");
+//        setSize(1280, 720);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        getContentPane().setBackground(new Color(255, 248, 239));
+
+
         this.previousPage = previousPage; // 初始化 previousPage 引用
 
         setTitle("Child Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(255, 248, 239));
+//        setLayout(new BorderLayout());
+
+        // 设置渐变背景
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.4f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
         setLayout(null);
 
 
@@ -30,8 +48,12 @@ public class ChildMainPage extends JFrame {
         backButton.setFocusable(false); // 移除按钮的焦点框
         backButton.setContentAreaFilled(false); // 不填充内容区域
         backButton.setOpaque(true); // 不透明背景
-        backButton.setBounds(0, 0, 80, 30);
-        getContentPane().add(backButton);
+        backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
+        add(backButton); // 添加按钮
+
+
+
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,27 +75,59 @@ public class ChildMainPage extends JFrame {
         lblChildName.setBounds(1000, 20, 250, 50);
         add(lblChildName);
 
+        JLabel lblNameType = new JLabel();
+        lblNameType.setBounds(1000, 40, 250, 50);
+        Font font = new Font("Arial", Font.BOLD, 18); // 设置字体为加粗，大小为18
+        lblNameType.setFont(font);
+        add(lblNameType);
+        lblNameType.setText("<html>" + parentName + "<br>Type: Parent</html>");
+
+
         // 在正上方添加一个小框显示 current money 和 total goal
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.white);
-        topPanel.setBounds(550, 20, 200, 70);
+        topPanel.setBackground(new Color(255, 255, 255, 155));
+        topPanel.setBounds(550, 40, 200, 70);
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
         lblCurrentMoney = new JLabel("Current Money: $100");
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
-        topPanel.add(lblCurrentMoney);
+        topPanel.add(lblCurrentMoney); // 将 lblCurrentMoney 添加到 topPanel 中
 
         lblTotalGoal = new JLabel("Total Goal: $500");
         lblTotalGoal.setFont(new Font("Arial", Font.PLAIN, 20));
-        topPanel.add(lblTotalGoal);
+        topPanel.add(lblTotalGoal); // 将 lblTotalGoal 添加到 topPanel 中
 
-        add(topPanel);
+        add(topPanel); // 将 topPanel 添加到 ChildMainPage 中
+
+
+//        lblChildName = new JLabel(childName);
+        lblChildName.setText(lblChildName.getText() + "'s Homepage");
+        lblChildName.setFont(new Font("Arial", Font.BOLD, 18));
+        lblChildName.setBounds(550, 250, 250, 50);
+        lblChildName.setForeground(new Color(61,138,82, 255));
+        add(lblChildName);
+
+//        JLabel nameLabel = new JLabel(lblChildName.getText() + "'s Homepage");
+//        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+//        nameLabel.setForeground(Color.GREEN);
+//        nameLabel.setOpaque(true); // 设置标签为不透明
+//        nameLabel.setBackground(new Color(255, 255, 255, 255));
+////        nameLabel.setHorizontalAlignment(SwingConstants.CENTER); // 设置居中对齐
+//
+//// 设置标签的边距
+//        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//
+//// 添加标签到内容面板中
+//       nameLabel.add(lblTotalGoal);
+//
+//
 
         // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(255, 255, 255, 153));
+        buttonPanel.setBackground(new Color(255, 255, 255, 0));
         buttonPanel.setBounds(100, 300, 1080, 300);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
+
 
         JButton btnTaskPool = new BtnOrange("Task Poll");
         btnTaskPool.setPreferredSize(new Dimension(200, 100));
@@ -129,6 +183,10 @@ public class ChildMainPage extends JFrame {
 
         setLocationRelativeTo(null);
         setResizable(false);
+
+//
+//        setComponentZOrder(gradientBackground, 999);
+
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -138,6 +196,19 @@ public class ChildMainPage extends JFrame {
             // 创建 ChildMainPage 实例，并传入 MainPage 的引用
             ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
             childMainPage.setVisible(true); // 显示 ChildMainPage
+            mainPage.setVisible(false); // 隐藏 MainPage
         });
     }
+
+
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            JFrame mainPage = new MainPage(); // 创建 MainPage 实例
+//            mainPage.setVisible(true); // 显示 MainPage
+//
+//            // 创建 ChildMainPage 实例，并传入 MainPage 的引用
+//            ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
+//            childMainPage.setVisible(true); // 显示 ChildMainPage
+//        });
+//    }
 }

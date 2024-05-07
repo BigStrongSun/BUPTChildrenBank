@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import service.TempService;
 import util.BtnOrange;
 import service.WishService;
+import util.GradientBackground;
 
 public class MainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -24,7 +25,10 @@ public class MainPage extends JFrame {
         setTitle("Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(255, 248, 239));
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
         setLayout(null);
 
 
@@ -93,51 +97,10 @@ public class MainPage extends JFrame {
     }
 
 
-//    private void displayParentView(int parentId) {
-//        JPanel parentPanel = new JPanel();
-//        parentPanel.setBackground(new Color(255, 255, 255, 153));
-//        parentPanel.setLayout(new GridLayout(0, 4, 50, 50));// 使用网格布局，1列，自动调整行数
-//
-//        // 定义一组按钮背景颜色
-//        Color[] buttonColors = {new Color(215, 231, 252), new Color(240, 200, 200), new Color(225, 250, 200)};
-//        // 定义一组按钮文本颜色
-//        Color[] textColors = {new Color(62, 90, 206, 204), new Color(191, 17, 48), new Color(45, 114, 25)};
-//
-//        for (int i = 0; i < 2; i++) {
-//            JButton btnChild = new BtnOrange("Child " + (i + 1));
-//            btnChild.setPreferredSize(new Dimension(200, 100));
-//            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
-//            // 使用循环中的相应颜色
-//            btnChild.setForeground(textColors[i % textColors.length]);  // 循环使用文本颜色数组中的颜色
-//            btnChild.setBackground(buttonColors[i % buttonColors.length]);  // 循环使用背景颜色数组中的颜色
-//            btnChild.setBorderPainted(false); // 移除按钮边框
-//            int childId = i + 1;
-//            btnChild.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    openChildMainPage(childId);
-//                }
-//            });
-//            parentPanel.add(btnChild);
-//        }
-//
-//        JScrollPane scrollPane = new JScrollPane(parentPanel);
-//        scrollPane.revalidate(); // 重新验证布局
-//        scrollPane.repaint(); // 重新绘制窗格
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // 设置垂直滚动条始终可见
-//        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // 不显示水平滚动条
-//        scrollPane.setBorder(null); // 设置滚动窗格的边框为空
-//        scrollPane.setBounds(100, 320, 1080, 280); // 设置滚动窗格的位置和大小
-//        scrollPane.getViewport().setBorder(null); // 设置视口的边框为空
-//        scrollPane.getViewport().setBorder(null); // 设置视口的边框为空
-//
-//        scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(50, 50, 10, 10)); // 设置视口的内边距为10像素
-//        add(scrollPane); // 将滚动窗格添加到主面板中
-//    }
 
     private void displayParentView(int parentId) {
         JPanel parentPanel = new JPanel();
-        parentPanel.setBackground(new Color(255, 255, 255, 153));
+        parentPanel.setBackground(new Color(255, 255, 255, 0));
         parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
         parentPanel.setBounds(100, 300, 1080, 300);
         add(parentPanel);
@@ -188,8 +151,8 @@ public class MainPage extends JFrame {
 
         // 在正上方添加一个小框显示 current money 和 total goal
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.white);
-        topPanel.setBounds(550, 20, 200, 70);
+        topPanel.setBackground(new Color(255, 255, 255, 200));
+        topPanel.setBounds(550, 60, 200, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // 使用 BoxLayout 排列垂直方向
