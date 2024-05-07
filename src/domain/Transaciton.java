@@ -7,7 +7,7 @@ enum TransactionType {
     TRANSFER, WITHDRAWAL, GIFT_EXCHANGE, BONUS
 }
 
-public class Transaction {
+public class Transaciton {
     private String transactionId; // 交易ID，唯一标识一笔交易
     private TransactionType type; // 交易类型
     private String senderAccountId; // 发送方账户ID
@@ -28,7 +28,7 @@ public class Transaction {
      * @param description 交易的具体描述
      * @param transactionDate 交易发生的日期和时间
      */
-    public Transaction(String transactionId, TransactionType type, String senderAccountId, String receiverAccountId, double amount, double fee, String description, Date transactionDate) {
+    public Transaciton(String transactionId, TransactionType type, String senderAccountId, String receiverAccountId, double amount, double fee, String description, Date transactionDate) {
         this.transactionId = transactionId;
         this.type = type;
         this.senderAccountId = senderAccountId;
