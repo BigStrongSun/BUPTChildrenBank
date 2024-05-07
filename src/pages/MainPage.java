@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import service.TempService;
 import util.BtnOrange;
 import service.WishService;
+import util.GradientBackground;
 
 public class MainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -24,8 +25,13 @@ public class MainPage extends JFrame {
         setTitle("Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(255, 248, 239));
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
         setLayout(null);
+
+
 
         tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
@@ -65,9 +71,12 @@ public class MainPage extends JFrame {
                 if (isParent) {
                     isParent = false;
                     displayChildView(childId);
+                    lblNameType.setText("<html>"+childName +"<br>Type:Child</html>");
+
                 } else {
                     isParent = true;
                     displayParentView(parentId);
+                    lblNameType.setText("<html>"+parentName +"<br>Type: Parent</html>");
                 }
                 add(btnSwitchUser); // 添加切换用户身份的按钮
                 add(lblNameType); // 添加用户简单信息
@@ -88,36 +97,47 @@ public class MainPage extends JFrame {
     }
 
 
+
     private void displayParentView(int parentId) {
-        // 创建一个背景色为橙色的 JPanel
         JPanel parentPanel = new JPanel();
-        parentPanel.setBackground(new Color(255, 169, 32, 87)); // 橙色背景
-        parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50)); // 设置布局为空，以便手动设置组件位置
-        parentPanel.setBounds(100, 300, 1080, 300); // 设置面板大小与 JFrame 相同
+        parentPanel.setBackground(new Color(255, 255, 255, 0));
+        parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
+        parentPanel.setBounds(100, 300, 1080, 300);
         add(parentPanel);
 
-//        JLabel lblTitle = new JLabel("This is parent's view.");
-//        lblTitle.setFont(new Font("Arial", Font.PLAIN, 30));
-//        lblTitle.setBounds(420, 100, 500, 50); // 设置标签位置
-//        parentPanel.add(lblTitle);
+        // 定义一组按钮背景颜色
+        Color[] buttonColors = {new Color(215, 231, 252), new Color(240, 200, 200), new Color(225, 250, 200)};
+        // 定义一组按钮文本颜色
+        Color[] textColors = {new Color(62, 90, 206, 204), new Color(191, 17, 48), new Color(45, 114, 25)};
 
-        // 示例：假设有两个孩子，显示两个按钮
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             JButton btnChild = new BtnOrange("Child " + (i + 1));
             btnChild.setPreferredSize(new Dimension(200, 100));
-            btnChild.setFont(new Font("Arial", Font.PLAIN, 20));
+            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
+            // 使用循环中的相应颜色
+            btnChild.setForeground(textColors[i % textColors.length]);  // 循环使用文本颜色数组中的颜色
+            btnChild.setBackground(buttonColors[i % buttonColors.length]);  // 循环使用背景颜色数组中的颜色
+            btnChild.setBorderPainted(false); // 移除按钮边框
             int childId = i + 1;
-            btnChild.setBounds(100 + i * 300, 200, 200, 100); // 设置按钮位置
+            btnChild.setBounds(100 + i * 300, 200, 200, 100);
             btnChild.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    dispose();
-//                new WishPage(parentId, childId).setVisible(true);
+                    openChildMainPage(childId);
                 }
             });
             parentPanel.add(btnChild);
         }
     }
+
+
+    private void openChildMainPage(int childId) {
+        ChildMainPage childMainPage = new ChildMainPage(childId, this); // 将 MainPage 的引用传递给 ChildMainPage
+        childMainPage.setVisible(true);
+    }
+
+
+
 
 
     private void displayChildView(int childId) {
@@ -131,8 +151,8 @@ public class MainPage extends JFrame {
 
         // 在正上方添加一个小框显示 current money 和 total goal
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.white);
-        topPanel.setBounds(550, 20, 200, 70);
+        topPanel.setBackground(new Color(255, 255, 255, 200));
+        topPanel.setBounds(550, 60, 200, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // 使用 BoxLayout 排列垂直方向
@@ -153,13 +173,16 @@ public class MainPage extends JFrame {
 
         // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(255, 169, 32, 87));
+        buttonPanel.setBackground(new Color(255, 255, 255, 153));
         buttonPanel.setBounds(100, 300, 1080, 300);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 
-        JButton btnTaskPool = new BtnOrange("Task");
+        JButton btnTaskPool = new BtnOrange("Task Poll");
         btnTaskPool.setPreferredSize(new Dimension(200, 100));
-        btnTaskPool.setFont(new Font("Arial", Font.PLAIN, 20));
+        btnTaskPool.setFont(new Font("Arial", Font.PLAIN, 30));
+        btnTaskPool.setForeground(new Color(45, 107, 28, 204));
+        btnTaskPool.setBackground(new Color(218, 241, 221));
+        btnTaskPool.setBorderPainted(false); // 移除按钮边框
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,9 +192,12 @@ public class MainPage extends JFrame {
         });
         buttonPanel.add(btnTaskPool);
 
-        JButton btnWishPool = new BtnOrange("Wish");
+        JButton btnWishPool = new BtnOrange("<html>Wishing<br><center>Well</center></html>");
         btnWishPool.setPreferredSize(new Dimension(200, 100));
-        btnWishPool.setFont(new Font("Arial", Font.PLAIN, 20));
+        btnWishPool.setFont(new Font("Arial", Font.PLAIN, 30));
+        btnWishPool.setForeground(new Color(191, 17, 107, 178));
+        btnWishPool.setBackground(new Color(252, 219, 236));
+        btnWishPool.setBorderPainted(false); // 移除按钮边框
         btnWishPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,7 +209,10 @@ public class MainPage extends JFrame {
 
         JButton btnWallet = new BtnOrange("Wallet");
         btnWallet.setPreferredSize(new Dimension(200, 100));
-        btnWallet.setFont(new Font("Arial", Font.PLAIN, 20));
+        btnWallet.setFont(new Font("Arial", Font.PLAIN, 30));
+        btnWallet.setForeground(new Color(62,90,206, 204));
+        btnWallet.setBackground(new Color(215, 231, 252));
+        btnWallet.setBorderPainted(false); // 移除按钮边框
         btnWallet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,6 +224,8 @@ public class MainPage extends JFrame {
 
         add(buttonPanel);
     }
+
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
