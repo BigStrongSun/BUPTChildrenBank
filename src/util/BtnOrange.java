@@ -24,8 +24,8 @@ public class BtnOrange extends JButton {
         setPreferredSize(size);
 
         this.setFocusable(false);
-        this.setBorderPainted(true); // 不显示边框
-        this.setContentAreaFilled(false); // 不填充内容区域
+        this.setBorderPainted(false); // 不显示边框
+        this.setContentAreaFilled(true); // 不填充内容区域
         this.setOpaque(true); // 不透明背景
         this.setBackground(new Color(225, 129, 9));
         this.setForeground(Color.white);
