@@ -1,5 +1,7 @@
 package pages;
-
+/**
+ * 家长点击某个孩子的按钮后进入此页面。此页面用户身份为家长
+ */
 
 import javax.swing.JFrame;
 import javax.swing.*;
