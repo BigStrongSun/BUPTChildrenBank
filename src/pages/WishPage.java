@@ -1,6 +1,7 @@
 package pages;
 
 import domain.Account;
+import domain.AccountType;
 import domain.Task;
 import domain.Wish;
 import service.WishService;
@@ -109,7 +110,7 @@ public class WishPage extends JFrame {
         accounts = jsonAccount.readArray(Account.class);
         double currentBalance = 0;
         for (Account account : accounts) {
-            if ( account.getUserId() == childId && account.getAccountType().equals("current")) {
+            if ( account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
                 currentBalance += account.getBalance();
             }
         }
@@ -129,7 +130,7 @@ public class WishPage extends JFrame {
 
         double savingBalance = 0;
         for (Account account : accounts) {
-            if ( account.getUserId() == childId && account.getAccountType().equals("saving")) {
+            if ( account.getUserId() == childId && account.getAccountType().equals(AccountType.SAVING_ACCOUNT)) {
                 savingBalance += account.getBalance();
             }
         }
@@ -195,3 +196,11 @@ public class WishPage extends JFrame {
     }
 }
 
+class Main2 {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            WishPage frame = new WishPage();
+            frame.setVisible(true);
+        });
+    }
+}
