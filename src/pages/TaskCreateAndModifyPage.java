@@ -1,6 +1,7 @@
 package pages;
 
 import domain.Account;
+import domain.AccountType;
 import domain.Task;
 import service.AccountService;
 import service.TaskService;
@@ -284,7 +285,7 @@ public class TaskCreateAndModifyPage extends JFrame {
 
                     accounts = jsonAccount.readArray(Account.class);
                     for (Account account : accounts) {
-                        if (account.getUserId() == childId && account.getAccountType().equals("current")) {
+                        if (account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
                             int actionresult = accountService.addBalance(account.getAccountId(), Double.parseDouble(textField_money.getText()));
                             if (actionresult == 1) {
                                 taskService.modifyTaskStatus(task);

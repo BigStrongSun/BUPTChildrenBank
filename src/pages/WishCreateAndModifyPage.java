@@ -1,6 +1,7 @@
 package pages;
 
 import domain.Account;
+import domain.AccountType;
 import domain.Wish;
 import service.AccountService;
 import service.TempService;
@@ -297,7 +298,7 @@ public class WishCreateAndModifyPage extends JFrame {
                     wish.setWishStatus("done");
                     wish.setWishProgress("100");
                     for (Account account : accounts) {
-                        if (account.getUserId() == childId && account.getAccountType().equals("current")) {
+                        if (account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
                             int actionResult = accountService.addBalance(account.getAccountId(), -Math.abs(Double.parseDouble(textField_wishTarget.getText())));
                             if (actionResult == 1) {
                                 wishService.modifyWishStatusAndProgress(wish);
