@@ -123,6 +123,7 @@ public class MainPage extends JFrame {
             btnChild.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    dispose();
                     openChildMainPage(childId);
                 }
             });
@@ -177,7 +178,7 @@ public class MainPage extends JFrame {
         buttonPanel.setBounds(100, 300, 1080, 300);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 
-        JButton btnTaskPool = new BtnOrange("Task Poll");
+        JButton btnTaskPool = new BtnOrange("Task Pool");
         btnTaskPool.setPreferredSize(new Dimension(200, 100));
         btnTaskPool.setFont(new Font("Arial", Font.PLAIN, 30));
         btnTaskPool.setForeground(new Color(45, 107, 28, 204));
@@ -186,8 +187,9 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+
                 new TaskPage().setVisible(true);
+                dispose();
             }
         });
         buttonPanel.add(btnTaskPool);

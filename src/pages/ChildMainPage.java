@@ -131,7 +131,7 @@ public class ChildMainPage extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
 
 
-        JButton btnTaskPool = new BtnOrange("Task Poll");
+        JButton btnTaskPool = new BtnOrange("Task Pool");
         btnTaskPool.setPreferredSize(new Dimension(200, 100));
         btnTaskPool.setFont(new Font("Arial", Font.PLAIN, 30));
         btnTaskPool.setForeground(new Color(45, 107, 28, 204));

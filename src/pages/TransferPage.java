@@ -171,7 +171,7 @@ public class TransferPage extends JFrame {
                         String message = "The Transfer Account ID is: " + selectedAccount.getAccountId() + "\n" +
                                 "Account Type is: " + selectedAccount.getAccountType() + "\n" +
                                 "Account Balance is: " + selectedAccount.getBalance() + "\n" +
-                                "User ID is: " + selectedAccount.getUserId() + "\n" + "Are you sure to continue the transfer?";
+                                "User ID is: " + selectedAccount.getUserId() + "\n" + "User password is: " + selectedAccount.getPassword() + "\n" + "Are you sure to continue the transfer?";
 
                         // 弹出确认对话框
                         int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);
