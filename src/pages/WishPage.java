@@ -103,7 +103,7 @@ public class WishPage extends JFrame {
         lblCurrentMoney = new JLabel("Current Balance : ");
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblCurrentMoney.setForeground(Color.WHITE);
-        lblCurrentMoney.setBounds(20, 60, 150, 28);
+        lblCurrentMoney.setBounds(20, 60, 200, 28);
         wishDifferencePanel.add(lblCurrentMoney);
 //        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
@@ -124,7 +124,7 @@ public class WishPage extends JFrame {
         lblSavingMoney = new JLabel("Saving Balance : ");
         lblSavingMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblSavingMoney.setForeground(Color.WHITE);
-        lblSavingMoney.setBounds(20, 120, 150, 28);
+        lblSavingMoney.setBounds(20, 120, 200, 28);
         wishDifferencePanel.add(lblSavingMoney);
 //        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
@@ -143,7 +143,7 @@ public class WishPage extends JFrame {
         lblTotalTarget = new JLabel("Total Target : ");
         lblTotalTarget.setFont(new Font("Arial", Font.PLAIN, 20));
         lblTotalTarget.setForeground(Color.WHITE);
-        lblTotalTarget.setBounds(20, 180, 150, 28);
+        lblTotalTarget.setBounds(20, 180, 200, 28);
         wishDifferencePanel.add(lblTotalTarget);
 //        lblTotalTarget.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
