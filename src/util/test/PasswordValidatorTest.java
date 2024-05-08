@@ -2,7 +2,7 @@ package util.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import qy_notSubmit.PasswordValidator;
+import util.PasswordValidator;
 
 import static org.junit.Assert.assertEquals;
 

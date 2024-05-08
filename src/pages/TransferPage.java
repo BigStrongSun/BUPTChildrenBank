@@ -12,13 +12,16 @@ import util.JSONController;
 import java.util.List;
 
 public class TransferPage extends JFrame {
-    private JTextField textFieldAccountNumber;
+    private JTextField textFieldToAccountNumber;
+    private JTextField textFieldFromAccountNumber;
     private JTextField textFieldAmount;
     private JPasswordField passwordField;
 
     private JFrame previousPage;
     private double Balance = 200;
     private int accountId = 100;
+
+    private int userId = 1;
     private int password = 12345678;
 
     // 从文本文件中读取账户数据
@@ -88,35 +91,53 @@ public class TransferPage extends JFrame {
         mainPanel.setLayout(null); // 使用 null 布局
         add(mainPanel);
 
-        JLabel lblAccountNumber = new JLabel("Account-" + accountId + "            " + ">>>>>>" + "         " + "Account-");
-        lblAccountNumber.setFont(new Font("Arial", Font.PLAIN, 24));
-        lblAccountNumber.setBounds(250, 30, 2000, 30);
-        mainPanel.add(lblAccountNumber);
 
-        textFieldAccountNumber = new JTextField();
-        textFieldAccountNumber.setBounds(715, 30, 200, 30);
-        textFieldAccountNumber.setFont(new Font("Arial", Font.PLAIN, 20));
-        mainPanel.add(textFieldAccountNumber);
+        JLabel lblAccountNumber1 = new JLabel( "Account-100");
+        lblAccountNumber1.setFont(new Font("Arial", Font.PLAIN, 24));
+//        lblAccountNumber1.setBounds(180, 30, 200, 30);
+        lblAccountNumber1.setBounds(320, 30, 200, 30);
+        mainPanel.add(lblAccountNumber1);
+
+//        JTextField accountIdTextField = new JTextField();
+//        accountIdTextField.setFont(new Font("Arial", Font.PLAIN, 24));
+//        accountIdTextField.setBounds(280, 30, 200, 30);
+//        mainPanel.add(accountIdTextField);
+
+        JLabel lblAccountNumber2 = new JLabel( ">>>>");
+        lblAccountNumber2.setFont(new Font("Arial", Font.PLAIN, 24));
+        lblAccountNumber2.setBounds(500, 30, 100, 30);
+        mainPanel.add(lblAccountNumber2);
+
+        JLabel lblAccountNumber3 = new JLabel( "Account-");
+        lblAccountNumber3.setFont(new Font("Arial", Font.PLAIN, 24));
+        lblAccountNumber3.setBounds(580, 30, 100, 30);
+        mainPanel.add(lblAccountNumber3);
+
+        textFieldToAccountNumber = new JTextField();
+        textFieldToAccountNumber.setBounds(680, 30, 200, 30);
+        textFieldToAccountNumber.setFont(new Font("Arial", Font.PLAIN, 20));
+        mainPanel.add(textFieldToAccountNumber);
+
 
         // 添加转账金额标签和文本框
         JLabel lblAmount = new JLabel("Transfer Amount");
         lblAmount.setFont(new Font("Arial", Font.PLAIN, 24));
-        lblAmount.setBounds(180, 80, 200, 30);
+        lblAmount.setBounds(230, 105, 200, 30);
         mainPanel.add(lblAmount);
 
         textFieldAmount = new JTextField();
-        textFieldAmount.setBounds(380, 80, 200, 30);
+        textFieldAmount.setBounds(480, 105, 200, 30);
         textFieldAmount.setFont(new Font("Arial", Font.PLAIN, 20));
         mainPanel.add(textFieldAmount);
 
         // 添加密码标签和密码框
         JLabel lblPassword = new JLabel("Password confirm");
         lblPassword.setFont(new Font("Arial", Font.PLAIN, 24));
-        lblPassword.setBounds(180, 130, 250, 30);
+        lblPassword.setBounds(230, 180, 250, 30);
         mainPanel.add(lblPassword);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(470, 130, 200, 30);
+        passwordField.setBounds(490, 180, 200, 30);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 20));
         mainPanel.add(passwordField);
 
@@ -130,7 +151,8 @@ public class TransferPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 获取用户输入的账户号码、金额和密码
-                String accountNumber = textFieldAccountNumber.getText();
+//                String fromAccountId = textFieldFromAccountNumber.getText();
+                String accountNumber = textFieldToAccountNumber.getText();
                 String enteredPassword = String.valueOf(passwordField.getPassword());
                 String transferAmountString = textFieldAmount.getText();
 
@@ -151,6 +173,25 @@ public class TransferPage extends JFrame {
 
                 // 从文本文件中读取账户数据
                 List<Account> accounts = readAccountData();
+
+//
+//                boolean isFromAccountValid = false;
+//                        for (Account account : accounts) {
+//                            if (account.getUserId() == userId && String.valueOf(account.getAccountId()).equals(fromAccountId)) {
+//                                isFromAccountValid = true;
+//                        break;
+//                    }
+//                }
+//                if (!isFromAccountValid) {
+//                    JOptionPane.showMessageDialog(null, "Invalid source account!", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+
+//                if ( fromAccountId.isEmpty()) {
+//                    JOptionPane.showMessageDialog(null, "Please enter a source account!", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+
 
                 // 根据用户输入的账户号码查找对应的账户信息
                 Account selectedAccount = null;
