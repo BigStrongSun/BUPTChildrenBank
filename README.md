@@ -7,6 +7,7 @@ This is CourseWork of EBU6304 Software Engineering
 
 - IOController和JSONController是之间学长学姐写的，直接拿过来用了。
   - 用来读取json格式的txt文件数据，支持读取单列表{}和数组[{},{},{}]
+  - 如果不会读写操作的，查看JSONController和JSONTest,JSONTest里的生成的666.txt对应的是JSON数组，777.txt对应的是JSON列表
 
 - PageSwitcher是用来实现页面跳转的工具类，不能传参。
   - 使用方法：PageSwitcher.switchPages(frameToClose, new frameToOpen);
