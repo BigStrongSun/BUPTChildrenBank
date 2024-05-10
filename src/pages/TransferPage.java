@@ -18,11 +18,12 @@ public class TransferPage extends JFrame {
     private JPasswordField passwordField;
 
     private JFrame previousPage;
-    private double Balance = 200;
-    private int accountId = 100;
+//    private int accountId = 100;
 
-    private int userId = 1;
-    private int password = 12345678;
+    private int userId = 2;
+    private int password = 1;
+
+    double totalBalance = 0.0;
 
     // 从文本文件中读取账户数据
     private List<Account> readAccountData() {
@@ -49,6 +50,10 @@ public class TransferPage extends JFrame {
     }
 
     public TransferPage() {
+
+
+        calculateAndUpdateTotalBalance();
+
         setTitle("Transfer Page");
         setSize(1280, 720); // 设置页面大小为1280x720
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +73,7 @@ public class TransferPage extends JFrame {
         backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
         add(backButton); // 添加按钮
 
-        JLabel lblBalance = new JLabel("Your balance: $" + Balance);
+        JLabel lblBalance = new JLabel("Your total balance: $" + totalBalance);
         lblBalance.setFont(new Font("Arial", Font.PLAIN, 20));
         lblBalance.setForeground(new Color(45, 107, 28, 204));
         lblBalance.setBounds(900, 80, 250, 30);
@@ -92,16 +97,16 @@ public class TransferPage extends JFrame {
         add(mainPanel);
 
 
-        JLabel lblAccountNumber1 = new JLabel( "Account-100");
+        JLabel lblAccountNumber1 = new JLabel( "Account-");
         lblAccountNumber1.setFont(new Font("Arial", Font.PLAIN, 24));
 //        lblAccountNumber1.setBounds(180, 30, 200, 30);
-        lblAccountNumber1.setBounds(320, 30, 200, 30);
+        lblAccountNumber1.setBounds(180, 30, 200, 30);
         mainPanel.add(lblAccountNumber1);
 
-//        JTextField accountIdTextField = new JTextField();
-//        accountIdTextField.setFont(new Font("Arial", Font.PLAIN, 24));
-//        accountIdTextField.setBounds(280, 30, 200, 30);
-//        mainPanel.add(accountIdTextField);
+        JTextField textFieldFromAccountNumber = new JTextField();
+        textFieldFromAccountNumber.setFont(new Font("Arial", Font.PLAIN, 24));
+        textFieldFromAccountNumber.setBounds(280, 30, 200, 30);
+        mainPanel.add(textFieldFromAccountNumber);
 
         JLabel lblAccountNumber2 = new JLabel( ">>>>");
         lblAccountNumber2.setFont(new Font("Arial", Font.PLAIN, 24));
@@ -147,12 +152,13 @@ public class TransferPage extends JFrame {
         btnTransfer.setBounds(400, 300, 200, 50);
         mainPanel.add(btnTransfer);
 
+
         btnTransfer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 获取用户输入的账户号码、金额和密码
-//                String fromAccountId = textFieldFromAccountNumber.getText();
-                String accountNumber = textFieldToAccountNumber.getText();
+                String fromAccountId = textFieldFromAccountNumber.getText();
+                String toAccountId = textFieldToAccountNumber.getText();
                 String enteredPassword = String.valueOf(passwordField.getPassword());
                 String transferAmountString = textFieldAmount.getText();
 
@@ -174,68 +180,106 @@ public class TransferPage extends JFrame {
                 // 从文本文件中读取账户数据
                 List<Account> accounts = readAccountData();
 
-//
-//                boolean isFromAccountValid = false;
-//                        for (Account account : accounts) {
-//                            if (account.getUserId() == userId && String.valueOf(account.getAccountId()).equals(fromAccountId)) {
-//                                isFromAccountValid = true;
-//                        break;
-//                    }
-//                }
-//                if (!isFromAccountValid) {
-//                    JOptionPane.showMessageDialog(null, "Invalid source account!", "Error", JOptionPane.ERROR_MESSAGE);
-//                    return;
-//                }
 
-//                if ( fromAccountId.isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "Please enter a source account!", "Error", JOptionPane.ERROR_MESSAGE);
-//                    return;
-//                }
+                boolean isFromAccountValid = false;
+                double balance = 0.0;
+                for (Account account : accounts) {
+                    if (account.getUserId() == userId && textFieldFromAccountNumber.getText().equals(String.valueOf(account.getAccountId()))) {
+                        System.out.println("User ID: " + account.getUserId());
+                        System.out.println("Account ID: " + account.getAccountId());
+                        System.out.println("Text Field Value: " + textFieldFromAccountNumber.getText());
+                        balance = account.getBalance();
+                        isFromAccountValid = true;
+                        break; // 如果找到了匹配的账户，就可以退出循环了
+                    }
+                }
 
+                if (!isFromAccountValid) {
+                    JOptionPane.showMessageDialog(null, "Invalid source account!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (!isFromAccountValid) {
+                    JOptionPane.showMessageDialog(null, "Invalid source account!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if ( fromAccountId.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a source account!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (textFieldFromAccountNumber.getText().equals( textFieldToAccountNumber.getText())) {
+                    JOptionPane.showMessageDialog(null, "You cannot transfer to the same account!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+
+// 计算指定用户所有账户的余额总和
+
+                for (Account account : accounts) {
+                    if (account.getUserId() == userId) {
+                        totalBalance += account.getBalance();
+                    }
+                }
 
                 // 根据用户输入的账户号码查找对应的账户信息
-                Account selectedAccount = null;
+                Account selectedFromAccount = null;
+                Account selectedToAccount = null;
                 for (Account account : accounts) {
-                    if (String.valueOf(account.getAccountId()).equals(accountNumber)) {
-                        selectedAccount = account;
+                    if (String.valueOf(account.getAccountId()).equals(fromAccountId)) {
+                        selectedFromAccount = account;
+                    }
+                    if (String.valueOf(account.getAccountId()).equals(toAccountId)) {
+                        selectedToAccount = account;
+                    }
+                    if (selectedFromAccount != null && selectedToAccount != null) {
                         break;
                     }
                 }
 
+
+
                 // 如果找到对应的账户信息
-                if (selectedAccount != null) {
+                if (selectedToAccount != null) {
                     // 检查转账金额是否大于账户余额
-                    if (transferAmount > selectedAccount.getBalance()) {
+                    if (transferAmount > selectedFromAccount.getBalance()) {
                         JOptionPane.showMessageDialog(null, "Insufficient balance!", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // 构建要显示的信息
-                        String message = "The Transfer Account ID is: " + selectedAccount.getAccountId() + "\n" +
-                                "Account Type is: " + selectedAccount.getAccountType() + "\n" +
-                                "Account Balance is: " + selectedAccount.getBalance() + "\n" +
-                                "User ID is: " + selectedAccount.getUserId() + "\n" + "User password is: " + selectedAccount.getPassword() + "\n" + "Are you sure to continue the transfer?";
+                        String message = "The Transfer Account ID is: " + selectedToAccount.getAccountId() + "\n" +
+                                "Account Type is: " + selectedToAccount.getAccountType() + "\n" +
+                                " From Account Balance is: " + balance+ "\n"+
+                                " To Account Balance is: " + selectedToAccount.getBalance() + "\n" +
+                                "User ID is: " + selectedToAccount.getUserId() + "\n" + "User password is: " + selectedToAccount.getPassword() + "\n" + "Are you sure to continue the transfer?";
 
                         // 弹出确认对话框
-                        int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);
+                        int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);// 确保确认转账成功后执行以下操作
                         if (option == JOptionPane.OK_OPTION) {
+                            // 更新转账方账户余额
+                            double currentFromBalance = selectedFromAccount.getBalance();
+                            selectedFromAccount.setBalance(currentFromBalance - transferAmount);
+                            // 更新收款方账户余额
+                            double currentToBalance = selectedToAccount.getBalance();
+                            selectedToAccount.setBalance(currentToBalance + transferAmount);
 
-                            double currentBalance = selectedAccount.getBalance();
-                            selectedAccount.setBalance(currentBalance + transferAmount);
+                            // 将更新后的数据写回到文件中
+                            updateAccountBalance(selectedFromAccount.getAccountId(), selectedFromAccount.getBalance()); // 更新转账方账户余额
+                            updateAccountBalance(selectedToAccount.getAccountId(), selectedToAccount.getBalance()); // 更新收款方账户余额
 
-// 更新目标账户的余额
-                            updateAccountBalance(selectedAccount.getAccountId(), selectedAccount.getBalance());
+                            // 更新页面上的总余额显示
+                            calculateAndUpdateTotalBalance();
 
-// 更新页面上的显示余额
-                            Balance -= transferAmount;
+                            // 更新已有的总余额标签
+                            lblBalance.setText("Your total balance: $" + totalBalance);
 
-
-                            lblBalance.setText("Your balance: $" + Balance);
-
-// 提示转账成功
+                            // 提示转账成功
                             JOptionPane.showMessageDialog(null, "Transfer successful!");
-
                         } else {
                             // 用户点击了取消按钮，不执行任何操作
                         }
+
+
                     }
                 } else {
                     // 如果未找到对应的账户信息，弹出提示
@@ -243,6 +287,23 @@ public class TransferPage extends JFrame {
                 }
             }
         });
+    }
+
+
+    private void calculateAndUpdateTotalBalance() {
+        // 从文本文件中读取账户数据
+        List<Account> accounts = readAccountData();
+
+        // 计算总余额
+        totalBalance = 0.0;
+        for (Account account : accounts) {
+            if (account.getUserId() == userId) {
+                totalBalance += account.getBalance();
+                    System.out.println(userId);
+                System.out.println(account.getBalance());
+                System.out.println(totalBalance);
+            }
+        }
     }
 
     public static void main(String[] args) {
