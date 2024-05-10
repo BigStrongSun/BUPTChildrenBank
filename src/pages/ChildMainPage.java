@@ -109,21 +109,6 @@ public class ChildMainPage extends JFrame {
         lblChildName.setForeground(new Color(61,138,82, 255));
         add(lblChildName);
 
-//        JLabel nameLabel = new JLabel(lblChildName.getText() + "'s Homepage");
-//        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
-//        nameLabel.setForeground(Color.GREEN);
-//        nameLabel.setOpaque(true); // 设置标签为不透明
-//        nameLabel.setBackground(new Color(255, 255, 255, 255));
-////        nameLabel.setHorizontalAlignment(SwingConstants.CENTER); // 设置居中对齐
-//
-//// 设置标签的边距
-//        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-//
-//// 添加标签到内容面板中
-//       nameLabel.add(lblTotalGoal);
-//
-//
-
         // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(255, 255, 255, 0));
@@ -176,7 +161,7 @@ public class ChildMainPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                new WalletPage().setVisible(true);
+                new WalletPage().setVisible(true);
             }
         });
         buttonPanel.add(btnWallet);
@@ -195,7 +180,6 @@ public class ChildMainPage extends JFrame {
             JFrame mainPage = new MainPage(); // 创建 MainPage 实例
             mainPage.setVisible(true); // 显示 MainPage
 
-            // 创建 ChildMainPage 实例，并传入 MainPage 的引用
             ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
             childMainPage.setVisible(true); // 显示 ChildMainPage
             mainPage.setVisible(false); // 隐藏 MainPage
@@ -203,14 +187,5 @@ public class ChildMainPage extends JFrame {
     }
 
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame mainPage = new MainPage(); // 创建 MainPage 实例
-//            mainPage.setVisible(true); // 显示 MainPage
-//
-//            // 创建 ChildMainPage 实例，并传入 MainPage 的引用
-//            ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
-//            childMainPage.setVisible(true); // 显示 ChildMainPage
-//        });
-//    }
+
 }

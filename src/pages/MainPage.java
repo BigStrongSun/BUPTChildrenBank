@@ -38,60 +38,29 @@ public class MainPage extends JFrame {
         childId = tempService.getTemp().getChildId();
         isParent = tempService.getTemp().isParent();
 
-        //左上角添加测试的切换类型按钮
-        JButton btnSwitchUser = new JButton("切换用户身份");
-        btnSwitchUser.setBounds(0, 0, 200, 30);
 
-        if (isParent) {
-            // 如果用户是家长，显示孩子的按钮列表
-            displayParentView(parentId);
-        } else {
-            // 如果用户是孩子，显示当前的金额和总目标，以及任务池、许愿池和钱包的按钮
-            displayChildView(childId);
-        }
+
         JLabel lblNameType = new JLabel();
         lblNameType.setBounds(1000, 20, 250, 50);
         Font font = new Font("Arial", Font.BOLD, 18); // 设置字体为加粗，大小为18
         lblNameType.setFont(font);
         add(lblNameType);
 
-// 根据用户类型设置姓名和类型文本
         if (isParent) {
+            // 如果用户是家长，显示孩子的按钮列表
+            displayParentView(parentId);
             lblNameType.setText("<html>" + parentName + "<br>Type: Parent</html>");
 
         } else {
-            lblNameType.setText("<html>" + childName + "<br>Type: ChildS</html>");
 
+            displayChildView(childId);
+            lblNameType.setText("<html>" + childName + "<br>Type: Child</html>");
         }
 
-        btnSwitchUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll(); // 移除当前所有组件
-                if (isParent) {
-                    isParent = false;
-                    displayChildView(childId);
-                    lblNameType.setText("<html>"+childName +"<br>Type:Child</html>");
-
-                } else {
-                    isParent = true;
-                    displayParentView(parentId);
-                    lblNameType.setText("<html>"+parentName +"<br>Type: Parent</html>");
-                }
-                add(btnSwitchUser); // 添加切换用户身份的按钮
-                add(lblNameType); // 添加用户简单信息
-                repaint(); // 重新绘制界面
-                revalidate(); // 重新验证布局
-            }
-        });
-
-        add(btnSwitchUser);
 
         setLocationRelativeTo(null);
         setResizable(false);
 
-        //右上角添加用户简单信息
-// 创建 JLabel 用于显示姓名和类型
 
 
     }
@@ -145,12 +114,8 @@ public class MainPage extends JFrame {
         // 创建 WishService 实例
         WishService wishService = new WishService();
 
-        // 读取当前金额和总目标值
-        //之后的函数！！
-//        double currentMoney = wishService.getCurrentMoney();
-//        double totalGoal = wishService.getTotalWishTargetBeforeDeadLine();
 
-        // 在正上方添加一个小框显示 current money 和 total goal
+
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(255, 255, 255, 200));
         topPanel.setBounds(550, 60, 200, 70);
@@ -219,7 +184,7 @@ public class MainPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                new WalletPage().setVisible(true);
+                new WalletPage().setVisible(true);
             }
         });
         buttonPanel.add(btnWallet);
