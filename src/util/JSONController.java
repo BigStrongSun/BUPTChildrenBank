@@ -7,6 +7,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.parser.Feature;
 import util.IOController;
 
+import static com.alibaba.fastjson.JSON.toJSONString;
+
 /**
  *  The util.JSONController class provides some simple methods for JSON input or output.
  *  Title      : util.JSONController.java
@@ -57,7 +59,7 @@ public class JSONController {
      * @return Whether the write operation was successful
      */
     public boolean writeArray(List<?> objectList) {
-        String temp= (String) JSON.toJSONString(objectList);
+        String temp= (String) toJSONString(objectList);
         return io.directWrite(temp);
     }
 
@@ -78,7 +80,7 @@ public class JSONController {
      * @return Whether the write operation was successful
      */
     public boolean write(Object x) {
-        String temp= (String) JSON.toJSONString(x);
+        String temp= (String) toJSONString(x);
         return io.directWrite(temp);
     }
 }

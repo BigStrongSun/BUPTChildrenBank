@@ -1,18 +1,14 @@
 package pages;
 import service.LoginService;
-import pages.ChildMainPage;
-import service.LoginService;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-public class ParentLoginPage {
-    //父母登陆界面及功能
+import static javax.swing.JOptionPane.showMessageDialog;
+
+public class ParentLoginPage{
+    //父母登陆界面及功能,以及注册界面功能
     public static void parentComponents(JPanel panel) {
         panel.setLayout(null);
 
@@ -43,17 +39,35 @@ public class ParentLoginPage {
 
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
+                String username = null;
+                boolean usernameValid = false;
+                while (!usernameValid){
+                    username = userText.getText();
+                    if(username.equals("0")){
+                        showMessageDialog(null, "Username cannot be 0");
+                        System.exit(0);//就是想退出，还没想到更好的方法。然后我也不知道exit0,1有啥区别
+                    }
+                    try {
+                        // 尝试将字符串转换为int
+                        int input = Integer.parseInt(username);
+                        System.out.println("Integer value: " + input);
+                        usernameValid = true;
+                    } catch (NumberFormatException ex) {
+                        // 如果转换失败，显示错误提示
+                        showMessageDialog(null, "Error: Username must be integer");
+                        System.exit(1);
+                    }
+                }
                 String password = new String(passwordText.getPassword());
                 String identity = "parent";
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
-                } else if (LoginService.parentisUsernameExist(username)) {
-                    JOptionPane.showMessageDialog(null, "Username already exists");
+                    showMessageDialog(null, "Username or password cannot be empty");
+                } else if (LoginService.usernameExist(username)) {
+                    showMessageDialog(null, "Username already exists");
                 } else {
-                	LoginService.parentsaveUser(username, password,identity);
-                    JOptionPane.showMessageDialog(null, "Registration successful");
+                	LoginService.saveUser(username, password,identity);
+                    showMessageDialog(null, "Registration successful");
                 }
             }
         });
@@ -64,11 +78,14 @@ public class ParentLoginPage {
                 String password = new String(passwordText.getPassword());
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
-                } else if (!LoginService.parentisUsernameExist(username) || !LoginService.parentvalidatePassword(username, password)) {
-                    JOptionPane.showMessageDialog(null, "Invalid username or password");
+                    showMessageDialog(null, "Username or password cannot be empty");
+                } else if (!LoginService.usernameExist(username) ||
+                        !LoginService.validatePassword(username, password)
+                            || !LoginService.checkIfIsParent(username)) {
+                    showMessageDialog(null, "Invalid username or password");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Login successful");
+                    showMessageDialog(null, "Login successful");
+                    LoginService.saveCurrentUser(username);
                 }
             }
         });
@@ -76,3 +93,5 @@ public class ParentLoginPage {
     }
 		
 }
+
+

@@ -31,4 +31,14 @@ public class Temp {
     public void setParent(boolean parent) {
         isParent = parent;
     }
+
+    public Temp(int parentId, int childId, boolean isParent) {
+        this.parentId = parentId;
+        this.childId = childId;
+        this.isParent = isParent;
+    }
+
+    public Temp(int parentId) {
+        this.parentId = parentId;
+    }
 }

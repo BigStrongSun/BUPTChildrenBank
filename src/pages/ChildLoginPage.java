@@ -1,6 +1,6 @@
 package pages;
 import service.LoginService;
-import pages.ChildMainPage;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class ChildLoginPage {
 	//孩子界面及功能
@@ -44,15 +46,28 @@ public class ChildLoginPage {
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
+                if(username.equals("0")){
+                    showMessageDialog(null, "Username cannot be 0");
+                    System.exit(0);//就是想退出，还没想到更好的方法。然后我也不知道exit0,1有啥区别
+                }
+                try {
+                    // 尝试将字符串转换为int
+                    int input = Integer.parseInt(username);
+                    System.out.println("Integer value: " + input);
+                } catch (NumberFormatException ex) {
+                    // 如果转换失败，显示错误提示
+                    JOptionPane.showMessageDialog(null, "Error: Username must be integer");
+                    System.exit(1);
+                }
                 String password = new String(passwordText.getPassword());
                 String identity = "child";
 
                 if (username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
-                } else if (LoginService.childisUsernameExist(username)) {
+                } else if (LoginService.usernameExist(username)) {
                     JOptionPane.showMessageDialog(null, "Username already exists");
                 } else {
-                	LoginService.childsaveUser(username, password, identity);
+                	LoginService.saveUser(username, password, identity);
                     JOptionPane.showMessageDialog(null, "Registration successful");
                 }
             }
@@ -61,14 +76,18 @@ public class ChildLoginPage {
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
+
                 String password = new String(passwordText.getPassword());
 
                 if (username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
-                } else if (!LoginService.childisUsernameExist(username) || !LoginService.childvalidatePassword(username, password)) {
+                } else if (!LoginService.usernameExist(username) ||
+                        !LoginService.validatePassword(username, password)
+                            || LoginService.checkIfIsParent(username)) {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
+                    LoginService.saveCurrentUser2(username);
                 }
             }
         });

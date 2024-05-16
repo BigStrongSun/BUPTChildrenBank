@@ -1,1 +1,12 @@
-[{"accountId":1,"accountType":"CURRENT_ACCOUNT","balance":185.5,"password":"Pass4000","userId":1},{"accountId":2,"accountType":"CURRENT_ACCOUNT","balance":192.0,"password":"Pass3000","userId":1},{"accountId":3,"accountType":"SAVING_ACCOUNT","balance":10.0,"password":"Pass1000","userId":2},{"accountId":4,"accountType":"CURRENT_ACCOUNT","balance":158.1,"password":"Pass1000","userId":2}]
+[
+{"accountId":1,
+"accountType":"CURRENT_ACCOUNT",
+"balance":185.5,
+"password":"Pass4000","userId":1},
+{"accountId":2,"accountType":"CURRENT_ACCOUNT",
+"balance":192.0,"password":"Pass3000","userId":1},
+{"accountId":3,
+"accountType":"SAVING_ACCOUNT",
+"balance":10.0,"password":"Pass1000",
+"userId":2},
+{"accountId":4,"accountType":"CURRENT_ACCOUNT","balance":158.1,"password":"Pass1000","userId":2}]
