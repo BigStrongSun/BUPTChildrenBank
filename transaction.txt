@@ -1,0 +1,32 @@
+[
+    {
+        "transactionId": 101,
+        "type": "DEPOSIT",
+        "senderAccountId": 2,
+        "receiverAccountId": 1,
+        "amount": 500.0,
+        "fee": 0.0,
+        "description": "Initial deposit",
+        "transactionDate": "2024-05-10"
+    },
+    {
+        "transactionId": 102,
+        "type": "TRANSFER",
+        "senderAccountId": 1,
+        "receiverAccountId": 2,
+        "amount": 150.0,
+        "fee": 2.5,
+        "description": "Rent payment",
+        "transactionDate": "2024-05-11"
+    },
+    {
+        "transactionId": 103,
+        "type": "WITHDRAWAL",
+        "senderAccountId": 2,
+        "receiverAccountId": 3,
+        "amount": 100.0,
+        "fee": 1.0,
+        "description": "ATM withdrawal",
+        "transactionDate": "2024-05-12"
+    }
+]

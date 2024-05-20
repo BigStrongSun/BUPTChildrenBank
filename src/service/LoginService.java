@@ -1,198 +1,65 @@
 package service;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
+import domain.Temp;
+import util.JSONController;
+import java.util.List;
+import domain.User;
+
+import static java.lang.Integer.parseInt;
+
 public class LoginService {
+    private static JSONController json = new JSONController("temp.txt");
+    private static JSONController json2 = new JSONController("user.txt");
+    static List<User> userList = json2. readArray(User.class);
 
-    public static void parentsaveUser(String username, String password, String identity) {
-        File file = new File("user.txt");
-        File file2 = new File ("currentuser.txt");
-        BufferedWriter writer = null;
-        BufferedWriter writer2 = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(file, true));
-            writer.write(username + ":" + password + ":" + identity);
-            writer.newLine();
-            
-            writer2 = new BufferedWriter(new FileWriter(file2, false));
-            writer2.write(username +  ":" + identity);
-            writer2.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            if (writer2 != null) {
-                try {
-                    writer2.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public static void saveCurrentUser(String username){//for parent
+        int userId = parseInt(username);
+        Temp temp = new Temp(userId,0,true);//childid为0代表尚未绑定孩子
+        json.write(temp);//向temp.txt里写入
+    }
+    public static void saveCurrentUser2(String username){//for child
+        int userId = parseInt(username);
+        Temp temp = new Temp(0,userId,true);//parentid为0代表尚未绑定家长
+        json.write(temp);//向temp.txt里写入
+    }
+    public static void saveUser(String username, String password, String identity) {
+        User newUser = new User(username, password, identity);
+        userList.add(newUser);
+        json2.writeArray(userList);
+
     }
 
-    public static boolean parentisUsernameExist(String username) {
-        File file = new File("user.txt");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] user = line.split(":");
-                if (user[0].equals(username)) {
+    public static boolean usernameExist(String username) {
+        for(User user: userList){
+            if (user.getUsername().equals(username)) {
+                   return true;
+               }
+        }
+        return false;
+    }
+
+    public static boolean validatePassword(String username, String password) {
+        for(User user: userList){//check if the entered info match any info in the file
+            if (user.getUsername().equals(username)) {
+                return user.getPassword().equals(password);
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkIfIsParent(String username){//if is parent, return true
+        for(User user: userList) {
+            if (user.getUsername().equals(username)) {//username is unique, so we only need to use the username to identify
+                if (user.getIdentity().equals("parent")) {
                     return true;
                 }
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
         return false;
+
     }
-
-    public static boolean parentvalidatePassword(String username, String password) {
-        File file = new File("user.txt");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] user = line.split(":");
-                if (user[0].equals(username)) {
-                    return user[1].equals(password);
-                }
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
-
-    
-
-
-    public static void childsaveUser(String username, String password, String identity) {
-        File file = new File("user.txt");
-        File file2 = new File("currentuser.txt");
-        BufferedWriter writer = null;
-        BufferedWriter writer2 = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(file, true));
-            writer.write(username + ":" + password + ":" + identity);
-            writer.newLine();
-            
-            writer2 = new BufferedWriter(new FileWriter(file2, false));
-            writer2.write(username + ":" + identity);
-            writer2.newLine();
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            
-            if (writer2 != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static boolean childisUsernameExist(String username) {
-        File file = new File("user.txt");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] user = line.split(":");
-                if (user[0].equals(username)) {
-                    return true;
-                }
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
-
-    public static boolean childvalidatePassword(String username, String password) {
-        File file = new File("user.txt");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] user = line.split(":");
-                if (user[0].equals(username)) {
-                    return user[1].equals(password);
-                }
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
-
-    
-
-
 }

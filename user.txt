@@ -1,3 +1,1 @@
-123:321:parent
-213:123:parent
-1234:123456parent
+[{"identity":"parent","password":"123","username":"122"},{"identity":"parent","password":"123","username":"123"},{"identity":"child","password":"123","username":"1234"}]

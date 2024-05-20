@@ -66,9 +66,10 @@ public class TaskPage extends JFrame {
 
         // 创建"Create task"按钮
         JButton createTaskButton = new BtnOrange("Create task");
-        createTaskButton.addActionListener(new ActionListener() {
+        createTaskButton.addActionListener(new ActionListener() {//给按钮添加了一个ActionListener
             public void actionPerformed(ActionEvent e) {
-                TaskCreateAndModifyPage window = new TaskCreateAndModifyPage(taskService.getMaxTaskId() + 1, true, false);
+                TaskCreateAndModifyPage window =
+                        new TaskCreateAndModifyPage(taskService.getMaxTaskId() + 1, true, false);
                 window.setVisible(true);
 //                JFrame taskPage = (JFrame) SwingUtilities.getWindowAncestor(SouthPanel.this);
                 taskPage.dispose();

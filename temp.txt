@@ -1,1 +1,1 @@
-{"parentId":1,"childId":2,"isParent":true}
+{"childId":1234,"parent":true,"parentId":0}

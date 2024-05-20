@@ -97,6 +97,21 @@ public class Transaction {
         return transactionDate;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", type='" + type + '\'' +
+                ", senderAccountId=" + senderAccountId +
+                ", receiverAccountId=" + receiverAccountId +
+                ", amount=" + amount +
+                ", fee=" + fee +
+                ", description='" + description + '\'' +
+                ", transactionDate='" + transactionDate + '\'' +
+                '}';
+    }
+
+
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
     }
