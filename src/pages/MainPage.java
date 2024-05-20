@@ -17,9 +17,9 @@ public class MainPage extends JFrame {
     private int parentId;
     private int childId;
 
-    private String childName = "John";
+    private String childName ;
 
-    private String parentName = "Doe";
+    private String parentName;
 
     public MainPage() {
         setTitle("Main Page");
@@ -37,6 +37,8 @@ public class MainPage extends JFrame {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         isParent = tempService.getTemp().isParent();
+        childName = String.valueOf(tempService.getTemp().getChildId());
+        parentName = String.valueOf(tempService.getTemp().getParentId());
 
 
 
