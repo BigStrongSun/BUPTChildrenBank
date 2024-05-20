@@ -69,6 +69,39 @@ public class MainPage extends JFrame {
 
 
 
+//    private void displayParentView(int parentId) {
+//        JPanel parentPanel = new JPanel();
+//        parentPanel.setBackground(new Color(255, 255, 255, 0));
+//        parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
+//        parentPanel.setBounds(100, 300, 1080, 300);
+//        add(parentPanel);
+//
+//        // 定义一组按钮背景颜色
+//        Color[] buttonColors = {new Color(215, 231, 252), new Color(240, 200, 200), new Color(225, 250, 200)};
+//        // 定义一组按钮文本颜色
+//        Color[] textColors = {new Color(62, 90, 206, 204), new Color(191, 17, 48), new Color(45, 114, 25)};
+//
+//        for (int i = 0; i < 3; i++) {
+//            JButton btnChild = new BtnOrange("Child " + (i + 1));
+//            btnChild.setPreferredSize(new Dimension(200, 100));
+//            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
+//            // 使用循环中的相应颜色
+//            btnChild.setForeground(textColors[i % textColors.length]);  // 循环使用文本颜色数组中的颜色
+//            btnChild.setBackground(buttonColors[i % buttonColors.length]);  // 循环使用背景颜色数组中的颜色
+//            btnChild.setBorderPainted(false); // 移除按钮边框
+//            int childId = i + 1;
+//            btnChild.setBounds(100 + i * 300, 200, 200, 100);
+//            btnChild.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    dispose();
+//                    openChildMainPage(childId);
+//                }
+//            });
+//            parentPanel.add(btnChild);
+//        }
+//    }
+
     private void displayParentView(int parentId) {
         JPanel parentPanel = new JPanel();
         parentPanel.setBackground(new Color(255, 255, 255, 0));
@@ -76,30 +109,25 @@ public class MainPage extends JFrame {
         parentPanel.setBounds(100, 300, 1080, 300);
         add(parentPanel);
 
-        // 定义一组按钮背景颜色
-        Color[] buttonColors = {new Color(215, 231, 252), new Color(240, 200, 200), new Color(225, 250, 200)};
-        // 定义一组按钮文本颜色
-        Color[] textColors = {new Color(62, 90, 206, 204), new Color(191, 17, 48), new Color(45, 114, 25)};
+        // 定义按钮背景颜色和文本颜色
+        Color buttonColor = new Color(215, 231, 252);
+        Color textColor = new Color(62, 90, 206, 204);
 
-        for (int i = 0; i < 3; i++) {
-            JButton btnChild = new BtnOrange("Child " + (i + 1));
-            btnChild.setPreferredSize(new Dimension(200, 100));
-            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
-            // 使用循环中的相应颜色
-            btnChild.setForeground(textColors[i % textColors.length]);  // 循环使用文本颜色数组中的颜色
-            btnChild.setBackground(buttonColors[i % buttonColors.length]);  // 循环使用背景颜色数组中的颜色
-            btnChild.setBorderPainted(false); // 移除按钮边框
-            int childId = i + 1;
-            btnChild.setBounds(100 + i * 300, 200, 200, 100);
-            btnChild.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    openChildMainPage(childId);
-                }
-            });
-            parentPanel.add(btnChild);
-        }
+        JButton btnChild = new BtnOrange(" " + childId);
+        btnChild.setPreferredSize(new Dimension(200, 100));
+        btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
+        btnChild.setForeground(textColor);
+        btnChild.setBackground(buttonColor);
+        btnChild.setBorderPainted(false);
+        btnChild.setBounds(100, 200, 200, 100);
+        btnChild.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                openChildMainPage(childId);
+            }
+        });
+        parentPanel.add(btnChild);
     }
 
 

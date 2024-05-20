@@ -10,15 +10,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import util.BtnOrange;
 import util.GradientBackground;
+import service.TempService;
 
 public class ChildMainPage extends JFrame {
     private JLabel lblCurrentMoney;
     private JLabel lblTotalGoal;
-
+    private TempService tempService;
     private JFrame previousPage;
     private JLabel lblChildName;
 
-    private String parentName = "Doe";
+
+
+    private int parentId;
+    private int childId;
+
+    private String childName ;
+
+    private String parentName;
 
     public ChildMainPage(int childId, JFrame previousPage) {
 //        this.previousPage = previousPage; // 初始化 previousPage 引用
@@ -31,6 +39,12 @@ public class ChildMainPage extends JFrame {
 
 
         this.previousPage = previousPage; // 初始化 previousPage 引用
+
+
+        tempService = new TempService();
+        parentId = tempService.getTemp().getParentId();
+        childName = String.valueOf(tempService.getTemp().getChildId());
+        parentName = String.valueOf(tempService.getTemp().getParentId());
 
         setTitle("Child Main Page");
         setSize(1280, 720);
