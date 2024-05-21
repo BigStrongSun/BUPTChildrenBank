@@ -11,6 +11,11 @@ import domain.Account;
 import util.JSONController;
 import java.util.List;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+
+
 public class TransferPage extends JFrame {
     private JTextField textFieldToAccountNumber;
     private JTextField textFieldFromAccountNumber;
@@ -20,7 +25,7 @@ public class TransferPage extends JFrame {
     private JFrame previousPage;
 //    private int accountId = 100;
 
-    private int userId = 2;
+    private int userId ;
     private String password ;
 
     double totalBalance = 0.0;
@@ -49,9 +54,32 @@ public class TransferPage extends JFrame {
         jsonAccount.writeArray(accounts);
     }
 
+    private void readUserIdFromTemp() {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("temp.txt"));
+            for (String line : lines) {
+                if (line.contains("childId")) {
+                    String childIdStr = line.substring(line.indexOf("childId") + 9, line.indexOf(",", line.indexOf("childId")));
+                    int childId = Integer.parseInt(childIdStr);
+                    if (line.contains("\"parent\":false")) {
+                        userId = childId;
+                    } else if (line.contains("\"parent\":true")) {
+                        String parentIdStr = line.substring(line.indexOf("parentId") + 10, line.indexOf("}", line.indexOf("parentId")));
+                        int parentId = Integer.parseInt(parentIdStr);
+                        userId = parentId;
+                    }
+                    break;
+                }
+            }  System.out.println("Read userId: " + userId); // 在这里打印 userId
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public TransferPage() {
 
-
+        readUserIdFromTemp();
         calculateAndUpdateTotalBalance();
 
         setTitle("Transfer Page");
