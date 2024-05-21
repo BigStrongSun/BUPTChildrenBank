@@ -25,9 +25,11 @@ public class ChangeChildPage extends JFrame{
         setLayout(new FlowLayout());
         RoundedTextField textField = new RoundedTextField(20);
         JButton changeChildButton = new JButton("Change Child");
+        JButton deleteAssociationButton = new JButton("Delete Child");
         //changeChildButton.setBounds(10, 110, 165, 25);
         add(textField);
         add(changeChildButton);
+        add(deleteAssociationButton);//这个按钮直接点即可，与输入内容无关
 
         changeChildButton.addActionListener(new ActionListener() {
             @Override
@@ -59,6 +61,14 @@ public class ChangeChildPage extends JFrame{
                 }else{
                     JOptionPane.showMessageDialog(null, "You already have a child");
                 }
+            }
+        });
+
+        deleteAssociationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
+                JOptionPane.showMessageDialog(null, "Child cleared");
             }
         });
         setVisible(true);
