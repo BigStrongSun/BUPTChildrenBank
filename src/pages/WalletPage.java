@@ -167,9 +167,10 @@ public class WalletPage extends JFrame {
                 constraintName.add("card" + i);
                 cardPanel.add(createAccountCard(allAccountsId.get(i)), constraintName.get(i) );
                 System.out.println(constraintName.get(i));
+                System.out.println("i =" + i);
+                i++;
             }
-            System.out.println("i =" + i);
-            i++;
+
         }
     }
 

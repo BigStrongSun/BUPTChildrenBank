@@ -1,8 +1,12 @@
 package pages;
+import domain.Account;
+import service.CreateAccountService;
 import service.LoginService;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,6 +19,8 @@ import util.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class ChildLoginPage {
+    private static JSONController jsonAccount = new JSONController("account.txt");
+    private static List<Account> accountList = jsonAccount.readArray(Account.class);
     //孩子界面及功能
     public static void childComponents(JPanel panel) {
         panel.setLayout(null);
@@ -72,6 +78,11 @@ public class ChildLoginPage {
                     JOptionPane.showMessageDialog(null, "Username already exists");
                 } else {
                     LoginService.saveUser(username, password, identity);
+                    Random rand = new Random();
+                    boolean flag;
+                    int newAccountId = GenerateRandomAccountId.generateNewAccID();;
+                    //给新孩子账号自动生成一个Current Account,该账户密码与孩子账号的密码相同
+                    CreateAccountService.createNewCurrentAccount(newAccountId,password,Integer.parseInt(username));
                     JOptionPane.showMessageDialog(null, "Registration successful");
                 }
             }
