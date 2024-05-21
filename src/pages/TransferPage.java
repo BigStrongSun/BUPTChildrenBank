@@ -21,7 +21,7 @@ public class TransferPage extends JFrame {
 //    private int accountId = 100;
 
     private int userId = 2;
-    private int password = 1;
+    private String password ;
 
     double totalBalance = 0.0;
 
@@ -162,11 +162,9 @@ public class TransferPage extends JFrame {
                 String enteredPassword = String.valueOf(passwordField.getPassword());
                 String transferAmountString = textFieldAmount.getText();
 
+
                 // 验证密码是否匹配
-                if (!enteredPassword.equals(String.valueOf(password))) {
-                    JOptionPane.showMessageDialog(null, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // 如果密码不匹配，直接返回，不进行转账操作
-                }
+
 
                 // 转账金额转换为 double 类型
                 double transferAmount = 0;
@@ -185,13 +183,22 @@ public class TransferPage extends JFrame {
                 double balance = 0.0;
                 for (Account account : accounts) {
                     if (account.getUserId() == userId && textFieldFromAccountNumber.getText().equals(String.valueOf(account.getAccountId()))) {
+                        balance = account.getBalance();
+                        password = account.getPassword();
+
                         System.out.println("User ID: " + account.getUserId());
                         System.out.println("Account ID: " + account.getAccountId());
                         System.out.println("Text Field Value: " + textFieldFromAccountNumber.getText());
-                        balance = account.getBalance();
+                        System.out.println("password: " + account.getPassword());
+
                         isFromAccountValid = true;
                         break; // 如果找到了匹配的账户，就可以退出循环了
                     }
+                }
+
+                if (!enteredPassword.equals(String.valueOf(password))) {
+                    JOptionPane.showMessageDialog(null, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; // 如果密码不匹配，直接返回，不进行转账操作
                 }
 
                 if (!isFromAccountValid) {
@@ -299,7 +306,7 @@ public class TransferPage extends JFrame {
         for (Account account : accounts) {
             if (account.getUserId() == userId) {
                 totalBalance += account.getBalance();
-                    System.out.println(userId);
+                System.out.println(userId);
                 System.out.println(account.getBalance());
                 System.out.println(totalBalance);
             }
