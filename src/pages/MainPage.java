@@ -4,10 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import domain.Account;
 import service.TempService;
 import util.BtnOrange;
 import service.WishService;
 import util.GradientBackground;
+import util.JSONController;
 
 public class MainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -16,6 +19,7 @@ public class MainPage extends JFrame {
     private boolean isParent;
     private int parentId;
     private int childId;
+     double totalBalance;
 
     private String childName ;
 
@@ -148,16 +152,16 @@ public class MainPage extends JFrame {
 
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(255, 255, 255, 200));
-        topPanel.setBounds(550, 60, 200, 70);
+        topPanel.setBounds(525, 60, 250, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // 使用 BoxLayout 排列垂直方向
 
-        lblCurrentMoney = new JLabel("Current Money: $100");//之后要改成函数来调用
+        lblCurrentMoney = new JLabel("Current Money: $" + totalBalance);
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         topPanel.add(lblCurrentMoney);
 
-        lblTotalGoal = new JLabel("Total Goal: $500");
+        lblTotalGoal = new JLabel("Total Target: $500");
         lblTotalGoal.setFont(new Font("Arial", Font.PLAIN, 20));
         topPanel.add(lblTotalGoal);
 
@@ -220,6 +224,34 @@ public class MainPage extends JFrame {
         buttonPanel.add(btnWallet);
 
         add(buttonPanel);
+
+        this.childId = childId; // 更新 childId 的值
+        calculateAndUpdateTotalBalance();
+    }
+
+    private List<Account> readAccountData() {
+        JSONController jsonAccount = new JSONController("account.txt");
+        return jsonAccount.readArray(Account.class);
+    }
+    private void calculateAndUpdateTotalBalance() {
+        // 打印 childId 的值
+        System.out.println("Child ID: " + childId);
+
+        List<Account> accounts = readAccountData();
+        totalBalance = 0.0;
+        for (Account account : accounts) {
+            // 打印当前遍历的账户的用户ID和余额
+            System.out.println("Account User ID: " + account.getUserId() + ", Account Balance: " + account.getBalance());
+
+            if (account.getUserId() == childId) {
+                totalBalance += account.getBalance();
+            }
+        }
+        // 打印计算后的总余额
+        System.out.println("Total Balance: " + totalBalance);
+
+        // 更新UI显示
+        lblCurrentMoney.setText("Current Money: $" + totalBalance);
     }
 
 

@@ -61,9 +61,9 @@ public class TransferPage extends JFrame {
                 if (line.contains("childId")) {
                     String childIdStr = line.substring(line.indexOf("childId") + 9, line.indexOf(",", line.indexOf("childId")));
                     int childId = Integer.parseInt(childIdStr);
-                    if (line.contains("\"parent\":false")) {
+                    if (line.contains("\"isParent\":false")) {
                         userId = childId;
-                    } else if (line.contains("\"parent\":true")) {
+                    } else if (line.contains("\"isParent\":true")) {
                         String parentIdStr = line.substring(line.indexOf("parentId") + 10, line.indexOf("}", line.indexOf("parentId")));
                         int parentId = Integer.parseInt(parentIdStr);
                         userId = parentId;
