@@ -1,19 +1,51 @@
 package pages;
 
+import domain.Account;
+import domain.Temp;
+import domain.Transaction;
 import util.FrostedGlassPanel;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import util.JSONController;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WalletPage extends JFrame {
     private CardLayout cardLayout = new CardLayout();
     private JPanel cardPanel = new JPanel(cardLayout); // 使用CardLayout进行账户信息卡片的管理
     private JTable transactionTable;
+    private JSONController jsonAccount = new JSONController("account.txt");
+    private JSONController jsonTemp = new JSONController("temp.txt");
+    private JSONController jsonTrans = new JSONController("transaction.txt");
+    List<Account> accounts = jsonAccount.readArray(Account.class);
+    private int userId;//当前用户的id
+    private static int currentAccountId;
+    private ArrayList<String> allAccountsId = new ArrayList<>();
+    int n = 0;
+    JScrollPane scrollPane = new JScrollPane(transactionTable);
 
     public WalletPage() {
+        Temp temp = (Temp) jsonTemp.read(Temp.class);
+        if(temp.isParent()){
+            userId = temp.getParentId();
+        }else{
+            userId = temp.getChildId();
+        }
+
+        for(Account account:accounts){
+            if (account.getUserId() == userId) {
+                allAccountsId.add(String.valueOf(account.getAccountId()));
+            }
+        }
+        System.out.println(allAccountsId);
+
+
+        currentAccountId = Integer.parseInt(allAccountsId.get(0));
         setTitle("My Wallet");
         setSize(1200, 800); // 根据设计调整窗体大小
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +67,7 @@ public class WalletPage extends JFrame {
 
         // 创建并添加交易记录表
         createTransactionTable();
-        JScrollPane scrollPane = new JScrollPane(transactionTable);
+        scrollPane.setViewportView(transactionTable);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         backgroundPanel.add(scrollPane, BorderLayout.CENTER);
@@ -77,8 +109,28 @@ public class WalletPage extends JFrame {
         JButton nextButton = new JButton(">");
         prevButton.setFont(new Font("Arial", Font.BOLD, 18));
         nextButton.setFont(new Font("Arial", Font.BOLD, 18));
-        prevButton.addActionListener(e -> cardLayout.previous(cardPanel));
-        nextButton.addActionListener(e -> cardLayout.next(cardPanel));
+
+        prevButton.addActionListener(e -> {cardLayout.previous(cardPanel);
+            if(n>0){
+                n--;
+                currentAccountId = Integer.parseInt(allAccountsId.get(n));
+            }else{
+                n = allAccountsId.size()-1;
+                currentAccountId = Integer.parseInt(allAccountsId.get(n));
+            }
+            System.out.println("current account id is " + currentAccountId);
+            refreshTransactionTable();
+        });
+        nextButton.addActionListener(e -> {cardLayout.next(cardPanel);
+            if(n<(allAccountsId.size()-1)){
+                n++;
+                currentAccountId = Integer.parseInt(allAccountsId.get(n));
+            }else{
+                n = 0;
+                currentAccountId = Integer.parseInt(allAccountsId.get(n));
+            }
+            refreshTransactionTable();
+        });
 
         createAccountCards();
 
@@ -101,8 +153,24 @@ public class WalletPage extends JFrame {
     private void createAccountCards() {
         // 示例：添加两个账户信息卡片
         cardPanel.setOpaque(false);
-        cardPanel.add(createAccountCard("Account-001"), "card1");
-        cardPanel.add(createAccountCard("Account-002"), "card2");
+        Temp temp = (Temp) jsonTemp.read(Temp.class);
+        if(temp.isParent()){
+            userId = temp.getParentId();
+        }else{
+            userId = temp.getChildId();
+        }
+        List<String> constraintName = new ArrayList<>();
+        int i = 0;
+        for(Account account: accounts){
+
+            if (account.getUserId() == userId) {
+                constraintName.add("card" + i);
+                cardPanel.add(createAccountCard(allAccountsId.get(i)), constraintName.get(i) );
+                System.out.println(constraintName.get(i));
+            }
+            System.out.println("i =" + i);
+            i++;
+        }
     }
 
     private JPanel createAccountCard(String accountId) {
@@ -125,16 +193,39 @@ public class WalletPage extends JFrame {
     }
 
     private void createTransactionTable() {
+
         String[] columnNames = {"Date", "Description", "Amount"};
-        Object[][] data = {
-                {"2024-03-15 21:00", "A new backpack", "-$60"},
-                {"2024-03-14 21:00", "Doing Dishes", "+$15"},
-                {"2024-03-13 21:00", "Sweep the floor", "+$15"},
-                {"2024-03-09 21:00", "Transformer", "-$39.99"}
-        };
+        List<Transaction> transactions = jsonTrans.readArray(Transaction.class);
+        Object[][] data = new Object[transactions.size()][3];
+        int i = 0;
+        for(Transaction transaction: transactions){
+            if (transaction.getReceiverAccountId() == currentAccountId ||
+                    transaction.getSenderAccountId() == currentAccountId) {
+                data[i][0] = transaction.getTransactionDate();
+                data[i][1] = transaction.getDescription();
+                data[i][2] = transaction.getAmount();
+                i++;
+            }
+        }
+
         transactionTable = new JTable(data, columnNames);
         transactionTable.setOpaque(false);
         ((DefaultTableCellRenderer)transactionTable.getDefaultRenderer(Object.class)).setOpaque(false);
+    }
+
+    private void refreshTransactionTable() {//用于点击切换按钮后，变换表格内容
+        // Remove old table from the scrollPane
+        scrollPane.setViewportView(null);
+
+        // Recreate the transactionTable
+        createTransactionTable();
+
+        // Add new table to scrollPane
+        scrollPane.setViewportView(transactionTable);
+
+        // Revalidate and repaint to update the UI
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
     public static void main(String[] args) {

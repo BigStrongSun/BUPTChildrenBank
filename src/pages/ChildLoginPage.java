@@ -10,11 +10,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class ChildLoginPage {
-	//孩子界面及功能
+    //孩子界面及功能
     public static void childComponents(JPanel panel) {
         panel.setLayout(null);
 
@@ -22,7 +23,8 @@ public class ChildLoginPage {
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
-        JTextField userText = new JTextField(20);
+        //JTextField userText = new JTextField(20);
+        RoundedTextField userText = new RoundedTextField(20);
         userText.setBounds(100, 20, 165, 25);
         panel.add(userText);
 
@@ -30,7 +32,8 @@ public class ChildLoginPage {
         passwordLabel.setBounds(10, 50, 80, 25);
         panel.add(passwordLabel);
 
-        JPasswordField passwordText = new JPasswordField(20);
+        //JPasswordField passwordText = new JPasswordField(20);
+        RoundedPasswordTextField passwordText = new RoundedPasswordTextField(20);
         passwordText.setBounds(100, 50, 165, 25);
         panel.add(passwordText);
 
@@ -43,6 +46,7 @@ public class ChildLoginPage {
         panel.add(loginButton);
 
 
+        //注册
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
@@ -67,7 +71,7 @@ public class ChildLoginPage {
                 } else if (LoginService.usernameExist(username)) {
                     JOptionPane.showMessageDialog(null, "Username already exists");
                 } else {
-                	LoginService.saveUser(username, password, identity);
+                    LoginService.saveUser(username, password, identity);
                     JOptionPane.showMessageDialog(null, "Registration successful");
                 }
             }
@@ -83,7 +87,7 @@ public class ChildLoginPage {
                     JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
                 } else if (!LoginService.usernameExist(username) ||
                         !LoginService.validatePassword(username, password)
-                            || LoginService.checkIfIsParent(username)) {
+                        || LoginService.checkIfIsParent(username)) {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
@@ -91,6 +95,6 @@ public class ChildLoginPage {
                 }
             }
         });
-        
+
     }
 }

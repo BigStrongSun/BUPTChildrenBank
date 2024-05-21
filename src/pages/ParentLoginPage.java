@@ -1,5 +1,6 @@
 package pages;
 import service.LoginService;
+import util.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +17,8 @@ public class ParentLoginPage{
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
-        JTextField userText = new JTextField(20);
+        RoundedTextField userText = new RoundedTextField(20);
+        //JTextField userText = new JTextField(20);
         userText.setBounds(100, 20, 165, 25);
         panel.add(userText);
 
@@ -24,7 +26,8 @@ public class ParentLoginPage{
         passwordLabel.setBounds(10, 50, 80, 25);
         panel.add(passwordLabel);
 
-        JPasswordField passwordText = new JPasswordField(20);
+        RoundedPasswordTextField passwordText = new RoundedPasswordTextField(20);
+        //JPasswordField passwordText = new JPasswordField(20);
         passwordText.setBounds(100, 50, 165, 25);
         panel.add(passwordText);
 
@@ -66,7 +69,7 @@ public class ParentLoginPage{
                 } else if (LoginService.usernameExist(username)) {
                     showMessageDialog(null, "Username already exists");
                 } else {
-                	LoginService.saveUser(username, password,identity);
+                    LoginService.saveUser(username, password,identity);
                     showMessageDialog(null, "Registration successful");
                 }
             }
@@ -81,7 +84,7 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Username or password cannot be empty");
                 } else if (!LoginService.usernameExist(username) ||
                         !LoginService.validatePassword(username, password)
-                            || !LoginService.checkIfIsParent(username)) {
+                        || !LoginService.checkIfIsParent(username)) {
                     showMessageDialog(null, "Invalid username or password");
                 } else {
                     showMessageDialog(null, "Login successful");
@@ -89,9 +92,9 @@ public class ParentLoginPage{
                 }
             }
         });
-        
+
     }
-		
+
 }
 
 

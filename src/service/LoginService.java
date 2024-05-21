@@ -19,15 +19,30 @@ public class LoginService {
     public static void saveCurrentUser(String username){//for parent
         int userId = parseInt(username);
         Temp temp = new Temp(userId,0,true);//childid为0代表尚未绑定孩子
+        for(User user: userList){
+            if(user.getUsername().equals(username)){
+                temp.setChildId(user.getChildOrParentId());
+                System.out.println(user.getUsername());
+                System.out.println(user.getChildOrParentId());
+                System.out.println(temp.getChildId());
+            }
+        }
         json.write(temp);//向temp.txt里写入
     }
     public static void saveCurrentUser2(String username){//for child
         int userId = parseInt(username);
-        Temp temp = new Temp(0,userId,true);//parentid为0代表尚未绑定家长
+
+        Temp temp = new Temp(0,userId,false);//parentid为0代表尚未绑定家长
+        for(User user: userList){
+            if(user.getUsername().equals(username)){
+                temp.setParentId(user.getChildOrParentId());
+            }
+        }
+
         json.write(temp);//向temp.txt里写入
     }
     public static void saveUser(String username, String password, String identity) {
-        User newUser = new User(username, password, identity);
+        User newUser = new User(username, password, identity, 0);
         userList.add(newUser);
         json2.writeArray(userList);
 
@@ -36,8 +51,8 @@ public class LoginService {
     public static boolean usernameExist(String username) {
         for(User user: userList){
             if (user.getUsername().equals(username)) {
-                   return true;
-               }
+                return true;
+            }
         }
         return false;
     }

@@ -1,20 +1,17 @@
 package pages;
-
+//更换用户名的界面
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.HashMap;
+
+import service.ChangePasswordService;
 import service.ChangeProfileService;
 public class ChangeProfilePage {
-	public static void main(String[] args) {
-        JFrame frame = new JFrame("Change Password");
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Change Username");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -25,7 +22,7 @@ public class ChangeProfilePage {
 
         frame.setVisible(true);
     }
-	private static void placeComponents(JPanel panel) {
+    private static void placeComponents(JPanel panel) {
 
         panel.setLayout(null);
 
@@ -64,8 +61,8 @@ public class ChangeProfilePage {
                 String Password = new String(passwordText.getPassword());
                 String newusername = new String(newUserText.getPassword());
 
-                if (ChangeProfileService.validatePassword(username, Password)) {
-                	ChangeProfileService.changeUsername(username, Password,newusername);
+                if (ChangePasswordService.validatePassword(username, Password)) {
+                    ChangeProfileService.changeUsername(username, Password,newusername);
                     JOptionPane.showMessageDialog(null, "username changed successfully");
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
@@ -73,5 +70,5 @@ public class ChangeProfilePage {
             }
         });
     }
-	
+
 }

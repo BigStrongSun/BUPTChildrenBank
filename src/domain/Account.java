@@ -54,4 +54,12 @@ public class Account {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public Account(int accountId, AccountType accountType, double balance, int userId, String password) {
+        this.accountId = accountId;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.userId = userId;
+        this.password = password;
+    }
 }

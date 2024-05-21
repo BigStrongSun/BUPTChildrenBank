@@ -4,8 +4,9 @@ public class User {
     private String username;
     private String password;
     private String identity;
-    private boolean isParent;
-    private int userId;
+    private int childOrParentId;
+//    private boolean isParent;
+//    private int userId;
 
     public String getUsername() {
         return username;
@@ -29,14 +30,14 @@ public class User {
 
     public void setIdentity(String identity) {
         this.identity = identity;
-        if(identity.equals("parent")){isParent = true;}
+        //if(identity.equals("parent")){isParent = true;}
     }
 
     public User(String username, String password, String identity) {
         this.username = username;
         this.password = password;
         this.identity = identity;
-        if(identity.equals("parent")){isParent = true;}
+        //if(identity.equals("parent")){isParent = true;}
     }
 
     public User(String username) {
@@ -47,4 +48,18 @@ public class User {
         this.username = username; this.password =password;
     }
 
+    public int getChildOrParentId() {
+        return childOrParentId;
+    }
+
+    public void setChildOrParentId(int childOrParentId) {
+        this.childOrParentId = childOrParentId;
+    }
+
+    public User(String username, String password, String identity, int childOrParentId) {
+        this.username = username;
+        this.password = password;
+        this.identity = identity;
+        this.childOrParentId = childOrParentId;
+    }
 }
