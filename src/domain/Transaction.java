@@ -35,6 +35,8 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
+    public Transaction(){}
+
     // 下面是一系列getter和setter方法，用于访问和修改交易对象的属性
 
     public int getTransactionId() {

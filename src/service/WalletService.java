@@ -6,8 +6,11 @@ import domain.TransactionType;
 import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSON;
+import util.JSONController;
+
 
 
 public class WalletService {
@@ -15,9 +18,12 @@ public class WalletService {
     private final String accountsFile = "accounts.txt"; // 存储账户数据的文件名
     private final String transactionsFile = "transactions.json"; // 存储交易记录的文件名
     private int transactionIdCounter = 1; // 交易ID计数器，用于生成交易ID
+    private List<Transaction> transactions;
+    private JSONController jsonTrans = new JSONController("transaction.txt");
 
     public WalletService() {
         loadAccounts(); // 构造函数中加载账户信息
+        transactions = jsonTrans.readArray(Transaction.class);
     }
 
     private void loadAccounts() {
@@ -99,6 +105,48 @@ public class WalletService {
             }
         } catch (IOException e) {
             System.err.println("Failed to update accounts: " + e.getMessage()); // 更新账户信息失败处理
+        }
+    }
+
+    public boolean saveTrans() {
+        return jsonTrans.writeArray(transactions);
+    }
+
+    public int getMaxTransId() {
+        int maxId = 0;
+        if (transactions != null && !transactions.isEmpty()) {
+            for (Transaction transaction : transactions) {
+                int transactionId = transaction.getTransactionId();
+                if (transactionId > maxId) {
+                    maxId = transactionId;
+                }
+            }
+        }
+        return maxId;
+    }
+    public int createTrans(Transaction transaction){
+        // 生成新的交易ID
+        int newTransactionId = getMaxTransId() + 1;
+
+        // 创建新的交易对象
+        Transaction newTransaction = new Transaction();
+        newTransaction.setTransactionId(newTransactionId);
+        newTransaction.setType(transaction.getType());
+        newTransaction.setSenderAccountId(transaction.getSenderAccountId());
+        newTransaction.setReceiverAccountId(transaction.getReceiverAccountId());
+        newTransaction.setAmount(transaction.getAmount());
+        newTransaction.setFee(transaction.getFee());
+        newTransaction.setDescription(transaction.getDescription());
+        newTransaction.setTransactionDate(new Date());
+
+        // 将新交易添加到交易列表
+        transactions.add(newTransaction);
+
+        // 保存更新后的交易列表
+        if (saveTrans()) {
+            return newTransactionId; // 返回新创建的交易ID
+        } else {
+            return -1; // 保存失败时返回-1
         }
     }
 }

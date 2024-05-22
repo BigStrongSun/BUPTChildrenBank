@@ -1,11 +1,10 @@
 package pages;
 
-import domain.Account;
-import domain.AccountType;
-import domain.Task;
+import domain.*;
 import service.AccountService;
 import service.TaskService;
 import service.TempService;
+import service.WalletService;
 import util.*;
 
 import javax.swing.*;
@@ -26,6 +25,7 @@ import java.util.regex.Pattern;
  */
 public class TaskCreateAndModifyPage extends JFrame {
     private JSONController jsonAccount = new JSONController("account.txt");
+    private JSONController jsonTransation = new JSONController("transaction.txt");
     private TaskCreateAndModifyPage taskCreateAndModifyPage;
     private TaskService taskService = new TaskService();
     TempService tempService = new TempService();
@@ -33,6 +33,9 @@ public class TaskCreateAndModifyPage extends JFrame {
     private int parentId;//父母的Id
     private int childId;//孩子的Id
     private List<Account> accounts;
+    private WalletService walletService = new WalletService();
+    private List<Transaction> transactions;
+    private JSONController jsonTrans = new JSONController("transaction.txt");
 
     private JTextField textField_taskName;
     private JTextArea textArea_taskDescription;
@@ -68,6 +71,7 @@ public class TaskCreateAndModifyPage extends JFrame {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         taskCreateAndModifyPage = this;
+        transactions = jsonTrans.readArray(Transaction.class);
 //        System.out.println("我进入了TaskCreateAndModify页面的初始化函数");
         setTitle("pages.TaskCreateAndModifyPage");
         getContentPane().setBackground(new Color(255, 248, 239));
@@ -289,14 +293,20 @@ public class TaskCreateAndModifyPage extends JFrame {
                             int actionresult = accountService.addBalance(account.getAccountId(), Double.parseDouble(textField_money.getText()));
                             if (actionresult == 1) {
                                 taskService.modifyTaskStatus(task);
+                                Transaction transaction = new Transaction();
+                                transaction.setType(TransactionType.BONUS);
+                                transaction.setAmount(Double.parseDouble(textField_money.getText()));
+                                transaction.setFee(0);
+                                transaction.setSenderAccountId(accountService.getCurrentAccountByUserId(parentId).getAccountId());
+                                transaction.setReceiverAccountId(account.getAccountId());
+                                transaction.setDescription(textField_taskName.getText());
+                                walletService.createTrans(transaction);
                                 PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
                                 return;
                             } else {
                                 System.out.println("Something wrong");
                                 return;
                             }
-
-
                         }
                     }
                     System.out.println("似乎是没有绑定孩子");

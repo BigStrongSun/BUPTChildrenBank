@@ -1,6 +1,7 @@
 package service;
 
 import domain.Account;
+import domain.AccountType;
 import domain.Task;
 import util.JSONController;
 
@@ -100,4 +101,12 @@ public class AccountService {
         return 0;
     }
 
+    public Account getCurrentAccountByUserId(int userId){
+        for (Account account : accounts) {
+            if(account.getUserId() == userId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)){
+                return account;
+            }
+        }
+        return null;
+    }
 }

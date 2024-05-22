@@ -1,6 +1,7 @@
 package service;
 
 import domain.Task;
+import domain.Transaction;
 import util.JSONController;
 
 import javax.swing.*;
@@ -21,7 +22,6 @@ public class TaskService {
     private List<Task> tasks;
     private JSONController json = new JSONController("task.txt");
     private Task task;
-    private boolean doAdd;
 
     /**
      *  Initialize TaskService
