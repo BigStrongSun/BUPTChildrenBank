@@ -71,7 +71,6 @@ public class TaskPage extends JFrame {
                 TaskCreateAndModifyPage window =
                         new TaskCreateAndModifyPage(taskService.getMaxTaskId() + 1, true, false);
                 window.setVisible(true);
-//                JFrame taskPage = (JFrame) SwingUtilities.getWindowAncestor(SouthPanel.this);
                 taskPage.dispose();
             }
         });
@@ -82,13 +81,12 @@ public class TaskPage extends JFrame {
 
         // 创建中央面板
         JPanel contentPanel = new JPanel();
-//        contentPanel.setOpaque(false);
         contentPanel.setBackground(new Color(255, 248, 239));
-// 创建 GridBagLayout
+        // 创建 GridBagLayout
         GridBagLayout gridBagLayout = new GridBagLayout();
         contentPanel.setLayout(gridBagLayout);
 
-// 创建 GridBagConstraints
+        // 创建 GridBagConstraints
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0; // 列索引为 0
         constraints.gridy = GridBagConstraints.RELATIVE; // 逐行排列
@@ -133,23 +131,7 @@ public class TaskPage extends JFrame {
         // 禁用水平滚动条
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-//        mainPanel.add(leftPanel,BorderLayout.WEST);
         mainPanel.add(rightPanel, BorderLayout.EAST);
-        if (isParent) {
-            mainPanel.add(southPanel, BorderLayout.SOUTH);
-        }
-        // 添加组件完成布局的监听器
-//        mainPanel.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                // 获取滚动面板的高度
-//                int scrollPaneHeight = scrollPane.getViewport().getHeight();
-//                System.out.println("滚动面板的高度：" + scrollPaneHeight);
-//
-//                // 获取主面板的高度
-//                int mainPanelHeight = contentPanel.getHeight();
-//                System.out.println("主面板的高度：" + mainPanelHeight);
-//            }
-//        });
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
     }
 }
