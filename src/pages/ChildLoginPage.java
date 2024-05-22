@@ -25,6 +25,19 @@ public class ChildLoginPage {
     public static void childComponents(JPanel panel) {
         panel.setLayout(null);
 
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(0, 0, 80, 30);
+        panel.add(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(LoginPage.childFrame,LoginPage.frame);
+            }
+        });
+
         JLabel userLabel = new JLabel("Username:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
@@ -84,6 +97,7 @@ public class ChildLoginPage {
                     //给新孩子账号自动生成一个Current Account,该账户密码与孩子账号的密码相同
                     CreateAccountService.createNewCurrentAccount(newAccountId,password,Integer.parseInt(username));
                     JOptionPane.showMessageDialog(null, "Registration successful");
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
@@ -102,7 +116,8 @@ public class ChildLoginPage {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser2(username);
+                    LoginService.saveCurrentUser2(username,LoginService.findName(username));
+                    PageSwitcher.switchPages(LoginPage.childFrame,new MainPage());
                 }
             }
         });

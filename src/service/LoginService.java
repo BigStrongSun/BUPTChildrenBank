@@ -16,9 +16,9 @@ public class LoginService {
     private static JSONController json2 = new JSONController("user.txt");
     static List<User> userList = json2. readArray(User.class);
 
-    public static void saveCurrentUser(String username){//for parent
+    public static void saveCurrentUser(String username, String name){//for parent
         int userId = parseInt(username);
-        Temp temp = new Temp(userId,0,true);//childid为0代表尚未绑定孩子
+        Temp temp = new Temp(userId,0,true,name);//childid为0代表尚未绑定孩子
         for(User user: userList){
             if(user.getUsername().equals(username)){
                 temp.setChildId(user.getChildOrParentId());
@@ -29,10 +29,10 @@ public class LoginService {
         }
         json.write(temp);//向temp.txt里写入
     }
-    public static void saveCurrentUser2(String username){//for child
+    public static void saveCurrentUser2(String username, String name){//for child
         int userId = parseInt(username);
 
-        Temp temp = new Temp(0,userId,false);//parentid为0代表尚未绑定家长
+        Temp temp = new Temp(0,userId,false,name);//parentid为0代表尚未绑定家长
         for(User user: userList){
             if(user.getUsername().equals(username)){
                 temp.setParentId(user.getChildOrParentId());
@@ -42,7 +42,7 @@ public class LoginService {
         json.write(temp);//向temp.txt里写入
     }
     public static void saveUser(String username, String password, String identity) {
-        User newUser = new User(username, password, identity, 0);
+        User newUser = new User(username, password, identity, 0, "name");
         userList.add(newUser);
         json2.writeArray(userList);
 
@@ -76,5 +76,14 @@ public class LoginService {
         }
         return false;
 
+    }
+
+    public static String findName(String userId){//通过userId,找到对应user的name，并返回
+        for(User user: userList){
+            if(user.getUsername().equals(userId)){
+                return user.getName();
+            }
+        }
+        return null;
     }
 }

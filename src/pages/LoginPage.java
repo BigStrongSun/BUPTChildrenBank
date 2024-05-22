@@ -11,8 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class LoginPage {
+    static JFrame childFrame;
+    static JFrame parentFrame;
+    static JFrame frame;
 	public static void main(String[] args) {
-        JFrame frame = new JFrame("Identity Selection");
+        frame = new JFrame("Identity Selection");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
 
@@ -32,7 +35,7 @@ public class LoginPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建一个新的JFrame对象，用于父母界面
-                JFrame parentFrame = new JFrame("父母界面");
+                parentFrame = new JFrame("父母界面");
                 parentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 parentFrame.setSize(300, 200);
 
@@ -42,6 +45,7 @@ public class LoginPage {
 
                 ParentLoginPage.parentComponents(panel);
 
+                frame.dispose();
                 parentFrame.setVisible(true);
                 
                 
@@ -54,7 +58,7 @@ public class LoginPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 创建一个新的JFrame对象，用于孩子界面
-                JFrame childFrame = new JFrame("孩子界面");
+                childFrame = new JFrame("孩子界面");
                 childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 childFrame.setSize(300, 200);
 
@@ -64,6 +68,7 @@ public class LoginPage {
 
                 ChildLoginPage.childComponents(panel);
 
+                frame.dispose();
                 childFrame.setVisible(true);
                 
                 

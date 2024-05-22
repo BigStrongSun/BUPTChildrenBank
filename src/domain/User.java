@@ -5,8 +5,23 @@ public class User {
     private String password;
     private String identity;
     private int childOrParentId;
-//    private boolean isParent;
-//    private int userId;
+    private String name;
+
+    public User(String username, String password, String identity, int childOrParentId, String name) {
+        this.username = username;
+        this.password = password;
+        this.identity = identity;
+        this.childOrParentId = childOrParentId;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUsername() {
         return username;

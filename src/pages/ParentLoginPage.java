@@ -1,4 +1,5 @@
 package pages;
+import service.CreateAccountService;
 import service.LoginService;
 import util.*;
 
@@ -12,6 +13,19 @@ public class ParentLoginPage{
     //父母登陆界面及功能,以及注册界面功能
     public static void parentComponents(JPanel panel) {
         panel.setLayout(null);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(0, 0, 80, 30);
+        panel.add(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(LoginPage.parentFrame,LoginPage.frame);
+            }
+        });
 
         JLabel userLabel = new JLabel("Username:");
         userLabel.setBounds(10, 20, 80, 25);
@@ -70,7 +84,10 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Username already exists");
                 } else {
                     LoginService.saveUser(username, password,identity);
+                    CreateAccountService.createParentAccount(GenerateRandomAccountId.generateNewAccID()
+                            ,password,Integer.parseInt(username));
                     showMessageDialog(null, "Registration successful");
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
@@ -88,7 +105,8 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Invalid username or password");
                 } else {
                     showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser(username);
+                    LoginService.saveCurrentUser(username,LoginService.findName(username));
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
