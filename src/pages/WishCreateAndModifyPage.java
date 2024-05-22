@@ -1,10 +1,9 @@
 package pages;
 
-import domain.Account;
-import domain.AccountType;
-import domain.Wish;
+import domain.*;
 import service.AccountService;
 import service.TempService;
+import service.WalletService;
 import service.WishService;
 import util.*;
 
@@ -30,6 +29,10 @@ public class WishCreateAndModifyPage extends JFrame {
     TempService tempService = new TempService();
     private int parentId;//父母的Id
     private int childId;//孩子的Id
+
+    private WalletService walletService = new WalletService();
+    private List<Transaction> transactions;
+    private JSONController jsonTrans = new JSONController("transaction.txt");
 
     private JTextField textField_wishName;
     private JTextArea textArea_wishDescription;
@@ -71,6 +74,7 @@ public class WishCreateAndModifyPage extends JFrame {
         childId = tempService.getTemp().getChildId();
         wishCreateAndModifyPage = this;
         accounts = jsonAccount.readArray(Account.class);
+        transactions = jsonTrans.readArray(Transaction.class);
         currentBalance = 0;
         for (Account account : accounts) {
             if (account.getUserId() == childId) {
@@ -302,6 +306,14 @@ public class WishCreateAndModifyPage extends JFrame {
                             int actionResult = accountService.addBalance(account.getAccountId(), -Math.abs(Double.parseDouble(textField_wishTarget.getText())));
                             if (actionResult == 1) {
                                 wishService.modifyWishStatusAndProgress(wish);
+                                Transaction transaction = new Transaction();
+                                transaction.setType(TransactionType.GIFT_EXCHANGE);
+                                transaction.setAmount(Double.parseDouble(textField_wishTarget.getText()));
+                                transaction.setFee(0);
+                                transaction.setSenderAccountId(accountService.getCurrentAccountByUserId(parentId).getAccountId());
+                                transaction.setReceiverAccountId(account.getAccountId());
+                                transaction.setDescription(textField_wishName.getText());
+                                walletService.createTrans(transaction);
                                 PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
                                 break;
                             } else {

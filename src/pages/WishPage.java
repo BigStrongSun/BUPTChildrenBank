@@ -195,12 +195,3 @@ public class WishPage extends JFrame {
 
     }
 }
-
-class Main2 {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            WishPage frame = new WishPage();
-            frame.setVisible(true);
-        });
-    }
-}
