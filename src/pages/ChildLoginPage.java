@@ -102,7 +102,7 @@ public class ChildLoginPage {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser2(username);
+                    LoginService.saveCurrentUser2(username,LoginService.findName(username));
                 }
             }
         });

@@ -88,7 +88,7 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Invalid username or password");
                 } else {
                     showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser(username);
+                    LoginService.saveCurrentUser(username,LoginService.findName(username));
                 }
             }
         });
