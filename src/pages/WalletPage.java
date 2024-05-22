@@ -3,6 +3,7 @@ package pages;
 import domain.Account;
 import domain.Temp;
 import domain.Transaction;
+import domain.TransactionType;
 import util.FrostedGlassPanel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,13 +32,13 @@ public class WalletPage extends JFrame {
 
     public WalletPage() {
         Temp temp = (Temp) jsonTemp.read(Temp.class);
-        if(temp.isParent()){
+        if (temp.isParent()) {
             userId = temp.getParentId();
-        }else{
+        } else {
             userId = temp.getChildId();
         }
 
-        for(Account account:accounts){
+        for (Account account : accounts) {
             if (account.getUserId() == userId) {
                 allAccountsId.add(String.valueOf(account.getAccountId()));
             }
@@ -110,22 +111,24 @@ public class WalletPage extends JFrame {
         prevButton.setFont(new Font("Arial", Font.BOLD, 18));
         nextButton.setFont(new Font("Arial", Font.BOLD, 18));
 
-        prevButton.addActionListener(e -> {cardLayout.previous(cardPanel);
-            if(n>0){
+        prevButton.addActionListener(e -> {
+            cardLayout.previous(cardPanel);
+            if (n > 0) {
                 n--;
                 currentAccountId = Integer.parseInt(allAccountsId.get(n));
-            }else{
-                n = allAccountsId.size()-1;
+            } else {
+                n = allAccountsId.size() - 1;
                 currentAccountId = Integer.parseInt(allAccountsId.get(n));
             }
             System.out.println("current account id is " + currentAccountId);
             refreshTransactionTable();
         });
-        nextButton.addActionListener(e -> {cardLayout.next(cardPanel);
-            if(n<(allAccountsId.size()-1)){
+        nextButton.addActionListener(e -> {
+            cardLayout.next(cardPanel);
+            if (n < (allAccountsId.size() - 1)) {
                 n++;
                 currentAccountId = Integer.parseInt(allAccountsId.get(n));
-            }else{
+            } else {
                 n = 0;
                 currentAccountId = Integer.parseInt(allAccountsId.get(n));
             }
@@ -154,18 +157,18 @@ public class WalletPage extends JFrame {
         // 示例：添加两个账户信息卡片
         cardPanel.setOpaque(false);
         Temp temp = (Temp) jsonTemp.read(Temp.class);
-        if(temp.isParent()){
+        if (temp.isParent()) {
             userId = temp.getParentId();
-        }else{
+        } else {
             userId = temp.getChildId();
         }
         List<String> constraintName = new ArrayList<>();
         int i = 0;
-        for(Account account: accounts){
+        for (Account account : accounts) {
 
             if (account.getUserId() == userId) {
                 constraintName.add("card" + i);
-                cardPanel.add(createAccountCard(allAccountsId.get(i)), constraintName.get(i) );
+                cardPanel.add(createAccountCard(allAccountsId.get(i)), constraintName.get(i));
                 System.out.println(constraintName.get(i));
                 System.out.println("i =" + i);
                 i++;
@@ -195,23 +198,39 @@ public class WalletPage extends JFrame {
 
     private void createTransactionTable() {
 
-        String[] columnNames = {"Date", "Description", "Amount"};
+        String[] columnNames = {"Date", "Description", "Amount", "Type"};
         List<Transaction> transactions = jsonTrans.readArray(Transaction.class);
-        Object[][] data = new Object[transactions.size()][3];
+        Object[][] data = new Object[transactions.size()][4];
         int i = 0;
-        for(Transaction transaction: transactions){
-            if (transaction.getReceiverAccountId() == currentAccountId ||
-                    transaction.getSenderAccountId() == currentAccountId) {
+        for (Transaction transaction : transactions) {
+            int receiverAccountId = transaction.getReceiverAccountId();
+            int senderAccountId = transaction.getSenderAccountId();
+            if (receiverAccountId == currentAccountId ||
+                    senderAccountId == currentAccountId) {
                 data[i][0] = transaction.getTransactionDate();
                 data[i][1] = transaction.getDescription();
-                data[i][2] = transaction.getAmount();
+                String symbol = "+ ";
+                if(transaction.getType().equals(TransactionType.BONUS)){
+                    if (receiverAccountId == currentAccountId) symbol = "+ ";
+                    if (senderAccountId == currentAccountId) symbol = "- ";
+                }else if(transaction.getType().equals(TransactionType.GIFT_EXCHANGE)){
+                    if (receiverAccountId == currentAccountId) symbol = "- ";
+                    if (senderAccountId == currentAccountId) symbol = "+ ";
+                }else if(transaction.getType().equals(TransactionType.WITHDRAWAL)){
+                    symbol = "- ";
+                } else if (transaction.getType().equals(TransactionType.TRANSFER)) {
+                    if (receiverAccountId == currentAccountId) symbol = "+ ";
+                    if (senderAccountId == currentAccountId) symbol = "- ";
+                }
+                data[i][2] = symbol + transaction.getAmount();
+                data[i][3] = transaction.getType();
                 i++;
             }
         }
 
         transactionTable = new JTable(data, columnNames);
         transactionTable.setOpaque(false);
-        ((DefaultTableCellRenderer)transactionTable.getDefaultRenderer(Object.class)).setOpaque(false);
+        ((DefaultTableCellRenderer) transactionTable.getDefaultRenderer(Object.class)).setOpaque(false);
     }
 
     private void refreshTransactionTable() {//用于点击切换按钮后，变换表格内容
