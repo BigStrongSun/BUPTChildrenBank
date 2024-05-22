@@ -25,6 +25,19 @@ public class ChildLoginPage {
     public static void childComponents(JPanel panel) {
         panel.setLayout(null);
 
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(0, 0, 80, 30);
+        panel.add(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(LoginPage.childFrame,LoginPage.frame);
+            }
+        });
+
         JLabel userLabel = new JLabel("Username:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);

@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 public class LoginPage {
     static JFrame childFrame;
     static JFrame parentFrame;
+    static JFrame frame;
 	public static void main(String[] args) {
-        JFrame frame = new JFrame("Identity Selection");
+        frame = new JFrame("Identity Selection");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
 
