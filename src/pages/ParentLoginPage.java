@@ -71,6 +71,7 @@ public class ParentLoginPage{
                 } else {
                     LoginService.saveUser(username, password,identity);
                     showMessageDialog(null, "Registration successful");
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
@@ -89,6 +90,7 @@ public class ParentLoginPage{
                 } else {
                     showMessageDialog(null, "Login successful");
                     LoginService.saveCurrentUser(username,LoginService.findName(username));
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });

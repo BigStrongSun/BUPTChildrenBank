@@ -84,6 +84,7 @@ public class ChildLoginPage {
                     //给新孩子账号自动生成一个Current Account,该账户密码与孩子账号的密码相同
                     CreateAccountService.createNewCurrentAccount(newAccountId,password,Integer.parseInt(username));
                     JOptionPane.showMessageDialog(null, "Registration successful");
+                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
@@ -103,6 +104,7 @@ public class ChildLoginPage {
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
                     LoginService.saveCurrentUser2(username,LoginService.findName(username));
+                    PageSwitcher.switchPages(LoginPage.childFrame,new MainPage());
                 }
             }
         });
