@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import domain.Wish;
 import service.TempService;
 import util.BtnOrange;
 import util.GradientBackground;
@@ -28,6 +30,8 @@ public class ChildMainPage extends JFrame {
     private String parentName;
 
     double totalBalance = 0.0;
+
+    String totalTarget;
 
     public ChildMainPage(int childId, JFrame previousPage) {
         this.previousPage = previousPage;
@@ -92,7 +96,7 @@ public class ChildMainPage extends JFrame {
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         topPanel.add(lblCurrentMoney);
 
-        lblTotalGoal = new JLabel("Total Goal: $500");
+        lblTotalGoal = new JLabel("Total Target: $" + totalTarget);
         lblTotalGoal.setFont(new Font("Arial", Font.PLAIN, 20));
         topPanel.add(lblTotalGoal);
 
@@ -165,6 +169,7 @@ public class ChildMainPage extends JFrame {
 
         this.childId = childId; // 更新 childId 的值
         calculateAndUpdateTotalBalance();
+        calculateAndUpdateTotalTarget();
     }
 
     // Read account data from file
@@ -179,20 +184,50 @@ public class ChildMainPage extends JFrame {
         System.out.println("Child ID: " + childId);
 
         List<Account> accounts = readAccountData();
-        totalBalance = 0.0;
+        double totalBalanceValue = 0.0;
         for (Account account : accounts) {
             // 打印当前遍历的账户的用户ID和余额
             System.out.println("Account User ID: " + account.getUserId() + ", Account Balance: " + account.getBalance());
 
             if (account.getUserId() == childId) {
-                totalBalance += account.getBalance();
+                totalBalanceValue += account.getBalance();
             }
         }
+        // 格式化为两位小数
+        String formattedTotal = String.format("%.2f", totalBalanceValue);
+
         // 打印计算后的总余额
-        System.out.println("Total Balance: " + totalBalance);
+        System.out.println("Total Balance: " + formattedTotal);
 
         // 更新UI显示
-        lblCurrentMoney.setText("Current Money: $" + totalBalance);
+        lblCurrentMoney.setText("Current Money: $" + formattedTotal);
+    }
+    private List<Wish> readWishData() {
+        JSONController jsonWish = new JSONController("wish.txt");
+        return jsonWish.readArray(Wish.class);
+    }
+    private void calculateAndUpdateTotalTarget() {
+        // 打印 childId 的值
+        System.out.println("Child ID: " + childId);
+
+        List<Wish> wishes = readWishData();
+        double totalTargetValue = 0.0;
+        for (Wish wish : wishes) {
+            // 打印当前遍历的账户的用户ID和余额
+            System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
+
+            if (wish.getChildId() == childId) {
+                totalTargetValue += Double.parseDouble(wish.getWishTarget());
+            }
+        }
+        // 格式化为两位小数
+        String formattedTotal = String.format("%.2f", totalTargetValue);
+
+        // 打印计算后的总余额
+        System.out.println("Total Target: " + formattedTotal);
+
+        // 更新UI显示
+        lblTotalGoal.setText("Total Target: $" + formattedTotal);
     }
 
 
