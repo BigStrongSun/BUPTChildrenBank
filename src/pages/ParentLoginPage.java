@@ -1,4 +1,5 @@
 package pages;
+import service.CreateAccountService;
 import service.LoginService;
 import util.*;
 
@@ -70,6 +71,8 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Username already exists");
                 } else {
                     LoginService.saveUser(username, password,identity);
+                    CreateAccountService.createParentAccount(GenerateRandomAccountId.generateNewAccID()
+                            ,password,Integer.parseInt(username));
                     showMessageDialog(null, "Registration successful");
                     PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }

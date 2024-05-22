@@ -28,4 +28,11 @@ public class CreateAccountService {
         accountList.add(newAccount);
         jsonAccount.writeArray(accountList);
     }
+
+    public static void createParentAccount(int accountId, String password, int newChildId){//唯一区别就是账户里有99999999
+        //为新注册的孩子账户添加current account
+        Account newAccount = new Account(accountId, CURRENT_ACCOUNT, 99999999.0, newChildId, password);
+        accountList.add(newAccount);
+        jsonAccount.writeArray(accountList);
+    }
 }
