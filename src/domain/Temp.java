@@ -7,6 +7,22 @@ public class Temp {
     private int parentId;
     private int childId;
     private boolean isParent;
+    private String name;
+
+    public Temp(int parentId, int childId, boolean isParent, String name) {
+        this.parentId = parentId;
+        this.childId = childId;
+        this.isParent = isParent;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getParentId() {
         return parentId;
