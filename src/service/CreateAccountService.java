@@ -1,6 +1,6 @@
 package service;
 
-import util.GenerateRandomAccountId;
+import util.GenerateRandomId;
 import util.JSONController;
 import domain.*;
 
@@ -17,7 +17,7 @@ public class CreateAccountService {
 
     public static void createNewSavingAccount(String password){
         //孩子可以自己添加多个saving account
-        int accountId = GenerateRandomAccountId.generateNewAccID();
+        int accountId = GenerateRandomId.generateNewAccID();
         Account newAccount = new Account(accountId, SAVING_ACCOUNT, 0, temp.getChildId(), password);
         accountList.add(newAccount);
         jsonAccount.writeArray(accountList);
