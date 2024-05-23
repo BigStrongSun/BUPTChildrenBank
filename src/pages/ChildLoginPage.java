@@ -12,8 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+
 import util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -24,7 +23,7 @@ public class ChildLoginPage {
     //孩子界面及功能
     public static void childComponents(JPanel panel) {
         panel.setLayout(null);
-
+        //返回按钮
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false);
         backButton.setContentAreaFilled(false);
@@ -38,9 +37,13 @@ public class ChildLoginPage {
             }
         });
 
-        JLabel userLabel = new JLabel("Username:");
+        JLabel userLabel = new JLabel("UserId:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
+
+        JLabel userLabel2 = new JLabel("You can change your name after you registered");
+        userLabel2.setBounds(10, 130, 80, 25);
+        panel.add(userLabel2);
 
         //JTextField userText = new JTextField(20);
         RoundedTextField userText = new RoundedTextField(20);
@@ -93,7 +96,7 @@ public class ChildLoginPage {
                     LoginService.saveUser(username, password, identity);
                     Random rand = new Random();
                     boolean flag;
-                    int newAccountId = GenerateRandomAccountId.generateNewAccID();;
+                    int newAccountId = GenerateRandomId.generateNewAccID();;
                     //给新孩子账号自动生成一个Current Account,该账户密码与孩子账号的密码相同
                     CreateAccountService.createNewCurrentAccount(newAccountId,password,Integer.parseInt(username));
                     JOptionPane.showMessageDialog(null, "Registration successful");
@@ -116,8 +119,8 @@ public class ChildLoginPage {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 } else {
                     JOptionPane.showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser2(username,LoginService.findName(username));
-                    PageSwitcher.switchPages(LoginPage.childFrame,new MainPage());
+                    LoginService.saveCurrentUser(username,false,LoginService.findName(username));
+                    //PageSwitcher.switchPages(LoginPage.childFrame,new MainPage());
                 }
             }
         });

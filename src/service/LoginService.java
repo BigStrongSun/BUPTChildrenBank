@@ -1,13 +1,10 @@
 package service;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 import domain.Temp;
 import util.JSONController;
 import java.util.List;
 import domain.User;
+import util.WriteToTemp;
 
 import static java.lang.Integer.parseInt;
 
@@ -16,31 +13,40 @@ public class LoginService {
     private static JSONController json2 = new JSONController("user.txt");
     static List<User> userList = json2. readArray(User.class);
 
-    public static void saveCurrentUser(String username, String name){//for parent
+    public static void saveCurrentUser(String username,boolean isParent, String name){//这里传入的isParent不是temp中的
         int userId = parseInt(username);
-        Temp temp = new Temp(userId,0,true,name);//childid为0代表尚未绑定孩子
-        for(User user: userList){
-            if(user.getUsername().equals(username)){
-                temp.setChildId(user.getChildOrParentId());
-                System.out.println(user.getUsername());
-                System.out.println(user.getChildOrParentId());
-                System.out.println(temp.getChildId());
-            }
-        }
-        json.write(temp);//向temp.txt里写入
-    }
-    public static void saveCurrentUser2(String username, String name){//for child
-        int userId = parseInt(username);
+        //Temp temp = new Temp(userId,0,isParent,name);//childid为0代表尚未绑定孩子
+        TempService tempService = new TempService();
+        Temp temp =tempService.getTemp();
 
-        Temp temp = new Temp(0,userId,false,name);//parentid为0代表尚未绑定家长
+        temp.setParent(isParent);
+        temp.setName(name);
+
+        int childOrParentId = 0;
         for(User user: userList){
             if(user.getUsername().equals(username)){
-                temp.setParentId(user.getChildOrParentId());
+                childOrParentId = user.getChildOrParentId();
             }
         }
 
-        json.write(temp);//向temp.txt里写入
+        if (isParent) {//是家长
+            temp.setParentId(userId);
+            temp.setChildId(childOrParentId);
+
+        } else {//是孩子
+            temp.setChildId(userId);
+            temp.setParentId(childOrParentId);
+        }
+
+        //json.write(temp);//向temp.txt里写入
+        //以下是强制向temp.txt中写。与以上信息无关
+        if (isParent) {
+            WriteToTemp.writeToTempFile(childOrParentId, name, true, userId);
+        } else {
+            WriteToTemp.writeToTempFile(userId, name, false, childOrParentId);
+        }
     }
+
     public static void saveUser(String username, String password, String identity) {
         User newUser = new User(username, password, identity, 0, "name");
         userList.add(newUser);

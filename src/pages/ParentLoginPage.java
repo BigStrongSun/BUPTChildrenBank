@@ -84,10 +84,10 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Username already exists");
                 } else {
                     LoginService.saveUser(username, password,identity);
-                    CreateAccountService.createParentAccount(GenerateRandomAccountId.generateNewAccID()
+                    CreateAccountService.createParentAccount(GenerateRandomId.generateNewAccID()
                             ,password,Integer.parseInt(username));
                     showMessageDialog(null, "Registration successful");
-                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
+                    //PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
@@ -105,7 +105,7 @@ public class ParentLoginPage{
                     showMessageDialog(null, "Invalid username or password");
                 } else {
                     showMessageDialog(null, "Login successful");
-                    LoginService.saveCurrentUser(username,LoginService.findName(username));
+                    LoginService.saveCurrentUser(username,true,LoginService.findName(username));
                     PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }

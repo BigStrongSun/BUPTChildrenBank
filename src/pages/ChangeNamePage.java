@@ -37,7 +37,7 @@ public class ChangeNamePage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String newName = textField.getText();
                 ChangeNameService.changeName(newName);
-                JOptionPane.showMessageDialog(null, "Name changed to " + ChangeNameService.findCurrentName());
+                JOptionPane.showMessageDialog(null, "Name changed to " + newName);
             }
 
         });
