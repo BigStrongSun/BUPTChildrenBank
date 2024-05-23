@@ -11,8 +11,9 @@ public class ChangeNameService {
 
     public static void changeName(String newName){//传入新名字
         //将更新内容写入temp.txt
-        temp.setName(newName);
-        jsonTemp.write(temp);
+//        temp.setName(newName);
+//        jsonTemp.write(temp);
+        WriteToTemp.writeToTempFile(temp.getChildId(), newName, temp.isParent(), temp.getParentId());
 
 
         //将更新内容写入user.txt

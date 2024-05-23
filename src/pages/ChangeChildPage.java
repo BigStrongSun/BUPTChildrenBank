@@ -46,7 +46,8 @@ public class ChangeChildPage extends JFrame{
                             ChangeChildService.changeChild(currentId, Integer.parseInt(childId));
                             temp.setChildId(Integer.parseInt(childId));
                             temp.setParent(true);
-                            jsonTemp.write(temp);//更新temp中的信息
+                            //jsonTemp.write(temp);//更新temp中的信息
+                            WriteToTemp.writeToTempFile(Integer.parseInt(childId), temp.getName(), true,currentId);
                             JOptionPane.showMessageDialog(null, "Information updated");
                             exist = true;
                             break;
@@ -68,6 +69,7 @@ public class ChangeChildPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
+                WriteToTemp.writeToTempFile(0, temp.getName(), true,currentId);
                 JOptionPane.showMessageDialog(null, "Child cleared");
             }
         });
