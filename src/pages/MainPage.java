@@ -119,21 +119,31 @@ public class MainPage extends JFrame {
         Color buttonColor = new Color(215, 231, 252);
         Color textColor = new Color(62, 90, 206, 204);
 
-        JButton btnChild = new BtnOrange(" " + childId);
-        btnChild.setPreferredSize(new Dimension(200, 100));
-        btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
-        btnChild.setForeground(textColor);
-        btnChild.setBackground(buttonColor);
-        btnChild.setBorderPainted(false);
-        btnChild.setBounds(100, 200, 200, 100);
-        btnChild.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                openChildMainPage(childId);
-            }
-        });
-        parentPanel.add(btnChild);
+
+        if (childId != 0) {
+            JButton btnChild = new BtnOrange(" " + childId);
+            btnChild.setPreferredSize(new Dimension(200, 100));
+            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
+            btnChild.setForeground(textColor);
+            btnChild.setBackground(buttonColor);
+            btnChild.setBorderPainted(false);
+            btnChild.setBounds(100, 200, 200, 100);
+            btnChild.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    openChildMainPage(childId);
+                }
+            });
+            parentPanel.add(btnChild);
+        }else {
+            JLabel noChildLabel = new JLabel("You haven't bound any child.");
+            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+            noChildLabel.setForeground(textColor);
+            // 设置JLabel的位置（例如：X = 50, Y = 100）
+            noChildLabel.setBounds(200, 100, 300, 50);
+            parentPanel.add(noChildLabel);
+        }
     }
 
 
