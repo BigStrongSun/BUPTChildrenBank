@@ -4,6 +4,7 @@ import domain.Account;
 import domain.Temp;
 import domain.Transaction;
 import domain.TransactionType;
+import service.TempService;
 import util.FrostedGlassPanel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -46,7 +47,9 @@ public class WalletPage extends JFrame {
         System.out.println(allAccountsId);
 
 
-        currentAccountId = Integer.parseInt(allAccountsId.get(0));
+        if (allAccountsId.size() != 0) {//有一些旧账号没有账户，这里会index out of bounds,所以加个if语句
+            currentAccountId = Integer.parseInt(allAccountsId.get(0));
+        }
         setTitle("My Wallet");
         setSize(1200, 800); // 根据设计调整窗体大小
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,7 +97,9 @@ public class WalletPage extends JFrame {
         labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
         // 用户名标签
-        JLabel userNameLabel = new JLabel("John Doe", SwingConstants.CENTER);
+        TempService tempService = new TempService();
+        Temp temp = tempService.getTemp();
+        JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
         userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         userDetailPanel.add(labelIcon, BorderLayout.CENTER);
