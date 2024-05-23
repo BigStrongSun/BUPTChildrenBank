@@ -27,7 +27,7 @@ public class ParentLoginPage{
             }
         });
 
-        JLabel userLabel = new JLabel("Username:");
+        JLabel userLabel = new JLabel("UserId:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
@@ -71,7 +71,7 @@ public class ParentLoginPage{
                         usernameValid = true;
                     } catch (NumberFormatException ex) {
                         // 如果转换失败，显示错误提示
-                        showMessageDialog(null, "Error: Username must be integer");
+                        showMessageDialog(null, "Error: UserId must be integer");
                         System.exit(1);
                     }
                 }
@@ -79,9 +79,9 @@ public class ParentLoginPage{
                 String identity = "parent";
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    showMessageDialog(null, "Username or password cannot be empty");
+                    showMessageDialog(null, "UserId or password cannot be empty");
                 } else if (LoginService.usernameExist(username)) {
-                    showMessageDialog(null, "Username already exists");
+                    showMessageDialog(null, "UserId already exists");
                 } else {
                     LoginService.saveUser(username, password,identity);
                     CreateAccountService.createParentAccount(GenerateRandomId.generateNewAccID()
@@ -98,7 +98,7 @@ public class ParentLoginPage{
                 String password = new String(passwordText.getPassword());
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    showMessageDialog(null, "Username or password cannot be empty");
+                    showMessageDialog(null, "UserId or password cannot be empty");
                 } else if (!LoginService.usernameExist(username) ||
                         !LoginService.validatePassword(username, password)
                         || !LoginService.checkIfIsParent(username)) {

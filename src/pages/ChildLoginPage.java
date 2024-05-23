@@ -73,7 +73,7 @@ public class ChildLoginPage {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
                 if(username.equals("0")){
-                    showMessageDialog(null, "Username cannot be 0");
+                    showMessageDialog(null, "UserId cannot be 0");
                     System.exit(0);//就是想退出，还没想到更好的方法。然后我也不知道exit0,1有啥区别
                 }
                 try {
@@ -82,16 +82,16 @@ public class ChildLoginPage {
                     System.out.println("Integer value: " + input);
                 } catch (NumberFormatException ex) {
                     // 如果转换失败，显示错误提示
-                    JOptionPane.showMessageDialog(null, "Error: Username must be integer");
+                    JOptionPane.showMessageDialog(null, "Error: UserId must be integer");
                     System.exit(1);
                 }
                 String password = new String(passwordText.getPassword());
                 String identity = "child";
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
+                    JOptionPane.showMessageDialog(null, "UserId or password cannot be empty");
                 } else if (LoginService.usernameExist(username)) {
-                    JOptionPane.showMessageDialog(null, "Username already exists");
+                    JOptionPane.showMessageDialog(null, "UserId already exists");
                 } else {
                     LoginService.saveUser(username, password, identity);
                     Random rand = new Random();
@@ -100,7 +100,7 @@ public class ChildLoginPage {
                     //给新孩子账号自动生成一个Current Account,该账户密码与孩子账号的密码相同
                     CreateAccountService.createNewCurrentAccount(newAccountId,password,Integer.parseInt(username));
                     JOptionPane.showMessageDialog(null, "Registration successful");
-                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
+//                    PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
                 }
             }
         });
