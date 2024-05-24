@@ -1,9 +1,7 @@
 package pages;
 
-import domain.Account;
-import domain.AccountType;
-import domain.Task;
-import domain.Wish;
+import domain.*;
+import service.UserService;
 import service.WishService;
 import service.TempService;
 import util.*;
@@ -22,10 +20,13 @@ public class WishPage extends JFrame {
     private WishPage wishPage;
     private List<Wish> wishes;
     private List<Account> accounts;
+    private List<User> users;
     private JSONController jsonWish = new JSONController("wish.txt");
     private JSONController jsonAccount = new JSONController("account.txt");
+    private JSONController jsonUser = new JSONController("user.txt");
     WishService wishService = new WishService();
     TempService tempService = new TempService();
+    UserService userService = new UserService();
 
     private String childName = "John";
     private int parentId;//父母的Id
@@ -50,6 +51,7 @@ public class WishPage extends JFrame {
         childId = tempService.getTemp().getChildId();
         isParent = tempService.getTemp().isParent();
         wishPage = this;
+        childName = userService.getChildNameById(childId);
         setTitle("pages.WishPage");
         getContentPane().setBackground(new Color(255, 248, 239));
         setSize(1280, 720);
@@ -193,5 +195,14 @@ public class WishPage extends JFrame {
         }
 
 
+    }
+}
+
+class Main222{
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            WishPage frame = new WishPage();
+            frame.setVisible(true);
+        });
     }
 }

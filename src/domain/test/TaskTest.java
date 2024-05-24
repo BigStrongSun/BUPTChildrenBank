@@ -8,29 +8,18 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TaskTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void getTaskId() {
         Task task = new Task();
         task.setTaskId(1);
         assertEquals(1, task.getTaskId());
     }
-
     @Test
     public void setTaskId() {
         Task task = new Task();
         task.setTaskId(1);
         assertEquals(1, task.getTaskId());
     }
-
     @Test
     public void getTaskDescription() {
         Task task = new Task();
@@ -106,14 +95,14 @@ public class TaskTest {
     public void getMoney() {
         Task task = new Task();
         task.setMoney(100);
-        assertEquals("$100", task.getMoney());
+        assertEquals(100.0, task.getMoney(),0.0);
     }
 
     @Test
     public void setMoney() {
         Task task = new Task();
         task.setMoney(100);
-        assertEquals("$100", task.getMoney());
+        assertEquals(100.0, task.getMoney(),0.0);
     }
 
 

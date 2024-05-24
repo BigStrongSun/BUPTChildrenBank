@@ -44,7 +44,7 @@ public class TaskServiceTest {
         assertEquals("2024-04-09 14:04", task.getStartTime());
         assertEquals("2024-07-19 14:04", task.getEndTime());
         assertEquals("undone", task.getTaskStatus());
-        assertEquals("$1", task.getMoney());
+        assertEquals(1, task.getMoney(),0.0);
     }
 
     @Test
