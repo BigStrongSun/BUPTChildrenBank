@@ -19,7 +19,7 @@ public class ChangeProfileService {
     public static void changeUsername(String username, String password, String newusername) {
         for(User user: userList){
             if(user.getUsername().equals(username))   {
-                user.setPassword(newusername);
+                user.setUsername(newusername);
                 break;
             }
         }
@@ -28,4 +28,5 @@ public class ChangeProfileService {
 
         System.out.println("newusername for user " + username + " changed to " + newusername);
     }
+
 }
