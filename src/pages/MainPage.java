@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import domain.Account;
 import domain.Wish;
@@ -49,7 +51,7 @@ public class MainPage extends JFrame {
 
 
         JLabel lblNameType = new JLabel();
-        lblNameType.setBounds(1000, 20, 250, 50);
+        lblNameType.setBounds(1000, 40, 250, 50);
         Font font = new Font("Arial", Font.BOLD, 18); // 设置字体为加粗，大小为18
         lblNameType.setFont(font);
         add(lblNameType);
@@ -57,14 +59,16 @@ public class MainPage extends JFrame {
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
             displayParentView(parentId);
-            lblNameType.setText("<html>" + parentName + "<br>Type: Parent</html>");
+            lblNameType.setText("<html>UserId:    " + parentName + "<br>Type: Parent</html>");
 
         } else {
 
             displayChildView(childId);
-            lblNameType.setText("<html>" + childName + "<br>Type: Child</html>");
+            lblNameType.setText("<html>UserId:    " + childName + "<br>Type: Child</html>");
         }
 
+
+        setupUserIcon();  // 在这里调用设置用户头像的方法
 
         setLocationRelativeTo(null);
         setResizable(false);
@@ -73,40 +77,31 @@ public class MainPage extends JFrame {
 
     }
 
+    private void setupUserIcon() {
+        JPanel userInfoPanel = new JPanel(new BorderLayout());
+        userInfoPanel.setOpaque(false);
+        JPanel userDetailPanel = new JPanel(new BorderLayout());
+        userDetailPanel.setOpaque(false);
 
+        // 用户头像
+        ImageIcon icon = new ImageIcon(new ImageIcon("src/images/头像男.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+        JLabel labelIcon = new JLabel(icon);
+        labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
-//    private void displayParentView(int parentId) {
-//        JPanel parentPanel = new JPanel();
-//        parentPanel.setBackground(new Color(255, 255, 255, 0));
-//        parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
-//        parentPanel.setBounds(100, 300, 1080, 300);
-//        add(parentPanel);
-//
-//        // 定义一组按钮背景颜色
-//        Color[] buttonColors = {new Color(215, 231, 252), new Color(240, 200, 200), new Color(225, 250, 200)};
-//        // 定义一组按钮文本颜色
-//        Color[] textColors = {new Color(62, 90, 206, 204), new Color(191, 17, 48), new Color(45, 114, 25)};
-//
-//        for (int i = 0; i < 3; i++) {
-//            JButton btnChild = new BtnOrange("Child " + (i + 1));
-//            btnChild.setPreferredSize(new Dimension(200, 100));
-//            btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
-//            // 使用循环中的相应颜色
-//            btnChild.setForeground(textColors[i % textColors.length]);  // 循环使用文本颜色数组中的颜色
-//            btnChild.setBackground(buttonColors[i % buttonColors.length]);  // 循环使用背景颜色数组中的颜色
-//            btnChild.setBorderPainted(false); // 移除按钮边框
-//            int childId = i + 1;
-//            btnChild.setBounds(100 + i * 300, 200, 200, 100);
-//            btnChild.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    dispose();
-//                    openChildMainPage(childId);
-//                }
-//            });
-//            parentPanel.add(btnChild);
-//        }
-//    }
+        // 添加鼠标点击事件
+        labelIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ChangeProfilePage().setVisible(true);
+//                dispose();
+            }
+        });
+
+        userDetailPanel.add(labelIcon, BorderLayout.CENTER);
+        userInfoPanel.add(userDetailPanel, BorderLayout.NORTH);
+        add(userInfoPanel);  // 确保你已经正确地将用户面板添加到 JFrame 或其他容器中
+        userInfoPanel.setBounds(900, 20, 100, 100);  // 设置合适的位置和大小
+    }
 
     private void displayParentView(int parentId) {
         JPanel parentPanel = new JPanel();

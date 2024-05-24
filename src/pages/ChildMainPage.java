@@ -11,6 +11,9 @@ import util.BtnOrange;
 import util.GradientBackground;
 import util.JSONController;
 import domain.Account;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -71,6 +74,7 @@ public class ChildMainPage extends JFrame {
         });
         add(backButton);
 
+        setupUserIcon();
         setLocationRelativeTo(null);
         setResizable(false);
 
@@ -171,6 +175,34 @@ public class ChildMainPage extends JFrame {
         calculateAndUpdateTotalBalance();
         calculateAndUpdateTotalTarget();
     }
+
+    private void setupUserIcon() {
+        JPanel userInfoPanel = new JPanel(new BorderLayout());
+        userInfoPanel.setOpaque(false);
+        JPanel userDetailPanel = new JPanel(new BorderLayout());
+        userDetailPanel.setOpaque(false);
+
+        // 用户头像
+        ImageIcon icon = new ImageIcon(new ImageIcon("src/images/头像男.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+        JLabel labelIcon = new JLabel(icon);
+        labelIcon.setHorizontalAlignment(JLabel.CENTER);
+
+        // 添加鼠标点击事件
+        labelIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    new ChangeProfilePage().setVisible(true);
+//                    dispose();
+
+            }
+        });
+
+        userDetailPanel.add(labelIcon, BorderLayout.CENTER);
+        userInfoPanel.add(userDetailPanel, BorderLayout.NORTH);
+        add(userInfoPanel);  // 确保你已经正确地将用户面板添加到 JFrame 或其他容器中
+        userInfoPanel.setBounds(900, 20, 100, 100);  // 设置合适的位置和大小
+    }
+
 
     // Read account data from file
     private List<Account> readAccountData() {

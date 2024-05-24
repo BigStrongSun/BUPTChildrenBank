@@ -14,8 +14,10 @@ import util.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class LoginPageForAll extends JFrame{
-    private static JSONController jsonAccount = new JSONController("account.txt");
-    private static List<Account> accountList = jsonAccount.readArray(Account.class);
+//    private static JSONController jsonAccount = new JSONController("account.txt");
+//    private static List<Account> accountList = jsonAccount.readArray(Account.class);
+        boolean caught;//check if exception is caught
+
     //孩子界面及功能
     public LoginPageForAll(boolean isParent) {
         if (!isParent) {
@@ -48,8 +50,8 @@ public class LoginPageForAll extends JFrame{
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
-        JLabel userLabel2 = new JLabel("You can change your name after you registered");
-        userLabel2.setBounds(10, 130, 80, 25);
+        JLabel userLabel2 = new JLabel("You can change your name after you login");
+        userLabel2.setBounds(10, 130, 250, 25);
         panel.add(userLabel2);
 
         //JTextField userText = new JTextField(20);
@@ -79,26 +81,28 @@ public class LoginPageForAll extends JFrame{
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
-                if(username.equals("0")){
-                    showMessageDialog(null, "UserId cannot be 0");
-                    System.exit(0);//就是想退出，还没想到更好的方法。然后我也不知道exit0,1有啥区别
-                }
+
+
                 try {
                     // 尝试将字符串转换为int
                     int input = Integer.parseInt(username);
-                    System.out.println("Integer value: " + input);
+                    //System.out.println("Integer value: " + input);
                 } catch (NumberFormatException ex) {
                     // 如果转换失败，显示错误提示
-                    JOptionPane.showMessageDialog(null, "Error: UserId must be integer");
-                    System.exit(1);
+                    //JOptionPane.showMessageDialog(null, "Error: UserId must be integer");
+                    caught = true;
                 }
+
                 String password = new String(passwordText.getPassword());
-                //String identity = "child";
 
                 if (username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "UserId or password cannot be empty");
                 } else if (LoginService.usernameExist(username)) {
                     JOptionPane.showMessageDialog(null, "UserId already exists");
+                }else if(username.equals("0")){
+                    JOptionPane.showMessageDialog(null, "UserId cannot be 0");
+                } else if (caught) {
+                    JOptionPane.showMessageDialog(null, "Error: UserId must be integer");
                 } else {
                     if (isParent) {
                         LoginService.saveUser(username, password, "parent");
@@ -114,7 +118,7 @@ public class LoginPageForAll extends JFrame{
                                 ,password,Integer.parseInt(username));
                     }
                     JOptionPane.showMessageDialog(null, "Registration successful");
-                    //PageSwitcher.switchPages(LoginPage.parentFrame,new MainPage());
+
                 }
             }
         });
