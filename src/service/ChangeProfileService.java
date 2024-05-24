@@ -29,4 +29,16 @@ public class ChangeProfileService {
         System.out.println("newusername for user " + username + " changed to " + newusername);
     }
 
+    //this method is to change the childOrParentId attribute of the corresponding child or parent
+    public static void changeCoPId(String username,String newUsername){//input the old username and the new username of the changing account
+        //find if there is someone (child or parent) is associated with them
+        for(User user: userList){
+            if(user.getChildOrParentId() == Integer.parseInt(username)){
+                user.setChildOrParentId(Integer.parseInt(newUsername));
+                jsonUser.writeArray(userList);
+                break;
+            }
+        }
+
+    }
 }
