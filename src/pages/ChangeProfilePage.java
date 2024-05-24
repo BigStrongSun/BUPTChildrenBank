@@ -1,29 +1,26 @@
 package pages;
-//更换用户名的界面
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.util.HashMap;
-
 import service.ChangePasswordService;
 import service.ChangeProfileService;
-public class ChangeProfilePage {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Change Username");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+public class ChangeProfilePage extends JFrame {
+
+    public ChangeProfilePage() {
+        super("Change Username"); // Set the title via the superclass constructor
+        setSize(400, 300); // Set size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation
         JPanel panel = new JPanel();
-        frame.add(panel);
-
-        placeComponents(panel);
-
-        frame.setVisible(true);
+        getContentPane().add(panel); // Add panel to the frame's content pane
+        placeComponents(panel); // Place components on the panel
+        setVisible(true); // Make the frame visible
     }
-    private static void placeComponents(JPanel panel) {
 
+    private void placeComponents(JPanel panel) {
         panel.setLayout(null);
 
         JLabel userLabel = new JLabel("Username:");
@@ -58,12 +55,12 @@ public class ChangeProfilePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
-                String Password = new String(passwordText.getPassword());
-                String newusername = new String(newUserText.getPassword());
+                String password = new String(passwordText.getPassword());
+                String newUsername = new String(newUserText.getPassword());
 
-                if (ChangePasswordService.validatePassword(username, Password)) {
-                    ChangeProfileService.changeUsername(username, Password,newusername);
-                    JOptionPane.showMessageDialog(null, "username changed successfully");
+                if (ChangePasswordService.validatePassword(username, password)) {
+                    ChangeProfileService.changeUsername(username, password, newUsername);
+                    JOptionPane.showMessageDialog(null, "Username changed successfully");
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 }
@@ -71,4 +68,7 @@ public class ChangeProfilePage {
         });
     }
 
+    public static void main(String[] args) {
+        new ChangeProfilePage(); // This will create and show the window
+    }
 }
