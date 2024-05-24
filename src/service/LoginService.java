@@ -9,7 +9,8 @@ import util.WriteToTemp;
 import static java.lang.Integer.parseInt;
 
 public class LoginService {
-    private static JSONController json = new JSONController("temp.txt");
+    private static TempService tempService = new TempService();
+    private static Temp temp = tempService.getTemp();
     private static JSONController json2 = new JSONController("user.txt");
     static List<User> userList = json2. readArray(User.class);
 
@@ -63,6 +64,7 @@ public class LoginService {
         return false;
     }
 
+    
     public static boolean validatePassword(String username, String password) {
         for(User user: userList){//check if the entered info match any info in the file
             if (user.getUsername().equals(username)) {
@@ -72,7 +74,7 @@ public class LoginService {
         return false;
     }
 
-    public static boolean checkIfIsParent(String username){//if is parent, return true
+    public static boolean checkIfIsParent(String username){//check if the username is a parent's username, return true
         for(User user: userList) {
             if (user.getUsername().equals(username)) {//username is unique, so we only need to use the username to identify
                 if (user.getIdentity().equals("parent")) {
