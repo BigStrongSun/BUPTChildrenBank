@@ -31,6 +31,10 @@ public class AccountService {
         return maxId;
     }
 
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
     public boolean saveAccounts() {
         return json.writeArray(accounts);
     }

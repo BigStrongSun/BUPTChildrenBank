@@ -149,4 +149,17 @@ public class WalletService {
             return -1; // 保存失败时返回-1
         }
     }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public Transaction getTransactionbyId(int transationId){
+        for(Transaction transaction:transactions){
+            if(transaction.getTransactionId() == transationId){
+                return transaction;
+            }
+        }
+        return null;
+    }
 }
