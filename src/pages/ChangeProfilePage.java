@@ -5,13 +5,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import domain.Temp;
 import service.ChangePasswordService;
 import service.ChangeProfileService;
+import service.LoginService;
+import service.TempService;
+import util.WriteToTemp;
 
 public class ChangeProfilePage extends JFrame {
 
+    TempService tempService = new TempService();
+    Temp temp = tempService.getTemp();
+    String username;
     public ChangeProfilePage() {
+
         super("Change Username"); // Set the title via the superclass constructor
+
+        if (temp.isParent()) {
+            username = String.valueOf(temp.getParentId());
+        } else {
+            username = String.valueOf(temp.getChildId());
+        }
         setSize(400, 300); // Set size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation
         JPanel panel = new JPanel();
@@ -27,9 +41,9 @@ public class ChangeProfilePage extends JFrame {
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
-        JTextField userText = new JTextField(20);
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
+        JLabel userLabel2 = new JLabel(username);
+        userLabel2.setBounds(100, 20, 165, 25);
+        panel.add(userLabel2);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(10, 50, 80, 25);
@@ -54,15 +68,22 @@ public class ChangeProfilePage extends JFrame {
         changePasswordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
+
                 String password = new String(passwordText.getPassword());
                 String newUsername = new String(newUserText.getPassword());
 
-                if (ChangePasswordService.validatePassword(username, password)) {
+                if (ChangePasswordService.validatePassword(username, password)
+                    &&!LoginService.usernameExist(newUsername)) {
                     ChangeProfileService.changeUsername(username, password, newUsername);
+                    if (temp.isParent()) {//是家长，则新username应该赋给家长
+                        WriteToTemp.writeToTempFile(temp.getChildId(),temp.getName(), temp.isParent(), Integer.parseInt(newUsername));
+                    } else {//是孩子，则新username应该赋给孩子
+                        WriteToTemp.writeToTempFile(Integer.parseInt(newUsername),temp.getName(), temp.isParent(), temp.getParentId());
+                    }
+                    ChangeProfileService.changeCoPId(username,newUsername);
                     JOptionPane.showMessageDialog(null, "Username changed successfully");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Invalid username or password");
+                    JOptionPane.showMessageDialog(null, "Invalid password or the username not availale");
                 }
             }
         });
