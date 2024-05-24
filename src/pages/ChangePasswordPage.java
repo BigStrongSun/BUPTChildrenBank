@@ -10,8 +10,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+
+import domain.Temp;
 import service.ChangePasswordService;
+import service.TempService;
+
 public class ChangePasswordPage {
+
+    public static TempService tempService = new TempService();
+    public static Temp temp = tempService.getTemp();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Change Password");
@@ -30,13 +37,13 @@ public class ChangePasswordPage {
 
         panel.setLayout(null);
 
-        JLabel userLabel = new JLabel("Username:");
+        JLabel userLabel = new JLabel("Name:");
         userLabel.setBounds(10, 20, 80, 25);
         panel.add(userLabel);
 
-        JTextField userText = new JTextField(20);
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
+        JLabel userLabel2 = new JLabel(temp.getName());
+        userLabel2.setBounds(100, 20, 165, 25);
+        panel.add(userLabel2);
 
         JLabel passwordLabel = new JLabel("Old Password:");
         passwordLabel.setBounds(10, 50, 80, 25);
@@ -61,11 +68,16 @@ public class ChangePasswordPage {
         changePasswordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = userText.getText();
+                String username;
+                if(temp.isParent()){
+                    username = String.valueOf(temp.getParentId());
+                } else{
+                    username = String.valueOf(temp.getChildId());
+                }
                 String oldPassword = new String(passwordText.getPassword());
                 String newPassword = new String(newPasswordText.getPassword());
 
-                if (validatePassword(username, oldPassword)) {
+                if (ChangePasswordService.validatePassword(username, oldPassword)) {
                 	ChangePasswordService.changeUserPassword(username, newPassword);
                     JOptionPane.showMessageDialog(null, "Password changed successfully");
                 } else {
@@ -75,32 +87,32 @@ public class ChangePasswordPage {
         });
     }
 
-    private static boolean validatePassword(String username, String password) {
-    	File file = new File("user.txt");
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] user = line.split(":");
-                if (user[0].equals(username)) {
-                    return user[1].equals(password);
-                }
-                line = reader.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
+//    private static boolean validatePassword(String username, String password) {
+//    	File file = new File("user.txt");
+//        BufferedReader reader = null;
+//        try {
+//            reader = new BufferedReader(new FileReader(file));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                String[] user = line.split(":");
+//                if (user[0].equals(username)) {
+//                    return user[1].equals(password);
+//                }
+//                line = reader.readLine();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (reader != null) {
+//                try {
+//                    reader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     
 }
