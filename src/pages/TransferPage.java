@@ -1,31 +1,33 @@
 package pages;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import domain.Account;
+import domain.Transaction;
+import domain.TransactionType;
+import service.UpdateAccountService;
+import util.BtnOrange;
+import util.GradientBackground;
+import util.JSONController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import domain.AccountType;
-import service.UpdateAccountService;
-import util.BtnOrange;
-import util.GradientBackground;
-import util.*;
-import domain.Account;
-import util.JSONController;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.IOException;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+
+import static service.TransactionIdGenerateService.addTransaction;
+import static service.TransactionIdGenerateService.generateTransactionId;
 
 
 public class TransferPage extends JFrame {
@@ -353,29 +355,38 @@ public class TransferPage extends JFrame {
 
                         // 弹出确认对话框
                         int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);// 确保确认转账成功后执行以下操作
+// 用户确认转账并且转账逻辑执行成功后
                         if (option == JOptionPane.OK_OPTION) {
-                            // 更新转账方账户余额
                             double currentFromBalance = selectedFromAccount.getBalance();
                             selectedFromAccount.setBalance(currentFromBalance - transferAmount);
-                            // 更新收款方账户余额
                             double currentToBalance = selectedToAccount.getBalance();
                             selectedToAccount.setBalance(currentToBalance + transferAmount);
 
-                            // 将更新后的数据写回到文件中
-                            updateAccountBalance(selectedFromAccount.getAccountId(), selectedFromAccount.getBalance()); // 更新转账方账户余额
-                            updateAccountBalance(selectedToAccount.getAccountId(), selectedToAccount.getBalance()); // 更新收款方账户余额
-
-                            // 更新页面上的总余额显示
+                            updateAccountBalance(selectedFromAccount.getAccountId(), selectedFromAccount.getBalance());
+                            updateAccountBalance(selectedToAccount.getAccountId(), selectedToAccount.getBalance());
                             calculateAndUpdateTotalBalance();
 
-                            // 更新已有的总余额标签
-                            lblBalance.setText("Your total balance: $" + totalBalance);
+                            Transaction transaction = new Transaction(
+                                    generateTransactionId(),
+                                    TransactionType.TRANSFER,
+                                    selectedFromAccount.getAccountId(),
+                                    selectedToAccount.getAccountId(),
+                                    transferAmount,
+                                    0.0,
+                                    "Transfer from " + selectedFromAccount.getAccountId() + " to " + selectedToAccount.getAccountId(),
+                                    new Date()
+                            );
 
-                            // 提示转账成功
+                            // 添加交易
+                            addTransaction(transaction);
+
+                            lblBalance.setText("Your total balance: $" + totalBalance);
                             JOptionPane.showMessageDialog(null, "Transfer successful!");
                         } else {
                             // 用户点击了取消按钮，不执行任何操作
                         }
+
+
 
 
                     }
@@ -408,6 +419,7 @@ public class TransferPage extends JFrame {
         SwingUtilities.invokeLater(() -> {
             TransferPage transferPage = new TransferPage();
             transferPage.setVisible(true);
+           transferPage.setLocationRelativeTo(null);
         });
     }
 }
