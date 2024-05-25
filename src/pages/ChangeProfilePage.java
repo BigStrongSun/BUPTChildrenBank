@@ -10,6 +10,7 @@ import service.ChangePasswordService;
 import service.ChangeProfileService;
 import service.LoginService;
 import service.TempService;
+import util.PageSwitcher;
 import util.WriteToTemp;
 
 public class ChangeProfilePage extends JFrame {
@@ -17,17 +18,20 @@ public class ChangeProfilePage extends JFrame {
     TempService tempService = new TempService();
     Temp temp = tempService.getTemp();
     String username;
+    private  ChangeProfilePage changeProfilePage;
     public ChangeProfilePage() {
 
-        super("Change Username"); // Set the title via the superclass constructor
 
+        super("Change Username"); // Set the title via the superclass constructor
+        changeProfilePage = this;
         if (temp.isParent()) {
             username = String.valueOf(temp.getParentId());
         } else {
             username = String.valueOf(temp.getChildId());
         }
-        setSize(400, 300); // Set size
+        setSize(1280, 720); // Set size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation
+
         JPanel panel = new JPanel();
         getContentPane().add(panel); // Add panel to the frame's content pane
         placeComponents(panel); // Place components on the panel
@@ -36,6 +40,20 @@ public class ChangeProfilePage extends JFrame {
 
     private void placeComponents(JPanel panel) {
         panel.setLayout(null);
+
+        //返回按钮
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(0, 0, 80, 30);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(changeProfilePage,new MainPage());
+            }
+        });
+        panel.add(backButton);
 
         JLabel userLabel = new JLabel("Username:");
         userLabel.setBounds(10, 20, 80, 25);
