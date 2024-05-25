@@ -16,7 +16,7 @@ public class AddAccountPage extends JFrame{
         //设置密码，即可创建新账户。accountId自动随机在1-1000分配
         super("Add Account");
         addAccountPage=this;
-        setSize(300, 200);
+        setSize(300, 250);
         setResizable(false);
 
         Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
@@ -24,11 +24,14 @@ public class AddAccountPage extends JFrame{
         GradientBackground gradientBackground = new GradientBackground(colors, fractions);
         setContentPane(gradientBackground);
 
-        gradientBackground.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // 周围留白
+//        gradientBackground.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 周围留白
         //RoundedTextField textField = new RoundedTextField(20);//输入新account id
+        JLabel label1 = new JLabel("Please set a passward");
+        JLabel label2 = new JLabel("to create your saving account");
         RoundedPasswordTextField passwordField = new RoundedPasswordTextField(20);//设置密码
         gradientBackground.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // 周围留白
-        //add(textField);
+        add(label1);
+        add(label2);
         add(passwordField);
         JButton button = new JButton("Create new account");
         add(button);
