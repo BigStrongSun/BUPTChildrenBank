@@ -13,6 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
 public class UpdateAccountService {
 
     private static final File jsonFile = new File("account.txt");
@@ -48,19 +52,23 @@ public class UpdateAccountService {
 
 
 
-private static void updateInterest(ObjectNode account) {
-         double interestRate = 100;  // 利率
-        double balance = account.get("balance").asDouble();
+    private static void updateInterest(ObjectNode account) {
+        double interestRate = 1.5;  // 假设年利率为1.5%
+        BigDecimal balance = new BigDecimal(account.get("balance").asDouble());
         LocalDateTime lastRead = LocalDateTime.parse(account.get("lastReadTime").asText(), formatter);
-        long secondsSinceLastRead = ChronoUnit.SECONDS.between(lastRead, LocalDateTime.now());
-        double interestMultiplier = (interestRate / 100) / (86400 / 10);  // 每10秒的利息因子
+        long daysSinceLastRead = ChronoUnit.DAYS.between(lastRead, LocalDateTime.now());
 
-        if (secondsSinceLastRead >= 10) {  // 至少10秒后更新利息
-            balance += balance * interestMultiplier * (secondsSinceLastRead / 10);  // 计算新的余额
-            account.put("balance", balance);
+        if (daysSinceLastRead >= 1) {  // 至少一天后更新利息
+            BigDecimal annualInterestRate = BigDecimal.valueOf(interestRate / 100);  // 年利率转为BigDecimal
+            BigDecimal dailyInterestFactor = annualInterestRate.divide(BigDecimal.valueOf(365), 8, RoundingMode.HALF_UP);  // 每天的利息因子，保留8位小数以确保精确度
+            BigDecimal interest = balance.multiply(dailyInterestFactor);  // 计算一天的利息
+            balance = balance.add(interest).setScale(2, RoundingMode.HALF_UP);  // 将新余额加上利息并保留两位小数
+
+            account.put("balance", balance.doubleValue());  // 将新余额更新回账户对象
             account.put("lastReadTime", LocalDateTime.now().format(formatter));  // 更新最后读取时间
         }
     }
+
 
     private static void updateLockTimes(ObjectNode account) {
         if (!account.has("depositTime")) {
@@ -73,4 +81,5 @@ private static void updateInterest(ObjectNode account) {
             account.put("lockEndTime", depositTime.plusDays(7).format(formatter));  // 解封时间为七天后
         }
     }
+
 }

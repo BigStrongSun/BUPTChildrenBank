@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import domain.AccountType;
 import service.UpdateAccountService;
 import util.BtnOrange;
 import util.GradientBackground;
@@ -14,11 +15,17 @@ import util.JSONController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.Duration;
+import java.time.Period;
 
 
 public class TransferPage extends JFrame {
@@ -32,6 +39,8 @@ public class TransferPage extends JFrame {
 
     private int userId ;
     private String password ;
+
+    String accountType;
 
     double totalBalance = 0.0;
 
@@ -220,16 +229,43 @@ public class TransferPage extends JFrame {
                     if (account.getUserId() == userId && textFieldFromAccountNumber.getText().equals(String.valueOf(account.getAccountId()))) {
                         balance = account.getBalance();
                         password = account.getPassword();
+                        accountType = String.valueOf(account.getAccountType());
 
                         System.out.println("User ID: " + account.getUserId());
                         System.out.println("Account ID: " + account.getAccountId());
                         System.out.println("Text Field Value: " + textFieldFromAccountNumber.getText());
                         System.out.println("password: " + account.getPassword());
+                        System.out.println("accountType: " + account.getAccountType());
+
+                        if ("SAVING_ACCOUNT".equals(accountType)) {
+                            String lockEndTimeStr = String.valueOf(account.getLockEndTime()); // Assuming getLockEndTime() returns a String formatted correctly
+
+                                LocalDateTime lockEndTime = LocalDateTime.parse(lockEndTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                                LocalDateTime now = LocalDateTime.now();
+                                System.out.println("Current Time: " + now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                                System.out.println("Lock End Time: " + lockEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+                                Duration duration = Duration.between(now, lockEndTime);
+                                Period period = Period.between(now.toLocalDate(), lockEndTime.toLocalDate());
+
+                                System.out.println("Time until lock period ends: " + duration.getSeconds() + " seconds");
+                                System.out.println("Period until lock period ends: " + period.getYears() + " years " + period.getMonths() + " months " + period.getDays() + " days");
+
+                                if (!duration.isNegative()) {
+                                    System.out.println("The lock period has not ended yet.");
+                                    JOptionPane.showMessageDialog(null, "The Account is still in lock period!", "Error", JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                } else {
+                                    System.out.println("The lock period has ended.");
+                                }
+
+                        }
 
                         isFromAccountValid = true;
-                        break; // 如果找到了匹配的账户，就可以退出循环了
+                        break; // If the account is found, exit the loop
                     }
                 }
+
 
                 if (!enteredPassword.equals(String.valueOf(password))) {
                     JOptionPane.showMessageDialog(null, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -254,6 +290,16 @@ public class TransferPage extends JFrame {
                     JOptionPane.showMessageDialog(null, "You cannot transfer to the same account!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                // Using getLockPeriod if the account is a saving account
+
+
+//                if ("SAVING_ACCOUNT".equals(selectedFromAccount.getAccountType())) {
+//                    LocalDateTime lockEndTime = LocalDateTime.parse(fromAccount.getLockEndTime());
+//                    if (lockEndTime.isAfter(LocalDateTime.now())) {
+//                        JOptionPane.showMessageDialog(null, "This saving account is currently locked until " + fromAccount.getLockEndTime(), "Error", JOptionPane.ERROR_MESSAGE);
+//                        return;
+//                    }
+//                }
 
 
 
