@@ -1,0 +1,9 @@
+[ {
+  "accountId" : 1,
+  "accountType" : "CURRENT_ACCOUNT",
+  "balance" : 385.5,
+  "interestRate" : 0.0,
+  "lockPeriod" : 7,
+  "password" : "Pass4000",
+  "userId" : 1001
+} ]

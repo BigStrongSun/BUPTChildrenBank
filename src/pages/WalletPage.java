@@ -256,18 +256,21 @@ public class WalletPage extends JFrame {
                 data[i][0] = transaction.getTransactionDate();
                 data[i][1] = transaction.getDescription();
                 String symbol = "+ ";
-                if(transaction.getType().equals(TransactionType.BONUS)){
-                    if (receiverAccountId == currentAccountId) symbol = "+ ";
-                    if (senderAccountId == currentAccountId) symbol = "- ";
-                }else if(transaction.getType().equals(TransactionType.GIFT_EXCHANGE)){
-                    if (receiverAccountId == currentAccountId) symbol = "- ";
-                    if (senderAccountId == currentAccountId) symbol = "+ ";
-                }else if(transaction.getType().equals(TransactionType.WITHDRAWAL)){
-                    symbol = "- ";
-                } else if (transaction.getType().equals(TransactionType.TRANSFER)) {
-                    if (receiverAccountId == currentAccountId) symbol = "+ ";
-                    if (senderAccountId == currentAccountId) symbol = "- ";
+                if(transaction.getType()!=null){
+                    if(transaction.getType().equals(TransactionType.BONUS)){
+                        if (receiverAccountId == currentAccountId) symbol = "+ ";
+                        if (senderAccountId == currentAccountId) symbol = "- ";
+                    }else if(transaction.getType().equals(TransactionType.GIFT_EXCHANGE)){
+                        if (receiverAccountId == currentAccountId) symbol = "- ";
+                        if (senderAccountId == currentAccountId) symbol = "+ ";
+                    }else if(transaction.getType().equals(TransactionType.WITHDRAWAL)){
+                        symbol = "- ";
+                    } else if (transaction.getType().equals(TransactionType.TRANSFER)) {
+                        if (receiverAccountId == currentAccountId) symbol = "+ ";
+                        if (senderAccountId == currentAccountId) symbol = "- ";
+                    }
                 }
+
                 data[i][2] = symbol + transaction.getAmount();
                 data[i][3] = transaction.getType();
                 i++;
