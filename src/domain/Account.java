@@ -131,7 +131,7 @@ public class Account {
         this.depositTime = depositTime;
     }
 
-    public CharSequence getLockEndTime() {
+    public LocalDateTime getLockEndTime() {
         return lockEndTime;
     }
 
@@ -139,12 +139,12 @@ public class Account {
         this.lockEndTime = lockEndTime;
     }
 
-    public LocalDateTime getLastReadTime() {
-        return lastReadTime;
-    }
+public LocalDateTime getLastReadTime() {
+    return lastReadTime;
+}
 
-    public void setLastReadTime(LocalDateTime lastReadTime) {
-        this.lastReadTime = lastReadTime;
-    }
+public void setLastReadTime(LocalDateTime lastReadTime) {
+    this.lastReadTime = lastReadTime;
+}
 
 }
