@@ -14,6 +14,7 @@ import util.BtnOrange;
 import service.WishService;
 import service.UserService;
 import service.TempService;
+import service.ChangeChildService;
 import util.GradientBackground;
 import util.JSONController;
 
@@ -141,12 +142,28 @@ public class MainPage extends JFrame {
             });
             parentPanel.add(btnChild);
         }else {
-            JLabel noChildLabel = new JLabel("You haven't bound any child.");
-            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-            noChildLabel.setForeground(textColor);
-            // 设置JLabel的位置（例如：X = 50, Y = 100）
-            noChildLabel.setBounds(200, 100, 300, 50);
-            parentPanel.add(noChildLabel);
+//            JLabel noChildLabel = new JLabel("You haven't bound any child.");
+//            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+//            noChildLabel.setForeground(textColor);
+//            // 设置JLabel的位置（例如：X = 50, Y = 100）
+//            noChildLabel.setBounds(200, 100, 300, 50);
+//            parentPanel.add(noChildLabel);
+            JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>"  );
+            btnChild.setPreferredSize(new Dimension(200, 100));
+            btnChild.setFont(new Font("Arial", Font.PLAIN, 25));
+            btnChild.setForeground(textColor);
+            btnChild.setBackground(buttonColor);
+            btnChild.setBorderPainted(false);
+            btnChild.setBounds(100, 200, 200, 100);
+            btnChild.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    openChangeChildPage(parentId);
+                }
+            });
+            parentPanel.add(btnChild);
+
         }
     }
 
@@ -154,6 +171,11 @@ public class MainPage extends JFrame {
     private void openChildMainPage(int childId) {
         ChildMainPage childMainPage = new ChildMainPage(childId, this); // 将 MainPage 的引用传递给 ChildMainPage
         childMainPage.setVisible(true);
+    }
+    private void openChangeChildPage(int parentId) {
+
+        ChangeChildPage changeChildPage = new ChangeChildPage(); // 假设构造函数接受一个 parentId 参数
+        changeChildPage.setVisible(true);
     }
 
 
