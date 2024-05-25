@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import domain.Account;
 import domain.Wish;
+import service.UpdateAccountService;
 import util.BtnOrange;
 import service.WishService;
 import service.UserService;
@@ -33,6 +34,9 @@ public class MainPage extends JFrame {
     private String parentName;
 
     public MainPage() {
+
+        UpdateAccountService.startScheduledUpdates();
+
         setTitle("Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

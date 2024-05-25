@@ -5,6 +5,8 @@ import domain.Temp;
 import domain.Transaction;
 import domain.TransactionType;
 import service.TempService;
+import service.UpdateAccountService;
+
 import util.FrostedGlassPanel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -32,6 +34,7 @@ public class WalletPage extends JFrame {
     JScrollPane scrollPane = new JScrollPane(transactionTable);
 
     public WalletPage() {
+        UpdateAccountService.startScheduledUpdates();
         Temp temp = (Temp) jsonTemp.read(Temp.class);
         userId = temp.getChildId();
 //        if (temp.isParent()) {

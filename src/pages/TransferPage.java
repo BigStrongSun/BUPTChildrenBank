@@ -4,11 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import service.UpdateAccountService;
 import util.BtnOrange;
 import util.GradientBackground;
 import util.*;
 import domain.Account;
 import util.JSONController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import java.nio.file.Files;
@@ -78,6 +83,8 @@ public class TransferPage extends JFrame {
 
 
     public TransferPage() {
+
+        UpdateAccountService.startScheduledUpdates();
 
         readUserIdFromTemp();
         calculateAndUpdateTotalBalance();
