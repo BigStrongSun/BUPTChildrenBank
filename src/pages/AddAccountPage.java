@@ -12,10 +12,15 @@ import java.awt.event.ActionListener;
 public class AddAccountPage extends JFrame{
     public AddAccountPage(){
         //设置密码，即可创建新账户。accountId自动随机在1-1000分配
-        setTitle("Add Saving Account");
-        setSize(1200, 800);
+        super("Add Account");
+        setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
+
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
 
         //RoundedTextField textField = new RoundedTextField(20);//输入新account id
         RoundedPasswordTextField passwordField = new RoundedPasswordTextField(20);//设置密码
@@ -34,6 +39,7 @@ public class AddAccountPage extends JFrame{
             }
         });
         setVisible(true);
+        setLocationRelativeTo(null);
 
     }
 
