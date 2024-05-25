@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import domain.Wish;
 import service.TempService;
+import service.UserService;
 import util.BtnOrange;
 import util.GradientBackground;
 import util.JSONController;
@@ -31,6 +32,8 @@ public class ChildMainPage extends JFrame {
 
     private String childName;
     private String parentName;
+    private JSONController jsonUser = new JSONController("user.txt");
+    UserService userService = new UserService();
 
     double totalBalance = 0.0;
 
@@ -42,8 +45,12 @@ public class ChildMainPage extends JFrame {
         tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
-        childName = String.valueOf(tempService.getTemp().getChildId());
-        parentName = String.valueOf(tempService.getTemp().getParentId());
+
+        childName = userService.getChildNameById(childId);
+        parentName = userService.getParentNameById(parentId);
+
+        System.out.println("aaaa"+childName);
+        System.out.println("aaaa"+parentName);
 
         setTitle("Child Main Page");
         setSize(1280, 720);
@@ -106,7 +113,7 @@ public class ChildMainPage extends JFrame {
 
         add(topPanel);
 
-        lblChildName.setText(lblChildName.getText() + "'s Homepage");
+        lblChildName.setText(childName + "'s Homepage");
         lblChildName.setFont(new Font("Arial", Font.BOLD, 18));
         lblChildName.setBounds(550, 250, 250, 50);
         lblChildName.setForeground(new Color(61, 138, 82, 255));

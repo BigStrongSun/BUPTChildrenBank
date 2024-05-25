@@ -9,9 +9,10 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import domain.Account;
 import domain.Wish;
-import service.TempService;
 import util.BtnOrange;
 import service.WishService;
+import service.UserService;
+import service.TempService;
 import util.GradientBackground;
 import util.JSONController;
 
@@ -24,8 +25,10 @@ public class MainPage extends JFrame {
     private int childId;
      double totalBalance;
      String totalTarget;
-
+    private JSONController jsonUser = new JSONController("user.txt");
+    UserService userService = new UserService();
     private String childName ;
+
 
     private String parentName;
 
@@ -45,9 +48,11 @@ public class MainPage extends JFrame {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         isParent = tempService.getTemp().isParent();
-        childName = String.valueOf(tempService.getTemp().getChildId());
-        parentName = String.valueOf(tempService.getTemp().getParentId());
+        childName = userService.getChildNameById(childId);
+        parentName = userService.getParentNameById(parentId);
 
+        System.out.println("aaaa"+childName);
+        System.out.println("aaaa"+parentName);
 
 
         JLabel lblNameType = new JLabel();
@@ -64,7 +69,7 @@ public class MainPage extends JFrame {
         } else {
 
             displayChildView(childId);
-            lblNameType.setText("<html>UserId:    " + childName + "<br>Type: Child</html>");
+            lblNameType.setText("<html>Name:    " + childName + "<br>Type: Child</html>");
         }
 
 
@@ -116,7 +121,7 @@ public class MainPage extends JFrame {
 
 
         if (childId != 0) {
-            JButton btnChild = new BtnOrange(" " + childId);
+            JButton btnChild = new BtnOrange(" " + childName);
             btnChild.setPreferredSize(new Dimension(200, 100));
             btnChild.setFont(new Font("Arial", Font.PLAIN, 30));
             btnChild.setForeground(textColor);

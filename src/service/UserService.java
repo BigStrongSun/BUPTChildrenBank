@@ -39,4 +39,20 @@ public class UserService {
         }
         return null;
     }
+
+    public String getParentNameById(int userId) {
+        User user = getUserById(userId);
+        if (user != null) {
+            if (user.getIdentity().equals("parent")) {
+                return user.getName();
+            } else {
+                int parentId = user.getChildOrParentId();
+                user = getUserById(parentId);
+                if (user != null) {
+                    return user.getName();
+                }
+            }
+        }
+        return null;
+    }
 }
