@@ -25,7 +25,7 @@ public class LoginPage {
 	public static void main(String[] args) {
 		
     	
-    	JFrame frame = new JFrame("Identity selection");
+    	frame = new JFrame("Identity selection");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setSize(600, 400);
     	frame.setLocationRelativeTo(null);
