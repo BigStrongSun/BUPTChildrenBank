@@ -42,6 +42,7 @@ public class AddAccountPage extends JFrame{
 
                 CreateAccountService.createNewSavingAccount(String.valueOf(passwordField.getPassword()));
                 JOptionPane.showMessageDialog(null, "New account created");
+                WalletPage.walletPage.dispose();
                 PageSwitcher.switchPages(addAccountPage,new WalletPage());
             }
         });

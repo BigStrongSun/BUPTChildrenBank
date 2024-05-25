@@ -40,7 +40,7 @@ public class WalletPage extends JFrame {
 
     private JButton btnCreateAccount;
     private JButton btnTransferTapTo;
-    private WalletPage walletPage;
+    public static WalletPage walletPage;
 
     public WalletPage() {
         walletPage = this;
