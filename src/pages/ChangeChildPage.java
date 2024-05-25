@@ -20,9 +20,32 @@ public class ChangeChildPage extends JFrame{
 
     public ChangeChildPage(){
         setTitle("Modify Child");
-        setSize(1200, 800);
+        setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
+
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
+
+
+
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(0, 0, 80, 30);
+        add(backButton); // 直接添加到 JFrame
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // 假设 MainPage 是另一个 JFrame 类
+                setVisible(false); // 隐藏当前窗口
+                new MainPage().setVisible(true); // 显示主页面
+            }
+        });
+
         RoundedTextField textField = new RoundedTextField(20);
         JButton changeChildButton = new JButton("Change Child");
         JButton deleteAssociationButton = new JButton("Delete Child");
@@ -74,6 +97,7 @@ public class ChangeChildPage extends JFrame{
             }
         });
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     public static void main(String[] args) {
