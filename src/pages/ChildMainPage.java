@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import domain.Wish;
 import service.TempService;
+import service.UpdateAccountService;
 import service.UserService;
 import util.BtnOrange;
 import util.GradientBackground;
@@ -113,8 +114,12 @@ public class ChildMainPage extends JFrame {
 
         add(topPanel);
 
-        lblChildName.setText(childName + "'s Homepage");
-        lblChildName.setFont(new Font("Arial", Font.BOLD, 18));
+
+
+        lblChildName.setText("<html><b style='font-size:25px;'>" + childName + "</b>'s Homepage</html>");
+        lblChildName.setFont(new Font("Arial", Font.BOLD, 22)); // 设置默认大小，HTML会覆盖这里的设置
+
+
         lblChildName.setBounds(550, 250, 250, 50);
         lblChildName.setForeground(new Color(61, 138, 82, 255));
         add(lblChildName);
@@ -181,6 +186,9 @@ public class ChildMainPage extends JFrame {
         this.childId = childId; // 更新 childId 的值
         calculateAndUpdateTotalBalance();
         calculateAndUpdateTotalTarget();
+
+
+        UpdateAccountService.startScheduledUpdates();
     }
 
     private void setupUserIcon() {
@@ -252,11 +260,13 @@ public class ChildMainPage extends JFrame {
         List<Wish> wishes = readWishData();
         double totalTargetValue = 0.0;
         for (Wish wish : wishes) {
-            // 打印当前遍历的账户的用户ID和余额
-            System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
+            if (wish.getWishStatus().equals("undone")) {
+                // 打印当前遍历的账户的用户ID和余额
+                System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
 
-            if (wish.getChildId() == childId) {
-                totalTargetValue += Double.parseDouble(wish.getWishTarget());
+                if (wish.getChildId() == childId) {
+                    totalTargetValue += Double.parseDouble(wish.getWishTarget());
+                }
             }
         }
         // 格式化为两位小数

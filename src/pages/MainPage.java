@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import domain.Account;
 import domain.Wish;
@@ -308,11 +310,13 @@ public class MainPage extends JFrame {
         List<Wish> wishes = readWishData();
         double totalTargetValue = 0.0;
         for (Wish wish : wishes) {
-            // 打印当前遍历的账户的用户ID和余额
-            System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
+            if(wish.getWishStatus().equals("undone")) {
+                // 打印当前遍历的账户的用户ID和余额
+                System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
 
-            if (wish.getChildId() == childId) {
-                totalTargetValue += Double.parseDouble(wish.getWishTarget());
+                if (wish.getChildId() == childId) {
+                    totalTargetValue += Double.parseDouble(wish.getWishTarget());
+                }
             }
         }
         // 格式化为两位小数
