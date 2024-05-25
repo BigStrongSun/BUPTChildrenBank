@@ -102,7 +102,7 @@ public class MainPage extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 new ChangeProfilePage().setVisible(true);
-//                dispose();
+                dispose();
             }
         });
 

@@ -17,6 +17,7 @@ import util.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class LoginPageForAll extends JFrame{
+    private LoginPageForAll loginPageForAll;
 private static final long serialVersionUID = 1L;
 		//    private static JSONController jsonAccount = new JSONController("account.txt");
 //    private static List<Account> accountList = jsonAccount.readArray(Account.class);
@@ -25,7 +26,7 @@ private static final long serialVersionUID = 1L;
     //孩子界面及功能
     public LoginPageForAll(boolean isParent) {
 
-    	
+    	loginPageForAll = this;
         if (!isParent) {
             setTitle("Child Login Page");
         } else {
@@ -152,7 +153,7 @@ private static final long serialVersionUID = 1L;
                     } else {
                         LoginService.saveCurrentUser(username,true,LoginService.findName(username));
                     }
-                    PageSwitcher.switchPages(LoginPage.childFrame,new MainPage());
+                    PageSwitcher.switchPages(loginPageForAll ,new MainPage());
                 }
             }
         });
