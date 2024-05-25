@@ -33,11 +33,12 @@ public class WalletPage extends JFrame {
 
     public WalletPage() {
         Temp temp = (Temp) jsonTemp.read(Temp.class);
-        if (temp.isParent()) {
-            userId = temp.getParentId();
-        } else {
-            userId = temp.getChildId();
-        }
+        userId = temp.getChildId();
+//        if (temp.isParent()) {
+//            userId = temp.getParentId();
+//        } else {
+//            userId = temp.getChildId();
+//        }
 
         for (Account account : accounts) {
             if (account.getUserId() == userId) {
@@ -162,11 +163,12 @@ public class WalletPage extends JFrame {
         // 示例：添加两个账户信息卡片
         cardPanel.setOpaque(false);
         Temp temp = (Temp) jsonTemp.read(Temp.class);
-        if (temp.isParent()) {
-            userId = temp.getParentId();
-        } else {
-            userId = temp.getChildId();
-        }
+        userId = temp.getChildId();
+//        if (temp.isParent()) {
+//            userId = temp.getParentId();
+//        } else {
+//            userId = temp.getChildId();
+//        }
         List<String> constraintName = new ArrayList<>();
         int i = 0;
         for (Account account : accounts) {
