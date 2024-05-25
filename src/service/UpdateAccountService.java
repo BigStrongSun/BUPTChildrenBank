@@ -29,7 +29,7 @@ public class UpdateAccountService {
     public static void startScheduledUpdates() {
         if (scheduler == null || scheduler.isShutdown()) {
             scheduler = Executors.newSingleThreadScheduledExecutor();
-            scheduler.scheduleAtFixedRate(UpdateAccountService::updateAccounts, 0, 10, TimeUnit.SECONDS);
+            scheduler.scheduleAtFixedRate(UpdateAccountService::updateAccounts, 0, 120, TimeUnit.SECONDS);
         }
     }
 

@@ -36,7 +36,7 @@ public class MainPage extends JFrame {
 
     public MainPage() {
 
-        UpdateAccountService.startScheduledUpdates();
+
 
         setTitle("Main Page");
         setSize(1280, 720);
@@ -84,7 +84,7 @@ public class MainPage extends JFrame {
         setResizable(false);
 
 
-
+        UpdateAccountService.startScheduledUpdates();
     }
 
     private void setupUserIcon() {
