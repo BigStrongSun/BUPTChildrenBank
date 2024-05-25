@@ -4,9 +4,11 @@ import domain.Account;
 import domain.Temp;
 import domain.Transaction;
 import domain.TransactionType;
+import service.CreateAccountService;
 import service.TempService;
 import service.UpdateAccountService;
 
+import util.BtnOrange;
 import util.FrostedGlassPanel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -14,7 +16,10 @@ import javax.swing.*;
 import java.awt.*;
 
 import util.JSONController;
+import util.PageSwitcher;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +38,12 @@ public class WalletPage extends JFrame {
     int n = 0;
     JScrollPane scrollPane = new JScrollPane(transactionTable);
 
+    private JButton btnCreateAccount;
+    private JButton btnTransferTapTo;
+    private WalletPage walletPage;
+
     public WalletPage() {
+        walletPage = this;
         UpdateAccountService.startScheduledUpdates();
         Temp temp = (Temp) jsonTemp.read(Temp.class);
         userId = temp.getChildId();
@@ -93,6 +103,7 @@ public class WalletPage extends JFrame {
 
         // 用户信息部分
         JPanel userDetailPanel = new JPanel(new BorderLayout());
+
         userDetailPanel.setOpaque(false);
 
         // 用户头像
@@ -158,8 +169,33 @@ public class WalletPage extends JFrame {
 
         userInfoPanel.add(verticalBox, BorderLayout.NORTH);
 
+        btnCreateAccount = new BtnOrange("Create Account");
+        btnTransferTapTo = new BtnOrange("Transfer");
+
+        JPanel buttonPanel = new JPanel(); // 默认FlowLayout
+        buttonPanel.add(btnCreateAccount);
+        buttonPanel.add(btnTransferTapTo);
+
+        btnCreateAccount.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(null, "Do you want to create a saving account? Note: The interest is 1.5% and the closure period is 7 days?", "Create Account", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    new AddAccountPage();
+                }
+            }
+        });
+
+        btnTransferTapTo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(walletPage,new TransferPage());
+            }
+        });
+
+        buttonPanel.setBackground(new Color(255, 204, 153)); // 浅橙色背景
+        userInfoPanel.add(buttonPanel,BorderLayout.SOUTH);
         return userInfoPanel;
     }
+
 
 
     private void createAccountCards() {

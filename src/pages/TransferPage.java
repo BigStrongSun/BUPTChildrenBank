@@ -27,6 +27,7 @@ public class TransferPage extends JFrame {
     private JTextField textFieldAmount;
     private JPasswordField passwordField;
 
+    private TransferPage transferPage;
     private JFrame previousPage;
 //    private int accountId = 100;
 
@@ -84,6 +85,7 @@ public class TransferPage extends JFrame {
 
     public TransferPage() {
 
+        transferPage = this;
         UpdateAccountService.startScheduledUpdates();
 
         readUserIdFromTemp();
@@ -107,6 +109,14 @@ public class TransferPage extends JFrame {
         backButton.setOpaque(true); // 不透明背景
         backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
         add(backButton); // 添加按钮
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                WalletPage window = new WalletPage();
+                window.setVisible(true);
+                transferPage.dispose();
+            }
+        });
 
         JLabel lblBalance = new JLabel("Your total balance: $" + totalBalance);
         lblBalance.setFont(new Font("Arial", Font.PLAIN, 20));
