@@ -40,7 +40,7 @@ public class WalletPage extends JFrame {
 
     private JButton btnCreateAccount;
     private JButton btnTransferTapTo;
-    private WalletPage walletPage;
+    public static WalletPage walletPage;
 
     public WalletPage() {
         walletPage = this;
@@ -74,10 +74,31 @@ public class WalletPage extends JFrame {
         backgroundPanel.setBackground(new Color(255, 204, 153)); // 浅橙色背景
         backgroundPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // 周围留白
 
+//        返回按钮
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false); // 移除按钮的焦点框
+        backButton.setContentAreaFilled(false); // 不填充内容区域
+        backButton.setOpaque(true); // 不透明背景
+        backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(walletPage,new MainPage());
+            }
+        });
+
         // 添加顶部标题
         JLabel walletTitle = new JLabel("My Wallet", SwingConstants.CENTER);
         walletTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        backgroundPanel.add(walletTitle, BorderLayout.NORTH);
+        JPanel panelBox = new JPanel();
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT, 0, 5);
+//        flowLayout.setHgap(250);  // 水平间距
+        panelBox.setLayout(flowLayout);
+        panelBox.setBackground(new Color(255, 204, 153));
+        panelBox.add(backButton);
+        panelBox.add(Box.createHorizontalStrut(480)); // 创建20像素的水平间隔
+        panelBox.add(walletTitle);
+        backgroundPanel.add(panelBox, BorderLayout.NORTH);
 
         // 左侧用户信息区域与账户卡片
         JPanel userInfoPanel = createUserInfoPanel();
