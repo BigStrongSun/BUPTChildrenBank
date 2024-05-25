@@ -1,7 +1,6 @@
 [ {
   "accountId" : 1,
   "accountType" : "CURRENT_ACCOUNT",
-<<<<<<< HEAD
   "balance" : 185.5,
   "interestRate" : 0.0,
   "lockPeriod" : 0,
@@ -156,11 +155,12 @@
   "lockPeriod" : 0,
   "password" : "2230",
   "userId" : 2230
-=======
-  "balance" : 385.5,
+}, {
+  "accountId" : 447,
+  "accountType" : "CURRENT_ACCOUNT",
+  "balance" : 0.0,
   "interestRate" : 0.0,
-  "lockPeriod" : 7,
-  "password" : "Pass4000",
-  "userId" : 1001
->>>>>>> cf1fdb147709da1ddcb9e6438358ea71d74a8bd9
+  "lockPeriod" : 0,
+  "password" : "2243",
+  "userId" : 2243
 } ]
