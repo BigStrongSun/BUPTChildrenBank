@@ -3,33 +3,42 @@ import domain.Account;
 import service.CreateAccountService;
 import service.LoginService;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.*;
-
+import pages.LoginPage;
 import util.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class LoginPageForAll extends JFrame{
-//    private static JSONController jsonAccount = new JSONController("account.txt");
+private static final long serialVersionUID = 1L;
+		//    private static JSONController jsonAccount = new JSONController("account.txt");
 //    private static List<Account> accountList = jsonAccount.readArray(Account.class);
         boolean caught;//check if exception is caught
 
     //孩子界面及功能
     public LoginPageForAll(boolean isParent) {
+
+    	
         if (!isParent) {
             setTitle("Child Login Page");
         } else {
             setTitle("Parent Login Page");
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+       
 
         // 在这里添加孩子界面的内容
-        JPanel panel = new JPanel();
+        GradientPanel panel = new GradientPanel(new Color(175,238,238), new Color(144,238,144));
+        
         add(panel);
         panel.setLayout(null);
         //返回按钮
@@ -47,33 +56,34 @@ public class LoginPageForAll extends JFrame{
         });
 
         JLabel userLabel = new JLabel("UserId:");
-        userLabel.setBounds(10, 20, 80, 25);
+        userLabel.setBounds(20, 50, 80, 25);
         panel.add(userLabel);
 
         JLabel userLabel2 = new JLabel("You can change your name after you login");
-        userLabel2.setBounds(10, 130, 250, 25);
+        userLabel2.setBounds(20, 160, 250, 25);
         panel.add(userLabel2);
 
         //JTextField userText = new JTextField(20);
         RoundedTextField userText = new RoundedTextField(20);
-        userText.setBounds(100, 20, 165, 25);
+        userText.setBounds(100, 50, 165, 25);
         panel.add(userText);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(10, 50, 80, 25);
+        passwordLabel.setBounds(20, 80, 80, 25);
         panel.add(passwordLabel);
 
         //JPasswordField passwordText = new JPasswordField(20);
         RoundedPasswordTextField passwordText = new RoundedPasswordTextField(20);
-        passwordText.setBounds(100, 50, 165, 25);
+        passwordText.setPreferredSize(new Dimension(165, 25));
+        passwordText.setBounds(100, 82, 165, 25);
         panel.add(passwordText);
 
         JButton registerButton = new JButton("Register");
-        registerButton.setBounds(10, 80, 80, 25);
+        registerButton.setBounds(20, 120, 100, 25);
         panel.add(registerButton);
 
         JButton loginButton = new JButton("Login");
-        loginButton.setBounds(100, 80, 80, 25);
+        loginButton.setBounds(150, 120, 100, 25);
         panel.add(loginButton);
 
 
