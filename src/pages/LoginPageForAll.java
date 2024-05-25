@@ -52,7 +52,7 @@ private static final long serialVersionUID = 1L;
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PageSwitcher.switchPages(LoginPage.page,LoginPage.frame);
+                PageSwitcher.switchPages(loginPageForAll,LoginPage.frame);
             }
         });
 
