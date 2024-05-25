@@ -10,6 +10,7 @@ import service.ChangePasswordService;
 import service.ChangeProfileService;
 import service.LoginService;
 import service.TempService;
+import util.GradientBackground;
 import util.PageSwitcher;
 import util.WriteToTemp;
 
@@ -29,17 +30,24 @@ public class ChangeProfilePage extends JFrame {
         } else {
             username = String.valueOf(temp.getChildId());
         }
-        setSize(1280, 720); // Set size
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Set default close operation
+        setSize(1280, 720);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+        float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+        GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+        setContentPane(gradientBackground);
 
         JPanel panel = new JPanel();
         getContentPane().add(panel); // Add panel to the frame's content pane
         placeComponents(panel); // Place components on the panel
-        setVisible(true); // Make the frame visible
+        setVisible(true);
+        setLocationRelativeTo(null);// Make the frame visible
     }
 
     private void placeComponents(JPanel panel) {
-        panel.setLayout(null);
+//        panel.setLayout(null);
 
         //返回按钮
         JButton backButton = new JButton("Back");
