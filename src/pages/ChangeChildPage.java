@@ -47,7 +47,7 @@ public class ChangeChildPage extends JFrame{
         });
 
         RoundedTextField textField = new RoundedTextField(20);
-        JButton changeChildButton = new JButton("Change Child");
+        JButton changeChildButton = new JButton(buttonText());
         JButton deleteAssociationButton = new JButton("Delete Child");
         //changeChildButton.setBounds(10, 110, 165, 25);
         add(textField);
@@ -78,6 +78,9 @@ public class ChangeChildPage extends JFrame{
                         }
 
                     }
+                    //Back to main page when successfully associated with a child
+                    dispose();
+                    new ChangeChildPage();
 
                     if(!exist){
                         JOptionPane.showMessageDialog(null, "Child not found or not available");
@@ -91,16 +94,32 @@ public class ChangeChildPage extends JFrame{
         deleteAssociationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
-                WriteToTemp.writeToTempFile(0, temp.getName(), true,currentId);
-                JOptionPane.showMessageDialog(null, "Child cleared");
+                if (temp.getChildId() != 0) {
+                    ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
+                    WriteToTemp.writeToTempFile(0, temp.getName(), true,currentId);
+                    JOptionPane.showMessageDialog(null, "Child cleared");
+                    //back to main page when cleared a child
+                    dispose();
+                    new ChangeChildPage();
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have no child to clear");
+                }
             }
         });
         setVisible(true);
         setLocationRelativeTo(null);
     }
 
+    public String buttonText(){
+        if(temp.getChildId() == 0){
+            System.out.println("no child");
+            return "Add Child";
+        }else{
+            return "Change Child";
+        }
+    }
+
     public static void main(String[] args) {
-        ChangeChildPage page = new ChangeChildPage();
+        new ChangeChildPage();
     }
 }
