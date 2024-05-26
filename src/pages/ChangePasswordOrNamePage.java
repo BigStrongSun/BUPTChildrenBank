@@ -92,6 +92,8 @@ public class ChangePasswordOrNamePage extends JFrame {
             if (ChangePasswordService.validatePassword(username, oldPassword)) {
                 ChangePasswordService.changeUserPassword(username, newPassword);
                 JOptionPane.showMessageDialog(null, "Password changed successfully");
+                dispose();
+                new ChangePasswordOrNamePage();
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid old password");
             }
@@ -112,6 +114,8 @@ public class ChangePasswordOrNamePage extends JFrame {
             String newName = newNameField.getText();
             ChangeNameService.changeName(newName);
             JOptionPane.showMessageDialog(null, "Name changed to " + newName);
+            dispose();
+            new ChangePasswordOrNamePage();
         });
     }
 
