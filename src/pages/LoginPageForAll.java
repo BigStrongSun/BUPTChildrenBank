@@ -50,7 +50,7 @@ private static final long serialVersionUID = 1L;
         backButton.setBounds(0, 0, 80, 30);
         gradientBackground.add(backButton);
 
-        JLabel titleLabel = new JLabel("Login/welcom");
+        JLabel titleLabel = new JLabel("Login/Register");
         titleLabel.setFont(new Font("Times New Roman",Font.BOLD,60));
         titleLabel.setBounds(550,30,600,70);
         gradientBackground.add(titleLabel);
@@ -94,12 +94,12 @@ private static final long serialVersionUID = 1L;
         gradientBackground.add(passwordText);
 
         JButton registerButton = new BtnOrange("Register");
-        registerButton.setBounds(550, 530, 200, 80);
+        registerButton.setBounds(770, 530, 200, 80);
         registerButton.setFont(new Font("Times New Roman",Font.BOLD,20));
         gradientBackground.add(registerButton);
-
+      
         JButton loginButton = new BtnOrange("Login");
-        loginButton.setBounds(770, 530, 200, 80);
+        loginButton.setBounds(550, 530, 200, 80);
         loginButton.setFont(new Font("Times New Roman",Font.BOLD,20));
         gradientBackground.add(loginButton);
 
