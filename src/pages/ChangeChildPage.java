@@ -38,6 +38,10 @@ public class ChangeChildPage extends JFrame{
         backButton.setBounds(0, 0, 80, 30);
         add(backButton); // 直接添加到 JFrame
 
+        JLabel lbl1 = new JLabel("Your child id is " + temp.getChildId());
+        JLabel lbl2 = new JLabel("You are not associated with any child currently. Please enter the id of the child you want to be associated with, and click 'Add Child'.");
+
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 假设 MainPage 是另一个 JFrame 类
@@ -106,6 +110,12 @@ public class ChangeChildPage extends JFrame{
                 }
             }
         });
+        if(temp.getChildId() != 0){
+            //lbl1.setBounds(100,100,500,100);//目前还是FlowLayout，最好改一下
+            add(lbl1);
+        }else{
+            add(lbl2);
+        }
         setVisible(true);
         setLocationRelativeTo(null);
     }
