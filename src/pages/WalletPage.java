@@ -141,11 +141,6 @@ public class WalletPage extends JFrame {
         JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
         userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
-        AccountService accountService = new AccountService();
-        Account account = accountService.getAccount();
-        JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
-        userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-
         userDetailPanel.add(labelIcon, BorderLayout.CENTER);
         userDetailPanel.add(userNameLabel, BorderLayout.SOUTH);
 
