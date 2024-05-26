@@ -14,6 +14,7 @@ public class Account {
     private int lockPeriod; // 封闭期（以月为单位）
     private LocalDateTime depositTime; // 存入时间
     private LocalDateTime lockEndTime; // 封闭期结束时间
+    private boolean inLockPeriod; // 标志账户是否处于封闭期
 
     private LocalDateTime lastReadTime;//最后一次刷新读取的时间
 
@@ -47,12 +48,14 @@ public class Account {
             this.lockPeriod = lockPeriod;
             this.depositTime = depositTime;
             this.lockEndTime = lockEndTime;
+            this.inLockPeriod = true; // 新创建的储蓄账户处于封闭期
         } else {
             // 对活期账户设置默认值
             this.interestRate = 0.0;
             this.lockPeriod = 0;
             this.depositTime = null;
             this.lockEndTime = null;
+            this.inLockPeriod = false;
         }
         this.lastReadTime = LocalDateTime.now();
     }
@@ -139,12 +142,19 @@ public class Account {
         this.lockEndTime = lockEndTime;
     }
 
-public LocalDateTime getLastReadTime() {
-    return lastReadTime;
-}
+    public LocalDateTime getLastReadTime() {
+        return lastReadTime;
+    }
 
-public void setLastReadTime(LocalDateTime lastReadTime) {
-    this.lastReadTime = lastReadTime;
-}
+    public void setLastReadTime(LocalDateTime lastReadTime) {
+        this.lastReadTime = lastReadTime;
+    }
 
+    public boolean isInLockPeriod() {
+        return inLockPeriod;
+    }
+
+    public void setInLockPeriod(boolean inLockPeriod) {
+        this.inLockPeriod = inLockPeriod;
+    }
 }

@@ -1,4 +1,5 @@
 package util;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -37,5 +38,10 @@ public class BalancePanel extends JPanel {
     // 允许动态更改金额颜色
     public void setAmountColor(Color color) {
         amountLabel.setForeground(color);
+    }
+
+    // 更新余额的方法
+    public void updateBalance(String amount) {
+        setAmount(amount);
     }
 }
