@@ -19,18 +19,19 @@ public class LoginPage {
 
 	static JFrame childFrame;
 	static JFrame parentFrame;
-	static JFrame frame = new JFrame();
+	static JFrame frame;
 	static LoginPageForAll page;
 	static LoginPage LoginPage;
 	public static void main(String[] args) {
 		LoginPage LoginPage = new LoginPage();
 	}
 	public LoginPage() {
+        frame = new JFrame("Identity selection");
 		LoginPage = this;
     	
-    	frame.setTitle("Identity selection");
+//    	frame.setTitle("Identity selection");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setSize(1920, 1080);
+    	frame.setSize(1280, 720);
     	frame.setLocationRelativeTo(null);
     	frame.setLayout(null);
 		Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};

@@ -34,7 +34,7 @@ private static final long serialVersionUID = 1L;
             setTitle("Parent Login Page");
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1920, 1680);
+        setSize(1280, 720);
         setLocationRelativeTo(null);
         setLayout(null);
 		Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
@@ -62,7 +62,7 @@ private static final long serialVersionUID = 1L;
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PageSwitcher.switchPages(LoginPage.page,LoginPage.frame);
+                PageSwitcher.switchPages(loginPageForAll,LoginPage.frame);
             }
         });
 
