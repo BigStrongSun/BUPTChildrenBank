@@ -42,25 +42,25 @@ public class LoginPage {
 		gradientBackground.setLayout(null);
 
         JLabel titleLabel = new JLabel("Identity selection");
-        titleLabel.setBounds(550,30,600,70);
+        titleLabel.setBounds(420,30,600,70);
         titleLabel.setFont(new Font("Times New Roman",Font.BOLD,60));
         gradientBackground.add(titleLabel);
 
 
         JLabel label = new JLabel("Please select your identity");
-        label.setBounds(550, 250, 600, 80);
+        label.setBounds(420, 250, 600, 80);
         label.setFont(new Font("Times New Roman",Font.BOLD,40));
         gradientBackground.add(label);
 
 
         JButton parentButton = new BtnPink("Parent");
-        parentButton.setBounds(500, 350, 250, 130);
+        parentButton.setBounds(370, 350, 250, 130);
         parentButton.setFont(new Font("Times New Roman",Font.BOLD,32));
         gradientBackground.add(parentButton);
 
         JButton childButton = new BtnBlue("Child");
         childButton.setFont(new Font("Times New Roman",Font.BOLD,32));
-        childButton.setBounds(800, 350, 250, 130);
+        childButton.setBounds(670, 350, 250, 130);
         gradientBackground.add(childButton);
 
         

@@ -234,8 +234,6 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                mainPage.dispose(); // Dispose the MainPage once
-//                new TaskPage().setVisible(true);
                 PageSwitcher.switchPages(mainPage,new TaskPage());
             }
         });

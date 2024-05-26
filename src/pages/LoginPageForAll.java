@@ -52,7 +52,7 @@ private static final long serialVersionUID = 1L;
 
         JLabel titleLabel = new JLabel("Login/Register");
         titleLabel.setFont(new Font("Times New Roman",Font.BOLD,60));
-        titleLabel.setBounds(550,30,600,70);
+        titleLabel.setBounds(450,30,600,70);
         gradientBackground.add(titleLabel);
         gradientBackground.setLayout(null);
 
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 1L;
         });
 
         JLabel userLabel = new JLabel("UserId:");
-        userLabel.setBounds(350, 300, 400, 80);
+        userLabel.setBounds(250, 300, 400, 80);
         userLabel.setFont(new Font("Times New Roman",Font.PLAIN,40));
         gradientBackground.add(userLabel);
 
@@ -77,12 +77,12 @@ private static final long serialVersionUID = 1L;
 
         //JTextField userText = new JTextField(20);
         RoundedTextField userText = new RoundedTextField(20);
-        userText.setBounds(550, 300, 400, 80);
+        userText.setBounds(450, 300, 400, 80);
         userText.setFont(new Font("Times New Roman",Font.PLAIN,40));
         gradientBackground.add(userText);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(350, 400, 400, 80);
+        passwordLabel.setBounds(250, 400, 400, 80);
         passwordLabel.setFont(new Font("Times New Roman",Font.PLAIN,40));
         gradientBackground.add(passwordLabel);
 
@@ -90,16 +90,16 @@ private static final long serialVersionUID = 1L;
         RoundedPasswordTextField passwordText = new RoundedPasswordTextField(20);
       
         passwordText.setFont(new Font("Times New Roman",Font.PLAIN,40));
-        passwordText.setBounds(550, 400, 400, 80);
+        passwordText.setBounds(450, 400, 400, 80);
         gradientBackground.add(passwordText);
 
         JButton registerButton = new BtnOrange("Register");
-        registerButton.setBounds(770, 530, 200, 80);
+        registerButton.setBounds(670, 530, 200, 80);
         registerButton.setFont(new Font("Times New Roman",Font.BOLD,20));
         gradientBackground.add(registerButton);
       
         JButton loginButton = new BtnOrange("Login");
-        loginButton.setBounds(550, 530, 200, 80);
+        loginButton.setBounds(450, 530, 200, 80);
         loginButton.setFont(new Font("Times New Roman",Font.BOLD,20));
         gradientBackground.add(loginButton);
 
