@@ -104,8 +104,8 @@ public class MainPage extends JFrame {
         labelIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new ChangeProfilePage().setVisible(true);
-                dispose();
+                new ModifyInformation().setVisible(true);
+//                dispose();
             }
         });
 

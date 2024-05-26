@@ -46,7 +46,8 @@ public class ChangeChildPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 // 假设 MainPage 是另一个 JFrame 类
                 setVisible(false); // 隐藏当前窗口
-                new MainPage().setVisible(true); // 显示主页面
+                dispose();
+                new ModifyInformation().setVisible(true); // 显示主页面
             }
         });
 

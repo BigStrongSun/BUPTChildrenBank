@@ -1,40 +1,35 @@
 package pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
 
 import domain.Temp;
 import service.ChangePasswordService;
 import service.TempService;
 
-public class ChangePasswordPage {
+public class ChangePasswordPage extends JFrame {
+    private static TempService tempService = new TempService();
+    private static Temp temp = tempService.getTemp();
+    private JFrame frame;
 
-    public static TempService tempService = new TempService();
-    public static Temp temp = tempService.getTemp();
+    public ChangePasswordPage() {
+        initializeUI();
+    }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Change Password");
+    private void initializeUI() {
+        frame = new JFrame("Change Password");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         frame.add(panel);
-
         placeComponents(panel);
-
-        frame.setVisible(true);
     }
 
-    private static void placeComponents(JPanel panel) {
-
+    private void placeComponents(JPanel panel) {
         panel.setLayout(null);
 
         JLabel userLabel = new JLabel("Name:");
@@ -68,17 +63,12 @@ public class ChangePasswordPage {
         changePasswordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username;
-                if(temp.isParent()){
-                    username = String.valueOf(temp.getParentId());
-                } else{
-                    username = String.valueOf(temp.getChildId());
-                }
+                String username = temp.isParent() ? String.valueOf(temp.getParentId()) : String.valueOf(temp.getChildId());
                 String oldPassword = new String(passwordText.getPassword());
                 String newPassword = new String(newPasswordText.getPassword());
 
                 if (ChangePasswordService.validatePassword(username, oldPassword)) {
-                	ChangePasswordService.changeUserPassword(username, newPassword);
+                    ChangePasswordService.changeUserPassword(username, newPassword);
                     JOptionPane.showMessageDialog(null, "Password changed successfully");
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid old password");
@@ -87,32 +77,14 @@ public class ChangePasswordPage {
         });
     }
 
-//    private static boolean validatePassword(String username, String password) {
-//    	File file = new File("user.txt");
-//        BufferedReader reader = null;
-//        try {
-//            reader = new BufferedReader(new FileReader(file));
-//            String line = reader.readLine();
-//            while (line != null) {
-//                String[] user = line.split(":");
-//                if (user[0].equals(username)) {
-//                    return user[1].equals(password);
-//                }
-//                line = reader.readLine();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (reader != null) {
-//                try {
-//                    reader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return false;
-//    }
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
+    }
 
-    
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            ChangePasswordPage passwordPage = new ChangePasswordPage();
+            passwordPage.setVisible(true);
+        });
+    }
 }

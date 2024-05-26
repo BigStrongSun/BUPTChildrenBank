@@ -207,7 +207,7 @@ public class ChildMainPage extends JFrame {
         labelIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                    new ChangeProfilePage().setVisible(true);
+                    new ModifyInformation().setVisible(true);
 //                    dispose();
 
             }
