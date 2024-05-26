@@ -396,6 +396,8 @@ public class TransferPage extends JFrame {
                 }
             }
         });
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
 

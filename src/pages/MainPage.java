@@ -81,7 +81,7 @@ public class MainPage extends JFrame {
 
 
         setupUserIcon();  // 在这里调用设置用户头像的方法
-
+        setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
 

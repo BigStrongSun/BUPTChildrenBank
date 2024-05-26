@@ -4,6 +4,7 @@ import domain.Account;
 import domain.Temp;
 import domain.Transaction;
 import domain.TransactionType;
+import service.AccountService;
 import service.CreateAccountService;
 import service.TempService;
 import service.UpdateAccountService;
@@ -115,6 +116,7 @@ public class WalletPage extends JFrame {
         add(backgroundPanel);
 
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private JPanel createUserInfoPanel() {
@@ -135,6 +137,11 @@ public class WalletPage extends JFrame {
         // 用户名标签
         TempService tempService = new TempService();
         Temp temp = tempService.getTemp();
+        JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
+        userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        AccountService accountService = new AccountService();
+        Account account = accountService.getAccount();
         JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
         userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
 

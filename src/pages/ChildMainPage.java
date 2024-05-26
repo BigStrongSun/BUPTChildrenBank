@@ -186,7 +186,8 @@ public class ChildMainPage extends JFrame {
         this.childId = childId; // 更新 childId 的值
         calculateAndUpdateTotalBalance();
         calculateAndUpdateTotalTarget();
-
+        setVisible(true);
+        setLocationRelativeTo(null);
 
         UpdateAccountService.startScheduledUpdates();
     }
