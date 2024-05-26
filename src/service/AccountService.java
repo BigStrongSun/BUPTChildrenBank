@@ -56,14 +56,14 @@ public class AccountService {
                 iterator.remove();
                 json.writeArray(accounts); // 更新任务列表到文件中
                 System.out.println("Account已成功删除！");
-                JOptionPane.showMessageDialog(null, "Account已成功删除", "提示", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Account successfully deleted", "Tips", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
         }
 
         // 没有找到指定的taskId
         System.out.println("没有找到具有accountId的任务！");
-        JOptionPane.showMessageDialog(null, "没有找到具有accountId的任务", "提示", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, "No tasks found with such accountId", "Tips", JOptionPane.WARNING_MESSAGE);
     }
 
     public Account getAccountById(int accountId) {
@@ -97,11 +97,11 @@ public class AccountService {
                 }
                 account.setBalance(newBalance);
                 json.writeArray(accounts); // 更新account列表到文件中
-                JOptionPane.showMessageDialog(null, "已更新current account的余额为：$" + newBalance, "提示", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Balance in current account is updated to：$" + newBalance, "Tips", JOptionPane.INFORMATION_MESSAGE);
                 return 1;
             }
         }
-        JOptionPane.showMessageDialog(null, "current account的余额不足，请从saving account中将钱转入再使用", "提示", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Insufficient balance in current account, please transfer the money form saving account", "Tips", JOptionPane.WARNING_MESSAGE);
         return 0;
     }
 
