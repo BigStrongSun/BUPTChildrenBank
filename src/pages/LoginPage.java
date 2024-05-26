@@ -19,41 +19,50 @@ public class LoginPage {
 
 	static JFrame childFrame;
 	static JFrame parentFrame;
-	static JFrame frame;
+	static JFrame frame = new JFrame();
 	static LoginPageForAll page;
-
+	static LoginPage LoginPage;
 	public static void main(String[] args) {
-		
+		LoginPage LoginPage = new LoginPage();
+	}
+	public LoginPage() {
+		LoginPage = this;
     	
-    	frame = new JFrame("Identity selection");
+    	frame.setTitle("Identity selection");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setSize(600, 400);
+    	frame.setSize(1920, 1080);
     	frame.setLocationRelativeTo(null);
-
-    	GradientPanel titlePanel = new GradientPanel(new Color(200, 200, 200), new Color(150, 150, 150));
-    	frame.add(titlePanel, BorderLayout.NORTH);
+    	frame.setLayout(null);
+		Color[] colors = {new Color(255, 227, 194), Color.WHITE, Color.WHITE, new Color(202, 240, 206)};
+		float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
+		GradientBackground gradientBackground = new GradientBackground(colors, fractions);
+		frame.setContentPane(gradientBackground);
+		
+		gradientBackground.setLayout(null);
 
         JLabel titleLabel = new JLabel("Identity selection");
-        titleLabel.setPreferredSize(new Dimension(150, 50));
-        titleLabel.setFont(new Font("Times New Roman",Font.BOLD,16));
-        titlePanel.add(titleLabel, BorderLayout.CENTER);
+        titleLabel.setBounds(550,30,600,70);
+        titleLabel.setFont(new Font("Times New Roman",Font.BOLD,60));
+        gradientBackground.add(titleLabel);
 
-        GradientPanel contentPanel = new GradientPanel(new Color(200, 200, 200), new Color(255, 255, 255));
-        frame.add(contentPanel, BorderLayout.CENTER);
 
-        JLabel label = new JLabel("Please select your identity:");
-        label.setPreferredSize(new Dimension(200, 30));
-        label.setFont(new Font("Times New Roman",Font.BOLD,16));
-        contentPanel.add(label);
+        JLabel label = new JLabel("Please select your identity");
+        label.setBounds(550, 250, 600, 80);
+        label.setFont(new Font("Times New Roman",Font.BOLD,40));
+        gradientBackground.add(label);
 
-        JButton parentButton = new JButton("Parent");
-        parentButton.setPreferredSize(new Dimension(100, 30));
-        contentPanel.add(parentButton);
 
-        JButton childButton = new JButton("Child");
-        childButton.setPreferredSize(new Dimension(100, 30));
-        contentPanel.add(childButton);
+        JButton parentButton = new BtnPink("Parent");
+        parentButton.setBounds(500, 350, 250, 130);
+        parentButton.setFont(new Font("Times New Roman",Font.BOLD,32));
+        gradientBackground.add(parentButton);
 
+        JButton childButton = new BtnBlue("Child");
+        childButton.setFont(new Font("Times New Roman",Font.BOLD,32));
+        childButton.setBounds(800, 350, 250, 130);
+        gradientBackground.add(childButton);
+
+        
         parentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
