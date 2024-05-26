@@ -67,8 +67,8 @@ public class ModifyInformation extends JFrame {
         btnChangePassword.setPreferredSize(new Dimension(300, 50));
         btnChangePassword.addActionListener(e -> {
             dispose();
-            ChangePasswordPage changePasswordPage = new ChangePasswordPage();
-            changePasswordPage.setVisible(true);
+            ChangePasswordOrNamePage changePasswordOrNamePage = new ChangePasswordOrNamePage();
+            changePasswordOrNamePage.setVisible(true);
         });
 
         // Adding buttons to JFrame with constraints
