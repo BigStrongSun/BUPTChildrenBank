@@ -61,6 +61,18 @@ public class MainPage extends JFrame {
         childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);
 
+        JButton backButton = new JButton("Logout");
+        backButton.setFocusable(false); // 移除按钮的焦点框
+        backButton.setContentAreaFilled(false); // 不填充内容区域
+        backButton.setOpaque(true); // 不透明背景
+        backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
+        add(backButton); // 添加按钮
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PageSwitcher.switchPages(mainPage,LoginPage.frame);
+            }
+        });
 
         System.out.println("aaaa"+childName);
         System.out.println("aaaa"+parentName);
@@ -71,6 +83,8 @@ public class MainPage extends JFrame {
         Font font = new Font("Arial", Font.BOLD, 18);
         lblNameType.setFont(font);
         add(lblNameType);
+
+
 
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
