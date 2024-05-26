@@ -39,13 +39,20 @@ public class ChangeChildPage extends JFrame {
         gradientBackground.add(backButton);
 
         JLabel lblInfo = new JLabel();
-        lblInfo.setFont(new Font("Arial", Font.PLAIN, 40));
-        lblInfo.setBounds(460, 160, 1100, 60);
+        lblInfo.setFont(new Font("Arial", Font.PLAIN, 30));
+
         gradientBackground.add(lblInfo);
         if (temp.getChildId() != 0) {
+            lblInfo.setBounds(492, 160, 1100, 60);
             lblInfo.setText("Your child id is " + temp.getChildId());
         } else {
-            lblInfo.setText("You are not associated with any child currently. Please enter the id of the child you want to be associated with, and click 'Add Child'.");
+            lblInfo.setBounds(400, 160, 1100, 60);
+            lblInfo.setText("You are not associated with any child currently.");
+            JLabel lblInfo1 = new JLabel();
+            lblInfo1.setText("Please enter the id of the child you want to be associated with, and click 'Add Child'.");
+            lblInfo1.setFont(new Font("Arial", Font.PLAIN, 30));
+            lblInfo1.setBounds(40, 200, 1100, 60);
+            gradientBackground.add(lblInfo1);
         }
 
         RoundedTextField textField = new RoundedTextField(20);
