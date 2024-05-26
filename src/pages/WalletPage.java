@@ -1,23 +1,15 @@
 package pages;
 
-import domain.Account;
-import domain.Temp;
-import domain.Transaction;
-import domain.TransactionType;
-import service.AccountService;
+import domain.*;
 import service.CreateAccountService;
 import service.TempService;
 import service.UpdateAccountService;
 
-import util.BtnOrange;
-import util.FrostedGlassPanel;
+import util.*;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.*;
 import java.awt.*;
-
-import util.JSONController;
-import util.PageSwitcher;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +34,6 @@ public class WalletPage extends JFrame {
     private JButton btnCreateAccount;
     private JButton btnTransferTapTo;
     public static WalletPage walletPage;
-    Object[] options = {"Yes", "No"};
 
     public WalletPage() {
         walletPage = this;
@@ -107,17 +98,34 @@ public class WalletPage extends JFrame {
         backgroundPanel.add(userInfoPanel, BorderLayout.WEST);
 
         // 创建并添加交易记录表
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setOpaque(false);
         createTransactionTable();
         scrollPane.setViewportView(transactionTable);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+        JPanel balanceContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        balanceContainer.setOpaque(false);
+        accounts = jsonAccount.readArray(Account.class);
+        double currentBalance = 0;
+        int childId;//孩子的Id
+        TempService tempService = new TempService();
+        childId = tempService.getTemp().getChildId();
+        for (Account account : accounts) {
+            if ( account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
+                currentBalance += account.getBalance();
+            }
+        }
+        BalancePanel balancePanel = new BalancePanel("Balance", Double.toString(currentBalance), Color.RED);
+        balanceContainer.add(balancePanel);
+        rightPanel.add(balanceContainer, BorderLayout.NORTH);
+        rightPanel.add(scrollPane, BorderLayout.CENTER);
+        backgroundPanel.add(rightPanel, BorderLayout.CENTER);
 
         // 添加背景面板到JFrame
         add(backgroundPanel);
 
         setVisible(true);
-        setLocationRelativeTo(null);
     }
 
     private JPanel createUserInfoPanel() {
@@ -202,9 +210,7 @@ public class WalletPage extends JFrame {
 
         btnCreateAccount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showOptionDialog(null, "Do you want to create a saving account? \n Note: The interest is 1.5% and the closure period is 7 days.", "Confirmation",
-                        JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
-                        null, options, options[0]);
+                int option = JOptionPane.showConfirmDialog(null, "Do you want to create a saving account? Note: The interest is 1.5% and the closure period is 7 days?", "Create Account", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     new AddAccountPage();
                 }
@@ -246,7 +252,20 @@ public class WalletPage extends JFrame {
                 i++;
             }
 
-        }
+        }        // 添加新建账号卡片
+        JPanel addAccountPanel = new JPanel(new BorderLayout());
+        JButton addButton = new JButton("+");
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int option = JOptionPane.showConfirmDialog(null, "Do you want to create a saving account? Note: The interest is 1.5% and the closure period is 7 days?", "Create Account", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    new AddAccountPage();
+                }
+            }
+        });
+
+        addAccountPanel.add(addButton, BorderLayout.CENTER);
+        cardPanel.add(addAccountPanel, "AddNewAccount");
     }
 
     private JPanel createAccountCard(String accountId) {
