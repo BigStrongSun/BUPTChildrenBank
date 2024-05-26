@@ -42,6 +42,7 @@ public class WalletPage extends JFrame {
     private JButton btnCreateAccount;
     private JButton btnTransferTapTo;
     public static WalletPage walletPage;
+    Object[] options = {"Yes", "No"};
 
     public WalletPage() {
         walletPage = this;
@@ -206,7 +207,9 @@ public class WalletPage extends JFrame {
 
         btnCreateAccount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog(null, "Do you want to create a saving account? Note: The interest is 1.5% and the closure period is 7 days?", "Create Account", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you want to create a saving account? \n Note: The interest is 1.5% and the closure period is 7 days.", "Confirmation",
+                        JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     new AddAccountPage();
                 }

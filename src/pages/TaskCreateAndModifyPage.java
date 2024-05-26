@@ -56,6 +56,9 @@ public class TaskCreateAndModifyPage extends JFrame {
     private JLabel lblEndTime;
     private JLabel lblMoney;
 
+    Object[] options = {"Yes", "No"};
+    Object[] optionsConfirm = {"confirm"};
+
     /**
      * Constructs a new pages.TaskCreateAndModifyPage object with the given taskId, parent flag, and modification flag.
      *
@@ -221,7 +224,9 @@ public class TaskCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认创建任务?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to create a task?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     if (isValidated()) {
                         Task task = new Task();
@@ -244,7 +249,9 @@ public class TaskCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认修改任务?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to modify a task?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     if (isValidated()) {
                         Task task = new Task();
@@ -268,7 +275,9 @@ public class TaskCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认删除任务?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to delete a task?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     taskService.deleteTask(taskId);
                     PageSwitcher.switchPages(taskCreateAndModifyPage, new TaskPage());
@@ -281,7 +290,9 @@ public class TaskCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认完成任务?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you want to confirm a task finished?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     Task task = new Task();
                     task.setTaskId(taskId);
@@ -316,6 +327,7 @@ public class TaskCreateAndModifyPage extends JFrame {
     }
 
     private static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
+
     public static boolean isNumeric2(String str) {
         return str != null && NUMBER_PATTERN.matcher(str).matches();
     }
@@ -339,7 +351,7 @@ public class TaskCreateAndModifyPage extends JFrame {
             isValidated = false;
             type = "empty";
         }
-        if(!isNumeric2(textField_money.getText())){
+        if (!isNumeric2(textField_money.getText())) {
             isValidated = false;
             type = "notNumber";
         }
@@ -360,7 +372,7 @@ public class TaskCreateAndModifyPage extends JFrame {
             if (type.equals("invalid_date")) {
                 JOptionPane.showMessageDialog(null, "Start date should not be after end date", "Alert", JOptionPane.WARNING_MESSAGE);
             }
-            if(type.equals("notNumber")){
+            if (type.equals("notNumber")) {
                 JOptionPane.showMessageDialog(null, "Money should be in Number type", "Alert", JOptionPane.WARNING_MESSAGE);
             }
         }

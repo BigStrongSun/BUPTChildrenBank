@@ -58,6 +58,7 @@ public class WishCreateAndModifyPage extends JFrame {
     private String wishProgress;
     private double currentBalance;//孩子账户中所有的钱，不区分 current account和 saving account
 
+    Object[] options = {"Yes", "No"};
     /**
      * Constructs a new pages.WishCreateAndModifyPage object with the given wishId, parent flag, and modification flag.
      *
@@ -228,7 +229,9 @@ public class WishCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认创建愿望?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to create a wish?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     if (isValidated()) {
                         Wish wish = new Wish();
@@ -253,7 +256,9 @@ public class WishCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认修改愿望?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to modify a wish?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     if (isValidated()) {
                         Wish wish = new Wish();
@@ -278,7 +283,9 @@ public class WishCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认删除愿望?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you confirm to delete a task?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     wishService.deleteWish(wishId);
                     PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
@@ -291,11 +298,13 @@ public class WishCreateAndModifyPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currentBalance < Double.parseDouble(textField_wishTarget.getText())) {
-                    JOptionPane.showMessageDialog(null, "余额不足!", "提示", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "insufficient balance!", "提示", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
                 // 显示确认对话框
-                int option = JOptionPane.showConfirmDialog(null, "是否确认完成愿望?", "确认", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showOptionDialog(null, "Do you want to confirm a wish finished?", "Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
                 if (option == JOptionPane.YES_OPTION) {
                     Wish wish = new Wish();
                     wish.setWishId(wishId);
@@ -317,7 +326,7 @@ public class WishCreateAndModifyPage extends JFrame {
                                 PageSwitcher.switchPages(wishCreateAndModifyPage, new WishPage());
                                 break;
                             } else {
-                                System.out.println("余额不足");
+                                System.out.println("insufficient balance!");
                             }
                         }
                     }

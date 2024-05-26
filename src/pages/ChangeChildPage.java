@@ -38,6 +38,10 @@ public class ChangeChildPage extends JFrame{
         backButton.setBounds(0, 0, 80, 30);
         add(backButton); // 直接添加到 JFrame
 
+        JLabel lbl1 = new JLabel("Your child id is " + temp.getChildId());
+        JLabel lbl2 = new JLabel("You are not associated with any child currently. Please enter the id of the child you want to be associated with, and click 'Add Child'.");
+
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 假设 MainPage 是另一个 JFrame 类
@@ -47,7 +51,7 @@ public class ChangeChildPage extends JFrame{
         });
 
         RoundedTextField textField = new RoundedTextField(20);
-        JButton changeChildButton = new JButton("Change Child");
+        JButton changeChildButton = new JButton(buttonText());
         JButton deleteAssociationButton = new JButton("Delete Child");
         //changeChildButton.setBounds(10, 110, 165, 25);
         add(textField);
@@ -78,6 +82,9 @@ public class ChangeChildPage extends JFrame{
                         }
 
                     }
+                    //Back to main page when successfully associated with a child
+                    dispose();
+                    new ChangeChildPage();
 
                     if(!exist){
                         JOptionPane.showMessageDialog(null, "Child not found or not available");
@@ -91,16 +98,38 @@ public class ChangeChildPage extends JFrame{
         deleteAssociationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
-                WriteToTemp.writeToTempFile(0, temp.getName(), true,currentId);
-                JOptionPane.showMessageDialog(null, "Child cleared");
+                if (temp.getChildId() != 0) {
+                    ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
+                    WriteToTemp.writeToTempFile(0, temp.getName(), true,currentId);
+                    JOptionPane.showMessageDialog(null, "Child cleared");
+                    //back to main page when cleared a child
+                    dispose();
+                    new ChangeChildPage();
+                } else {
+                    JOptionPane.showMessageDialog(null, "You have no child to clear");
+                }
             }
         });
+        if(temp.getChildId() != 0){
+            //lbl1.setBounds(100,100,500,100);//目前还是FlowLayout，最好改一下
+            add(lbl1);
+        }else{
+            add(lbl2);
+        }
         setVisible(true);
         setLocationRelativeTo(null);
     }
 
+    public String buttonText(){
+        if(temp.getChildId() == 0){
+            System.out.println("no child");
+            return "Add Child";
+        }else{
+            return "Change Child";
+        }
+    }
+
     public static void main(String[] args) {
-        ChangeChildPage page = new ChangeChildPage();
+        new ChangeChildPage();
     }
 }
