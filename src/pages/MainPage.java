@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import domain.Account;
+import domain.Temp;
 import domain.Wish;
 import service.UpdateAccountService;
 import util.BtnOrange;
@@ -36,6 +37,8 @@ public class MainPage extends JFrame {
 
     private String parentName;
 
+//    private Temp temp = tempService.getTemp();
+
     public MainPage() {
 
 
@@ -57,6 +60,7 @@ public class MainPage extends JFrame {
         isParent = tempService.getTemp().isParent();
         childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);
+
 
         System.out.println("aaaa"+childName);
         System.out.println("aaaa"+parentName);
@@ -104,8 +108,16 @@ public class MainPage extends JFrame {
         labelIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new ModifyInformation().setVisible(true);
-//                dispose();
+                // Decide which page to open based on whether the user is a parent
+                if (isParent) {
+                    ModifyInformation modifyInformation = new ModifyInformation();
+                    modifyInformation.setVisible(true);
+                } else {
+                    ChangePasswordOrNamePage changePage = new ChangePasswordOrNamePage();
+                    changePage.setVisible(true);
+                    dispose();
+                }
+                 // Close the current window
             }
         });
 

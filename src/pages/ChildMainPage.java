@@ -208,7 +208,7 @@ public class ChildMainPage extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                     new ModifyInformation().setVisible(true);
-//                    dispose();
+                    dispose();
 
             }
         });
@@ -281,14 +281,14 @@ public class ChildMainPage extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame mainPage = new MainPage();
-            mainPage.setVisible(true);
-
-            ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
-            childMainPage.setVisible(true);
-            mainPage.setVisible(false);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            JFrame mainPage = new MainPage();
+//            mainPage.setVisible(true);
+//
+//            ChildMainPage childMainPage = new ChildMainPage(1, mainPage);
+//            childMainPage.setVisible(true);
+//            mainPage.setVisible(false);
+//        });
+//    }
 }

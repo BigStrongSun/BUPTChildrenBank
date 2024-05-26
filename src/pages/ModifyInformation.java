@@ -21,7 +21,7 @@ public class ModifyInformation extends JFrame {
         float[] fractions = {0.0f, 0.4f, 0.8f, 1.0f};
         GradientBackground gradientBackground = new GradientBackground(colors, fractions);
         setContentPane(gradientBackground);
-        setLayout(new GridBagLayout());  // More flexible layout manager
+        setLayout(null);  // More flexible layout manager
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER; // Each component in its own row
@@ -29,42 +29,34 @@ public class ModifyInformation extends JFrame {
         constraints.insets = new Insets(10, 50, 10, 50);      // Top, left, bottom, right padding
 
 
-//        JButton backButton = new JButton("Back");
-//        backButton.setFocusable(false);
-//        backButton.setContentAreaFilled(false);
-//        backButton.setOpaque(true);
-//        backButton.setBounds(0, 0, 80, 30);
-//        add(backButton); // 直接添加到 JFrame
-//        backButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // 假设 MainPage 是另一个 JFrame 类
-//                setVisible(false); // 隐藏当前窗口
-//                dispose();
-//                new MainPage().setVisible(true); // 显示主页面
-//            }
-//        });
+
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(20, 20, 80, 30);
+        backButton.addActionListener(e -> {
+            dispose();
+            MainPage mainPage = new MainPage();
+            mainPage.setVisible(true);
+        });
+        gradientBackground.add(backButton);
+
+
 
         // Button to open Change Child Page
-        JButton btnChangeChild = new BtnOrange("Change Child");
+        JButton btnChangeChild = new BtnOrange("Bound or Unbound Child");
         btnChangeChild.setPreferredSize(new Dimension(300, 50));
+        btnChangeChild.setBounds(470, 250, 300, 50);
         btnChangeChild.addActionListener(e -> {
             dispose();
             ChangeChildPage changeChildPage = new ChangeChildPage();
             changeChildPage.setVisible(true);
         });
 
-        // Button to open Change Name Page
-        JButton btnChangeName = new BtnOrange("Change Name");
-        btnChangeName.setPreferredSize(new Dimension(300, 50));
-        btnChangeName.addActionListener(e -> {
-            dispose();
-            ChangeNamePage changeNamePage = new ChangeNamePage();
-            changeNamePage.setVisible(true);
-        });
-
         // Button to open Change Password Page
-        JButton btnChangePassword = new BtnOrange("Change Password");
-        btnChangePassword.setPreferredSize(new Dimension(300, 50));
+        JButton btnChangePassword = new BtnOrange("Modify Name/Password");
+        btnChangePassword.setBounds(470, 350, 300, 50);
         btnChangePassword.addActionListener(e -> {
             dispose();
             ChangePasswordOrNamePage changePasswordOrNamePage = new ChangePasswordOrNamePage();
@@ -73,7 +65,7 @@ public class ModifyInformation extends JFrame {
 
         // Adding buttons to JFrame with constraints
         add(btnChangeChild, constraints);
-        add(btnChangeName, constraints);
+//        add(btnChangeName, constraints);
         add(btnChangePassword, constraints);
 
         // Centralizing the JFrame
