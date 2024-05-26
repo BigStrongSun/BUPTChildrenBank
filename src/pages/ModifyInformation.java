@@ -45,23 +45,26 @@ public class ModifyInformation extends JFrame {
 
 
         // Button to open Change Child Page
+        Font buttonFont = new Font("Arial", Font.BOLD, 20); // 创建字体对象，字体为Arial，加粗，大小为24
+
         JButton btnChangeChild = new BtnOrange("Bound or Unbound Child");
-        btnChangeChild.setPreferredSize(new Dimension(300, 50));
-        btnChangeChild.setBounds(470, 250, 300, 50);
+        btnChangeChild.setFont(buttonFont); // 设置按钮的字体
+        btnChangeChild.setBounds(470, 250, 300, 70);
         btnChangeChild.addActionListener(e -> {
             dispose();
             ChangeChildPage changeChildPage = new ChangeChildPage();
             changeChildPage.setVisible(true);
         });
 
-        // Button to open Change Password Page
         JButton btnChangePassword = new BtnOrange("Modify Name/Password");
-        btnChangePassword.setBounds(470, 350, 300, 50);
+        btnChangePassword.setFont(buttonFont); // 为另一个按钮设置同样的字体
+        btnChangePassword.setBounds(470, 350, 300, 70);
         btnChangePassword.addActionListener(e -> {
             dispose();
             ChangePasswordOrNamePage changePasswordOrNamePage = new ChangePasswordOrNamePage();
             changePasswordOrNamePage.setVisible(true);
         });
+
 
         // Adding buttons to JFrame with constraints
         add(btnChangeChild, constraints);

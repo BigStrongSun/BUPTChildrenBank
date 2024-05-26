@@ -83,7 +83,7 @@ public class ChangePasswordOrNamePage extends JFrame {
         panel.add(newPasswordText);
 
         BtnOrange changePasswordButton = new BtnOrange("Change Password");
-        changePasswordButton.setBounds(410, 240, 180, 25);
+        changePasswordButton.setBounds(500, 250, 180, 25);
         panel.add(changePasswordButton);
         changePasswordButton.addActionListener(e -> {
             String username = temp.isParent() ? String.valueOf(temp.getParentId()) : String.valueOf(temp.getChildId());
@@ -106,7 +106,7 @@ public class ChangePasswordOrNamePage extends JFrame {
         panel.add(newNameField);
 
         BtnOrange changeNameButton = new BtnOrange("Change Name");
-        changeNameButton.setBounds(410, 390, 180, 25);
+        changeNameButton.setBounds(500, 400, 180, 25);
         panel.add(changeNameButton);
         changeNameButton.addActionListener(e -> {
             String newName = newNameField.getText();
