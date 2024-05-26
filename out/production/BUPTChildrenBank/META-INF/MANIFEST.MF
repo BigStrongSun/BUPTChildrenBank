@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Main-Class: pages.LoginPage
+Class-Path: junit-4.13.1.jar hamcrest-core-1.3.jar fastjson-1.2.68.jar j
+ ackson-core-2.1.2.jar jackson-databind-2.1.2.jar jackson-annotations-2.
+ 1.2.jar fastjson-1.2.68.jar
+

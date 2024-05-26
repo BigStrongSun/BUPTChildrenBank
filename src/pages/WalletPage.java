@@ -40,11 +40,6 @@ public class WalletPage extends JFrame {
         UpdateAccountService.startScheduledUpdates();
         Temp temp = (Temp) jsonTemp.read(Temp.class);
         userId = temp.getChildId();
-//        if (temp.isParent()) {
-//            userId = temp.getParentId();
-//        } else {
-//            userId = temp.getChildId();
-//        }
 
         for (Account account : accounts) {
             if (account.getUserId() == userId) {
@@ -108,7 +103,7 @@ public class WalletPage extends JFrame {
         balanceContainer.setOpaque(false);
         accounts = jsonAccount.readArray(Account.class);
         double currentBalance = 0;
-        int childId;//孩子的Id
+        int childId;
         TempService tempService = new TempService();
         childId = tempService.getTemp().getChildId();
         for (Account account : accounts) {
@@ -122,7 +117,6 @@ public class WalletPage extends JFrame {
         rightPanel.add(scrollPane, BorderLayout.CENTER);
         backgroundPanel.add(rightPanel, BorderLayout.CENTER);
 
-        // 添加背景面板到JFrame
         add(backgroundPanel);
 
         setVisible(true);
@@ -154,7 +148,7 @@ public class WalletPage extends JFrame {
 
         // 账户切换部分
         JPanel accountSwitchPanel = new JPanel(new BorderLayout());
-        accountSwitchPanel.setPreferredSize(new Dimension(400, 110)); // 控制高度
+        accountSwitchPanel.setPreferredSize(new Dimension(400, 110));
         accountSwitchPanel.setOpaque(false);
 
         // 控制卡片切换的按钮
@@ -235,11 +229,7 @@ public class WalletPage extends JFrame {
         cardPanel.setOpaque(false);
         Temp temp = (Temp) jsonTemp.read(Temp.class);
         userId = temp.getChildId();
-//        if (temp.isParent()) {
-//            userId = temp.getParentId();
-//        } else {
-//            userId = temp.getChildId();
-//        }
+
         List<String> constraintName = new ArrayList<>();
         int i = 0;
         for (Account account : accounts) {
@@ -302,7 +292,8 @@ public class WalletPage extends JFrame {
                 data[i][1] = transaction.getDescription();
                 String symbol = "+ ";
                 if(transaction.getType()!=null){
-                    if(transaction.getType().equals(TransactionType.BONUS)){
+                    if(transaction.getType().equals(TransactionType.BONUS)
+                        || transaction.getType().equals(TransactionType.TRANSFER)){
                         if (receiverAccountId == currentAccountId) symbol = "+ ";
                         if (senderAccountId == currentAccountId) symbol = "- ";
                     }else if(transaction.getType().equals(TransactionType.GIFT_EXCHANGE)){
@@ -310,9 +301,6 @@ public class WalletPage extends JFrame {
                         if (senderAccountId == currentAccountId) symbol = "+ ";
                     }else if(transaction.getType().equals(TransactionType.WITHDRAWAL)){
                         symbol = "- ";
-                    } else if (transaction.getType().equals(TransactionType.TRANSFER)) {
-                        if (receiverAccountId == currentAccountId) symbol = "+ ";
-                        if (senderAccountId == currentAccountId) symbol = "- ";
                     }
                 }
 

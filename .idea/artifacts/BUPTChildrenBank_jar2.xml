@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="BUPTChildrenBank:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/BUPTChildrenBank_jar2</output-path>
+    <root id="root">
+      <element id="archive" name="BUPTChildrenBank.jar">
+        <element id="module-output" name="BUPTChildrenBank" />
+      </element>
+      <element id="library" level="module" name="JUnit4" module-name="BUPTChildrenBank" />
+      <element id="library" level="project" name="lib (2)" />
+      <element id="library" level="project" name="fastjson-1.2.68" />
+    </root>
+  </artifact>
+</component>

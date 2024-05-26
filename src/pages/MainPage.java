@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import domain.Account;
 import domain.Temp;
 import domain.Wish;
@@ -20,6 +21,7 @@ import service.TempService;
 import service.ChangeChildService;
 import util.GradientBackground;
 import util.JSONController;
+import util.PageSwitcher;
 
 public class MainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -28,21 +30,18 @@ public class MainPage extends JFrame {
     private boolean isParent;
     private int parentId;
     private int childId;
-     double totalBalance;
-     String totalTarget;
+    double totalBalance;
+    String totalTarget;
     private JSONController jsonUser = new JSONController("user.txt");
     UserService userService = new UserService();
-    private String childName ;
+    private String childName;
 
 
     private String parentName;
+    public MainPage mainPage;
 
-//    private Temp temp = tempService.getTemp();
 
     public MainPage() {
-
-
-
         setTitle("Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +50,7 @@ public class MainPage extends JFrame {
         GradientBackground gradientBackground = new GradientBackground(colors, fractions);
         setContentPane(gradientBackground);
         setLayout(null);
-
+        mainPage = this;
 
 
         tempService = new TempService();
@@ -61,16 +60,30 @@ public class MainPage extends JFrame {
         childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);
 
+        JButton backButton = new JButton("Logout");
+        backButton.setFocusable(false); // 移除按钮的焦点框
+        backButton.setContentAreaFilled(false); // 不填充内容区域
+        backButton.setOpaque(true); // 不透明背景
+        backButton.setBounds(0, 0, 80, 30); // 设置按钮位置为 (0, 0)
+        add(backButton); // 添加按钮
 
-        System.out.println("aaaa"+childName);
-        System.out.println("aaaa"+parentName);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainPage.dispose();
+                new LoginPage();
+            }
+        });
+
+        System.out.println("aaaa" + childName);
+        System.out.println("aaaa" + parentName);
 
 
         JLabel lblNameType = new JLabel();
         lblNameType.setBounds(1000, 40, 250, 50);
-        Font font = new Font("Arial", Font.BOLD, 18); // 设置字体为加粗，大小为18
+        Font font = new Font("Arial", Font.BOLD, 18);
         lblNameType.setFont(font);
         add(lblNameType);
+
 
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
@@ -84,7 +97,7 @@ public class MainPage extends JFrame {
         }
 
 
-        setupUserIcon();  // 在这里调用设置用户头像的方法
+        setupUserIcon();
         setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -108,7 +121,6 @@ public class MainPage extends JFrame {
         labelIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Decide which page to open based on whether the user is a parent
                 if (isParent) {
                     ModifyInformation modifyInformation = new ModifyInformation();
                     modifyInformation.setVisible(true);
@@ -117,14 +129,13 @@ public class MainPage extends JFrame {
                     changePage.setVisible(true);
                     dispose();
                 }
-                 // Close the current window
             }
         });
 
         userDetailPanel.add(labelIcon, BorderLayout.CENTER);
         userInfoPanel.add(userDetailPanel, BorderLayout.NORTH);
-        add(userInfoPanel);  // 确保你已经正确地将用户面板添加到 JFrame 或其他容器中
-        userInfoPanel.setBounds(900, 20, 100, 100);  // 设置合适的位置和大小
+        add(userInfoPanel);
+        userInfoPanel.setBounds(900, 20, 100, 100);
     }
 
     private void displayParentView(int parentId) {
@@ -155,14 +166,13 @@ public class MainPage extends JFrame {
                 }
             });
             parentPanel.add(btnChild);
-        }else {
+        } else {
 //            JLabel noChildLabel = new JLabel("You haven't bound any child.");
 //            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
 //            noChildLabel.setForeground(textColor);
-//            // 设置JLabel的位置（例如：X = 50, Y = 100）
 //            noChildLabel.setBounds(200, 100, 300, 50);
 //            parentPanel.add(noChildLabel);
-            JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>"  );
+            JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>");
             btnChild.setPreferredSize(new Dimension(200, 100));
             btnChild.setFont(new Font("Arial", Font.PLAIN, 25));
             btnChild.setForeground(textColor);
@@ -183,17 +193,15 @@ public class MainPage extends JFrame {
 
 
     private void openChildMainPage(int childId) {
-        ChildMainPage childMainPage = new ChildMainPage(childId, this); // 将 MainPage 的引用传递给 ChildMainPage
+        ChildMainPage childMainPage = new ChildMainPage(childId, this);
         childMainPage.setVisible(true);
     }
+
     private void openChangeChildPage(int parentId) {
 
-        ChangeChildPage changeChildPage = new ChangeChildPage(); // 假设构造函数接受一个 parentId 参数
+        ChangeChildPage changeChildPage = new ChangeChildPage();
         changeChildPage.setVisible(true);
     }
-
-
-
 
 
     private void displayChildView(int childId) {
@@ -201,13 +209,12 @@ public class MainPage extends JFrame {
         WishService wishService = new WishService();
 
 
-
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(255, 255, 255, 200));
         topPanel.setBounds(525, 60, 250, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // 使用 BoxLayout 排列垂直方向
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
         lblCurrentMoney = new JLabel("Current Money: $" + totalBalance);
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -220,10 +227,8 @@ public class MainPage extends JFrame {
         add(topPanel);
 
 
-
         add(topPanel);
 
-        // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(255, 255, 255, 153));
         buttonPanel.setBounds(100, 300, 1080, 300);
@@ -238,11 +243,10 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                new TaskPage().setVisible(true);
-                dispose();
+                PageSwitcher.switchPages(mainPage, new TaskPage());
             }
         });
+
         buttonPanel.add(btnTaskPool);
 
         JButton btnWishPool = new BtnOrange("<html>Wishing<br><center>Well</center></html>");
@@ -263,7 +267,7 @@ public class MainPage extends JFrame {
         JButton btnWallet = new BtnOrange("Wallet");
         btnWallet.setPreferredSize(new Dimension(200, 100));
         btnWallet.setFont(new Font("Arial", Font.PLAIN, 30));
-        btnWallet.setForeground(new Color(62,90,206, 204));
+        btnWallet.setForeground(new Color(62, 90, 206, 204));
         btnWallet.setBackground(new Color(215, 231, 252));
         btnWallet.setBorderPainted(false); // 移除按钮边框
         btnWallet.addActionListener(new ActionListener() {
@@ -286,8 +290,9 @@ public class MainPage extends JFrame {
         JSONController jsonAccount = new JSONController("account.txt");
         return jsonAccount.readArray(Account.class);
     }
+
     private void calculateAndUpdateTotalBalance() {
-        // 打印 childId 的值
+
         System.out.println("Child ID: " + childId);
 
         List<Account> accounts = readAccountData();
@@ -315,6 +320,7 @@ public class MainPage extends JFrame {
         JSONController jsonWish = new JSONController("wish.txt");
         return jsonWish.readArray(Wish.class);
     }
+
     private void calculateAndUpdateTotalTarget() {
         // 打印 childId 的值
         System.out.println("Child ID: " + childId);
@@ -322,7 +328,7 @@ public class MainPage extends JFrame {
         List<Wish> wishes = readWishData();
         double totalTargetValue = 0.0;
         for (Wish wish : wishes) {
-            if(wish.getWishStatus().equals("undone")) {
+            if (wish.getWishStatus().equals("undone")) {
                 // 打印当前遍历的账户的用户ID和余额
                 System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
 

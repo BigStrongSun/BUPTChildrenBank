@@ -53,8 +53,34 @@ public class TaskPage extends JFrame {
         add(mainPanel);
 
         // 创建顶部面板
-        TopPanel topPanel = new TopPanel("Task", this, new MainPage());
+//        TopPanel topPanel = new TopPanel("Task", this, new MainPage());
+//        topPanel.setBackground(new Color(255, 248, 239));
+        JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(255, 248, 239));
+        topPanel.setPreferredSize(new Dimension(800, 50));
+        FlowLayout flowLayout1 = new FlowLayout(FlowLayout.LEFT, 0, 5);
+//        flowLayout.setHgap(250);  // 水平间距
+        topPanel.setLayout(flowLayout1);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(20, 20, 110, 30);
+        topPanel.add(backButton);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                dispose();
+                new MainPage().setVisible(true); // Assume MainPage is another JFrame class
+            }
+        });
+
+        topPanel.add(Box.createHorizontalStrut(480)); // 创建20像素的水平间隔
+        JLabel taskLabel = new JLabel("Task");
+        taskLabel.setFont(new Font("Arial", Font.PLAIN, 30));
+        topPanel.add(taskLabel);
+
 
         //创建底部面板
         JPanel southPanel = new JPanel();
