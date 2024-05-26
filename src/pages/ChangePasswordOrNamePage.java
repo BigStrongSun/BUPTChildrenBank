@@ -41,37 +41,54 @@ public class ChangePasswordOrNamePage extends JFrame {
 
         initUI(panel); // Initialize the UI components in the panel
 
+        JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        backButton.setContentAreaFilled(false);
+        backButton.setOpaque(true);
+        backButton.setBounds(20, 20, 80, 30);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close current window
+                new ModifyInformation().setVisible(true); // Open Modify Information page
+            }
+        });
+        gradientBackground.add(backButton); // Add back button to the gradient background
+
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void initUI(JPanel panel) {
+        Font commonFont = new Font("Arial", Font.PLAIN, 20);
+
         JLabel nameLabel = new JLabel("Name:");
-        nameLabel.setBounds(10, 20, 80, 25);
+        nameLabel.setBounds(410, 120, 80, 25);
+        nameLabel.setFont(commonFont);
         panel.add(nameLabel);
 
         JLabel nameValueLabel = new JLabel(temp.getName());
-        nameValueLabel.setBounds(100, 20, 165, 25);
+        nameValueLabel.setBounds(500, 120, 165, 25);
+        nameValueLabel.setFont(commonFont);
         panel.add(nameValueLabel);
 
         JLabel oldPasswordLabel = new JLabel("Old Password:");
-        oldPasswordLabel.setBounds(10, 60, 120, 25);
+        oldPasswordLabel.setBounds(410, 160, 120, 25);
         panel.add(oldPasswordLabel);
 
         JPasswordField oldPasswordText = new JPasswordField(20);
-        oldPasswordText.setBounds(130, 60, 200, 25);
+        oldPasswordText.setBounds(530, 160, 200, 25);
         panel.add(oldPasswordText);
 
         JLabel newPasswordLabel = new JLabel("New Password:");
-        newPasswordLabel.setBounds(10, 100, 120, 25);
+        newPasswordLabel.setBounds(410, 200, 120, 25);
         panel.add(newPasswordLabel);
 
         JPasswordField newPasswordText = new JPasswordField(20);
-        newPasswordText.setBounds(130, 100, 200, 25);
+        newPasswordText.setBounds(530, 200, 200, 25);
         panel.add(newPasswordText);
 
         BtnOrange changePasswordButton = new BtnOrange("Change Password");
-        changePasswordButton.setBounds(10, 140, 180, 25);
+        changePasswordButton.setBounds(410, 240, 180, 25);
         panel.add(changePasswordButton);
 
         changePasswordButton.addActionListener(new ActionListener() {
@@ -91,15 +108,15 @@ public class ChangePasswordOrNamePage extends JFrame {
         });
 
         JLabel changeNameLabel = new JLabel("Enter new name:");
-        changeNameLabel.setBounds(10, 200, 150, 25);
+        changeNameLabel.setBounds(410, 350, 150, 25);
         panel.add(changeNameLabel);
 
         RoundedTextField newNameField = new RoundedTextField(20);
-        newNameField.setBounds(160, 200, 200, 25);
+        newNameField.setBounds(560, 350, 200, 25);
         panel.add(newNameField);
 
         BtnOrange changeNameButton = new BtnOrange("Change Name");
-        changeNameButton.setBounds(10, 240, 180, 25);
+        changeNameButton.setBounds(410, 390, 180, 25);
         panel.add(changeNameButton);
 
         changeNameButton.addActionListener(new ActionListener() {
