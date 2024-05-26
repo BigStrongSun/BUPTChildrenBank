@@ -20,6 +20,7 @@ import service.TempService;
 import service.ChangeChildService;
 import util.GradientBackground;
 import util.JSONController;
+import util.PageSwitcher;
 
 public class MainPage extends JFrame {
     private JLabel lblCurrentMoney;
@@ -36,6 +37,7 @@ public class MainPage extends JFrame {
 
 
     private String parentName;
+    public MainPage mainPage;
 
 
 
@@ -48,6 +50,7 @@ public class MainPage extends JFrame {
         GradientBackground gradientBackground = new GradientBackground(colors, fractions);
         setContentPane(gradientBackground);
         setLayout(null);
+        mainPage = this;
 
 
 
@@ -231,8 +234,9 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Dispose the MainPage once
-                new TaskPage().setVisible(true);
+//                mainPage.dispose(); // Dispose the MainPage once
+//                new TaskPage().setVisible(true);
+                PageSwitcher.switchPages(mainPage,new TaskPage());
             }
         });
 
