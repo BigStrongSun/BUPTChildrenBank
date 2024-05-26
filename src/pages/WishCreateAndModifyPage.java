@@ -168,6 +168,7 @@ public class WishCreateAndModifyPage extends JFrame {
         textArea_wishDescription.setBounds(400, 190, 600, 80);
         getContentPane().add(textArea_wishDescription);
         textArea_wishDescription.setColumns(10);
+        textArea_wishDescription.setFont(new Font("Arial", Font.PLAIN, 20));
         textArea_wishDescription.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 

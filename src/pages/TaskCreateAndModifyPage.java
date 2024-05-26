@@ -147,6 +147,7 @@ public class TaskCreateAndModifyPage extends JFrame {
         textArea_taskDescription.setBounds(400, 190, 600, 80);
         getContentPane().add(textArea_taskDescription);
         textArea_taskDescription.setColumns(10);
+        textArea_taskDescription.setFont(new Font("Arial", Font.PLAIN, 20));
         textArea_taskDescription.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 
