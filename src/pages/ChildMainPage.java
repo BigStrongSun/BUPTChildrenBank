@@ -140,8 +140,9 @@ public class ChildMainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+
                 new TaskPage().setVisible(true);
+                dispose();
             }
         });
         buttonPanel.add(btnTaskPool);

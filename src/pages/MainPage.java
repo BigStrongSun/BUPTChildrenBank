@@ -37,12 +37,9 @@ public class MainPage extends JFrame {
 
     private String parentName;
 
-//    private Temp temp = tempService.getTemp();
+
 
     public MainPage() {
-
-
-
         setTitle("Main Page");
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +65,7 @@ public class MainPage extends JFrame {
 
         JLabel lblNameType = new JLabel();
         lblNameType.setBounds(1000, 40, 250, 50);
-        Font font = new Font("Arial", Font.BOLD, 18); // 设置字体为加粗，大小为18
+        Font font = new Font("Arial", Font.BOLD, 18);
         lblNameType.setFont(font);
         add(lblNameType);
 
@@ -84,7 +81,7 @@ public class MainPage extends JFrame {
         }
 
 
-        setupUserIcon();  // 在这里调用设置用户头像的方法
+        setupUserIcon();
         setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -108,7 +105,6 @@ public class MainPage extends JFrame {
         labelIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Decide which page to open based on whether the user is a parent
                 if (isParent) {
                     ModifyInformation modifyInformation = new ModifyInformation();
                     modifyInformation.setVisible(true);
@@ -117,14 +113,13 @@ public class MainPage extends JFrame {
                     changePage.setVisible(true);
                     dispose();
                 }
-                 // Close the current window
             }
         });
 
         userDetailPanel.add(labelIcon, BorderLayout.CENTER);
         userInfoPanel.add(userDetailPanel, BorderLayout.NORTH);
-        add(userInfoPanel);  // 确保你已经正确地将用户面板添加到 JFrame 或其他容器中
-        userInfoPanel.setBounds(900, 20, 100, 100);  // 设置合适的位置和大小
+        add(userInfoPanel);
+        userInfoPanel.setBounds(900, 20, 100, 100);
     }
 
     private void displayParentView(int parentId) {
@@ -159,7 +154,6 @@ public class MainPage extends JFrame {
 //            JLabel noChildLabel = new JLabel("You haven't bound any child.");
 //            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
 //            noChildLabel.setForeground(textColor);
-//            // 设置JLabel的位置（例如：X = 50, Y = 100）
 //            noChildLabel.setBounds(200, 100, 300, 50);
 //            parentPanel.add(noChildLabel);
             JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>"  );
@@ -183,12 +177,12 @@ public class MainPage extends JFrame {
 
 
     private void openChildMainPage(int childId) {
-        ChildMainPage childMainPage = new ChildMainPage(childId, this); // 将 MainPage 的引用传递给 ChildMainPage
+        ChildMainPage childMainPage = new ChildMainPage(childId, this);
         childMainPage.setVisible(true);
     }
     private void openChangeChildPage(int parentId) {
 
-        ChangeChildPage changeChildPage = new ChangeChildPage(); // 假设构造函数接受一个 parentId 参数
+        ChangeChildPage changeChildPage = new ChangeChildPage();
         changeChildPage.setVisible(true);
     }
 
@@ -207,7 +201,7 @@ public class MainPage extends JFrame {
         topPanel.setBounds(525, 60, 250, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // 使用 BoxLayout 排列垂直方向
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
         lblCurrentMoney = new JLabel("Current Money: $" + totalBalance);
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -223,7 +217,6 @@ public class MainPage extends JFrame {
 
         add(topPanel);
 
-        // 在页面中下方添加一个大框，里面有三个按钮
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(255, 255, 255, 153));
         buttonPanel.setBounds(100, 300, 1080, 300);
@@ -238,7 +231,7 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
                 new TaskPage().setVisible(true);
                 dispose();
             }
@@ -287,7 +280,7 @@ public class MainPage extends JFrame {
         return jsonAccount.readArray(Account.class);
     }
     private void calculateAndUpdateTotalBalance() {
-        // 打印 childId 的值
+
         System.out.println("Child ID: " + childId);
 
         List<Account> accounts = readAccountData();
