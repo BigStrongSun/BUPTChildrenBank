@@ -59,11 +59,11 @@ public class ChangeChildPage extends JFrame {
         textField.setBounds(460, 280, 360, 30);
         gradientBackground.add(textField);
 
-        JButton changeChildButton = new JButton(buttonText());
+        BtnOrange changeChildButton = new BtnOrange(buttonText());
         changeChildButton.setBounds(460, 380, 150, 30);
         gradientBackground.add(changeChildButton);
 
-        JButton deleteAssociationButton = new JButton("Delete Child");
+        BtnOrange deleteAssociationButton = new BtnOrange("Delete Child");
         deleteAssociationButton.setBounds(660, 380, 150, 30);
         gradientBackground.add(deleteAssociationButton);
 
