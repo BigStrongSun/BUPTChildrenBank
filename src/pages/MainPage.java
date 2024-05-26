@@ -231,11 +231,11 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                dispose(); // Dispose the MainPage once
                 new TaskPage().setVisible(true);
-                dispose();
             }
         });
+
         buttonPanel.add(btnTaskPool);
 
         JButton btnWishPool = new BtnOrange("<html>Wishing<br><center>Well</center></html>");

@@ -53,7 +53,7 @@ public class TaskPage extends JFrame {
         add(mainPanel);
 
         // 创建顶部面板
-        TopPanel topPanel = new TopPanel("Task", this, new MainPage());
+        TopPanel topPanel = new TopPanel("Task", this, this);
         topPanel.setBackground(new Color(255, 248, 239));
 
         //创建底部面板
