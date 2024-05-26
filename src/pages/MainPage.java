@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import domain.Account;
 import domain.Temp;
 import domain.Wish;
@@ -29,16 +30,15 @@ public class MainPage extends JFrame {
     private boolean isParent;
     private int parentId;
     private int childId;
-     double totalBalance;
-     String totalTarget;
+    double totalBalance;
+    String totalTarget;
     private JSONController jsonUser = new JSONController("user.txt");
     UserService userService = new UserService();
-    private String childName ;
+    private String childName;
 
 
     private String parentName;
     public MainPage mainPage;
-
 
 
     public MainPage() {
@@ -51,7 +51,6 @@ public class MainPage extends JFrame {
         setContentPane(gradientBackground);
         setLayout(null);
         mainPage = this;
-
 
 
         tempService = new TempService();
@@ -70,12 +69,13 @@ public class MainPage extends JFrame {
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PageSwitcher.switchPages(mainPage,LoginPage.frame);
+                mainPage.dispose();
+                new LoginPage();
             }
         });
 
-        System.out.println("aaaa"+childName);
-        System.out.println("aaaa"+parentName);
+        System.out.println("aaaa" + childName);
+        System.out.println("aaaa" + parentName);
 
 
         JLabel lblNameType = new JLabel();
@@ -83,7 +83,6 @@ public class MainPage extends JFrame {
         Font font = new Font("Arial", Font.BOLD, 18);
         lblNameType.setFont(font);
         add(lblNameType);
-
 
 
         if (isParent) {
@@ -167,13 +166,13 @@ public class MainPage extends JFrame {
                 }
             });
             parentPanel.add(btnChild);
-        }else {
+        } else {
 //            JLabel noChildLabel = new JLabel("You haven't bound any child.");
 //            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
 //            noChildLabel.setForeground(textColor);
 //            noChildLabel.setBounds(200, 100, 300, 50);
 //            parentPanel.add(noChildLabel);
-            JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>"  );
+            JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>");
             btnChild.setPreferredSize(new Dimension(200, 100));
             btnChild.setFont(new Font("Arial", Font.PLAIN, 25));
             btnChild.setForeground(textColor);
@@ -197,6 +196,7 @@ public class MainPage extends JFrame {
         ChildMainPage childMainPage = new ChildMainPage(childId, this);
         childMainPage.setVisible(true);
     }
+
     private void openChangeChildPage(int parentId) {
 
         ChangeChildPage changeChildPage = new ChangeChildPage();
@@ -204,13 +204,9 @@ public class MainPage extends JFrame {
     }
 
 
-
-
-
     private void displayChildView(int childId) {
         // 创建 WishService 实例
         WishService wishService = new WishService();
-
 
 
         JPanel topPanel = new JPanel();
@@ -231,7 +227,6 @@ public class MainPage extends JFrame {
         add(topPanel);
 
 
-
         add(topPanel);
 
         JPanel buttonPanel = new JPanel();
@@ -248,7 +243,7 @@ public class MainPage extends JFrame {
         btnTaskPool.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PageSwitcher.switchPages(mainPage,new TaskPage());
+                PageSwitcher.switchPages(mainPage, new TaskPage());
             }
         });
 
@@ -272,7 +267,7 @@ public class MainPage extends JFrame {
         JButton btnWallet = new BtnOrange("Wallet");
         btnWallet.setPreferredSize(new Dimension(200, 100));
         btnWallet.setFont(new Font("Arial", Font.PLAIN, 30));
-        btnWallet.setForeground(new Color(62,90,206, 204));
+        btnWallet.setForeground(new Color(62, 90, 206, 204));
         btnWallet.setBackground(new Color(215, 231, 252));
         btnWallet.setBorderPainted(false); // 移除按钮边框
         btnWallet.addActionListener(new ActionListener() {
@@ -295,6 +290,7 @@ public class MainPage extends JFrame {
         JSONController jsonAccount = new JSONController("account.txt");
         return jsonAccount.readArray(Account.class);
     }
+
     private void calculateAndUpdateTotalBalance() {
 
         System.out.println("Child ID: " + childId);
@@ -324,6 +320,7 @@ public class MainPage extends JFrame {
         JSONController jsonWish = new JSONController("wish.txt");
         return jsonWish.readArray(Wish.class);
     }
+
     private void calculateAndUpdateTotalTarget() {
         // 打印 childId 的值
         System.out.println("Child ID: " + childId);
@@ -331,7 +328,7 @@ public class MainPage extends JFrame {
         List<Wish> wishes = readWishData();
         double totalTargetValue = 0.0;
         for (Wish wish : wishes) {
-            if(wish.getWishStatus().equals("undone")) {
+            if (wish.getWishStatus().equals("undone")) {
                 // 打印当前遍历的账户的用户ID和余额
                 System.out.println("Wish User ID: " + wish.getChildId() + ", Target: " + wish.getWishTarget());
 

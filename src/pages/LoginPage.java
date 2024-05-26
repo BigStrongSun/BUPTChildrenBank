@@ -19,7 +19,7 @@ public class LoginPage {
 
 	static JFrame childFrame;
 	static JFrame parentFrame;
-	static JFrame frame;
+	public static JFrame frame;
 	static LoginPageForAll page;
 	static LoginPage LoginPage;
 	public static void main(String[] args) {
