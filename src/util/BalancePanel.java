@@ -11,7 +11,7 @@ public class BalancePanel extends JPanel {
         setOpaque(false);  // 设置背景透明
 
         // 图标
-        ImageIcon coinIcon = new ImageIcon(new ImageIcon("path_to_coin_icon.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)); // 替换为实际的图标路径
+        ImageIcon coinIcon = new ImageIcon(new ImageIcon("src/images/icon.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)); // 替换为实际的图标路径
         JLabel iconLabel = new JLabel(coinIcon);
 
         // 文本标签

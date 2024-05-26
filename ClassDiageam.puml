@@ -1,0 +1,297 @@
+@startuml
+
+!theme plain
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam class {
+    BackgroundColor<<service>> PaleGreen
+    BackgroundColor<<page>> Wheat
+    BackgroundColor<<component>> LightBlue
+    BackgroundColor<<domain>> LightYellow
+    BackgroundColor<<enum>> Gold
+}
+
+' User domain and services
+class User {
+    userId: int
+    username: String
+    password: String
+    email: String
+    + User()
+    + validatePassword(String): boolean
+    + updateProfile(String, String): boolean
+}
+
+class UserService <<service>> {
+    users: List<User>
+    + addUser(User): boolean
+    + getUserById(int): User
+    + updateUser(User): boolean
+    + deleteUser(int): boolean
+    + authenticate(String, String): User
+    + UserService()
+}
+
+class AuthenticationService <<service>> {
+    + login(String, String): User
+    + logout(User): void
+    + AuthenticationService()
+}
+
+class SessionManager <<service>> {
+    + createSession(User): void
+    + terminateSession(User): void
+    + SessionManager()
+}
+
+class UserProfilePage <<page>> {
+    + displayProfile(User): void
+    + editProfile(User): void
+    + UserProfilePage()
+}
+
+class LoginPage <<page>> {
+    + login(String, String): void
+    + register(String, String, String): User
+    + LoginPage()
+}
+
+class UserComponent <<component>> {
+    + displayUserInfo(User): void
+    + UserComponent()
+}
+
+' Task domain and services
+class Task {
+    taskId: int
+    description: String
+    dueDate: LocalDate
+    status: String
+    ownerId: int
+    + Task()
+    + completeTask(): void
+    + updateTask(String, LocalDate): boolean
+}
+
+class TaskService <<service>> {
+    tasks: List<Task>
+    + addTask(Task): boolean
+    + getTaskById(int): Task
+    + updateTask(Task): boolean
+    + deleteTask(int): boolean
+    + TaskService()
+}
+
+class TaskPage <<page>> {
+    + displayTasks(List<Task>): void
+    + addNewTask(): void
+    + TaskPage()
+}
+
+class TaskComponent <<component>> {
+    + displayTaskDetails(Task): void
+    + updateTaskStatus(Task): void
+    + TaskComponent()
+}
+
+' Wish domain and services
+class Wish {
+    wishId: int
+    description: String
+    targetAmount: double
+    currentAmount: double
+    userId: int
+    deadline: LocalDate
+    + Wish()
+    + contribute(double): void
+    + isFulfilled(): boolean
+}
+
+class WishService <<service>> {
+    wishes: List<Wish>
+    + addWish(Wish): boolean
+    + getWishById(int): Wish
+    + updateWish(Wish): boolean
+    + deleteWish(int): boolean
+    + fulfillWish(int): boolean
+    + WishService()
+}
+
+class WishPage <<page>> {
+    + displayWishes(): void
+    + addNewWish(): void
+    + WishPage()
+}
+
+class WishComponent <<component>> {
+    + displayWishDetails(Wish): void
+    + updateWishProgress(Wish): void
+    + WishComponent()
+}
+
+' Wallet domain and services
+class Wallet {
+   ownerId: int
+   walletId: int
+   balance: double
+   transactions: List<Transaction>
+  + Wallet()
+  + getBalance(): double
+  + addTransaction(Transaction): void
+}
+
+class WalletService <<service>> {
+   wallets: List<Wallet>
+  + getWalletByUserId(int): Wallet
+  + performTransaction(Transaction): boolean
+  + updateWalletBalance(int, double): boolean
+  + WalletService()
+}
+
+class WalletPage <<page>> {
+  + displayWalletDetails(): void
+  + initiateTransfer(): void
+  + WalletPage()
+}
+
+class TransferPage <<page>> {
+  + initiateTransfer(): void
+  + validateTransferDetails(): boolean
+  + TransferPage()
+}
+
+class WalletComponent <<component>> {
+  + displayBalance(): void
+  + listTransactions(): void
+  + WalletComponent()
+}
+
+' Transaction domain and services
+class Transaction {
+   transactionId: int
+   amount: double
+   date: LocalDateTime
+   description: String
+   senderAccountId: int
+   receiverAccountId: int
+   transactionType: TransactionType
+  + Transaction()
+  + processTransaction(): boolean
+}
+
+enum TransactionType <<enum>> {
+  + TRANSFER
+  + DEPOSIT
+  + WITHDRAWAL
+}
+
+class TransactionService <<service>> {
+   transactions: List<Transaction>
+  + addTransaction(Transaction): boolean
+  + getTransactionById(int): Transaction
+  + deleteTransaction(int): boolean
+  + updateTransaction(Transaction): boolean
+  + TransactionService()
+}
+
+' Temp domain and services
+class Temp {
+    tempId: int
+    name: String
+    value: String
+    userId: int
+    + Temp()
+    + setTempValue(String): void
+    + getTempValue(): String
+}
+
+class TempService <<service>> {
+    temps: List<Temp>
+    + addTemp(Temp): boolean
+    + getTempById(int): Temp
+    + updateTemp(Temp): boolean
+    + deleteTemp(int): boolean
+    + TempService()
+}
+
+class TempPage <<page>> {
+    + displayTemps(List<Temp>): void
+    + addNewTemp(): void
+    + TempPage()
+}
+
+class TempComponent <<component>> {
+    + displayTempDetails(Temp): void
+    + updateTempValue(Temp): void
+    + TempComponent()
+}
+
+' Shared services and components
+class JSONController <<service>> {
+    + serialize(Object): String
+    + deserialize(String, Class<?>): Object
+    + JSONController()
+}
+
+class NotificationService <<service>> {
+    + sendNotification(String): void
+    + NotificationService()
+}
+
+' Relationships
+' User service and related components
+UserService --> User : "manages >"
+UserService --> JSONController : "uses >"
+UserService --> AuthenticationService : "relies on >"
+UserService --> SessionManager : "coordinates with >"
+UserProfilePage --> UserService : "interacts with >"
+LoginPage --> UserService : "uses for login/register >"
+UserComponent --> User : "displays >"
+AuthenticationService --> User : "authenticates >"
+SessionManager --> User : "manages sessions for >"
+
+' Task service and related components
+TaskService --> Task : "manages >"
+TaskService --> JSONController : "uses >"
+TaskService --> UserService : "queries user info >"
+TaskService --> NotificationService : "uses for alerts >"
+TaskPage --> TaskService : "interacts with >"
+TaskComponent --> Task : "displays >"
+UserService --> Task : "assigns tasks to users >"
+Task --> User : "belongs to >"
+
+' Wish service and related components
+WishService --> Wish : "manages >"
+WishService --> JSONController : "uses >"
+WishService --> UserService : "queries user info >"
+WishService --> NotificationService : "uses for alerts >"
+WishPage --> WishService : "interacts with >"
+WishComponent --> Wish : "displays >"
+UserService --> Wish : "assigns wishes to users >"
+Wish --> User : "belongs to >"
+
+' Wallet service and related components
+WalletService --> Wallet : "manages >"
+WalletService --> TransactionService : "uses >"
+WalletService --> JSONController : "uses >"
+WalletPage --> WalletService : "interacts with >"
+TransferPage --> WalletService : "interacts with >"
+WalletComponent --> Wallet : "displays >"
+UserService --> Wallet : "assigns wallets to users >"
+TransactionService --> Transaction : "manages >"
+Wallet --> Transaction : "contains >"
+Transaction --> User : "involves >"
+Transaction --> TransactionType : "has type >"
+
+' Temp service and related components
+TempService --> Temp : "manages >"
+TempService --> JSONController : "uses >"
+TempService --> UserService : "queries user info >"
+TempService --> NotificationService : "uses for alerts >"
+TempPage --> TempService : "interacts with >"
+TempComponent --> Temp : "displays >"
+UserService --> Temp : "assigns temps to users >"
+Temp --> User : "belongs to >"
+
+@enduml
