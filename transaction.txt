@@ -1,1 +1,28 @@
-[{"amount":500.0,"description":"Initial deposit","fee":0.0,"receiverAccountId":1,"senderAccountId":2,"transactionDate":1715270400000,"transactionId":101},{"amount":150.0,"description":"Rent payment","fee":2.5,"receiverAccountId":2,"senderAccountId":1,"transactionDate":1715356800000,"transactionId":102,"type":"TRANSFER"},{"amount":100.0,"description":"ATM withdrawal","fee":1.0,"receiverAccountId":3,"senderAccountId":2,"transactionDate":1715443200000,"transactionId":103,"type":"WITHDRAWAL"},{"amount":200.0,"description":"wash teeth","fee":0.0,"receiverAccountId":146,"senderAccountId":187,"transactionDate":1716344473402,"transactionId":104,"type":"BONUS"},{"amount":99.0,"description":"Macdonald","fee":0.0,"receiverAccountId":146,"senderAccountId":187,"transactionDate":1716345037752,"transactionId":105,"type":"GIFT_EXCHANGE"}]
+[ {
+  "transactionId" : 1,
+  "type" : "BONUS",
+  "senderAccountId" : 258,
+  "receiverAccountId" : 707,
+  "amount" : 1000.0,
+  "fee" : 0.0,
+  "description" : "A Task",
+  "transactionDate" : 1716809539828
+}, {
+  "transactionId" : 2,
+  "type" : "GIFT_EXCHANGE",
+  "senderAccountId" : 258,
+  "receiverAccountId" : 707,
+  "amount" : 100.0,
+  "fee" : 0.0,
+  "description" : "Wish 1",
+  "transactionDate" : 1716809572996
+}, {
+  "transactionId" : 3,
+  "type" : "TRANSFER",
+  "senderAccountId" : 707,
+  "receiverAccountId" : 623,
+  "amount" : 100.0,
+  "fee" : 0.0,
+  "description" : "Transfer from 707 to 623",
+  "transactionDate" : 1716809932141
+} ]
