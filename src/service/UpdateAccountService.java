@@ -72,7 +72,7 @@ public class UpdateAccountService {
         }
     }
 
-    private static void updateLockTimes(ObjectNode account) {
+    public static void updateLockTimes(ObjectNode account) {
         if (!account.has("depositTime")) {
             LocalDateTime depositTime = LocalDateTime.now();
             account.put("depositTime", depositTime.format(formatter));

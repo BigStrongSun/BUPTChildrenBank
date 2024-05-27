@@ -8,6 +8,9 @@ public class Temp {
     private int childId;
     private boolean isParent;
     private String name;
+    public Temp() {
+        // 无参数构造函数
+    }
 
     public Temp(int parentId, int childId, boolean isParent, String name) {
         this.parentId = parentId;
@@ -56,5 +59,12 @@ public class Temp {
 
     public Temp(int parentId) {
         this.parentId = parentId;
+    }
+    public String toStringABC() {
+        return "Temp{" +"parentId=" + parentId +
+                ",childId=" + childId +
+                ", isParent=" + isParent +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

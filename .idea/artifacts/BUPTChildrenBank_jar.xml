@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="BUPTChildrenBank:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/BUPTChildrenBank_jar</output-path>
+    <output-path>$PROJECT_DIR$/../Downloads</output-path>
     <root id="archive" name="BUPTChildrenBank.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
@@ -8,7 +8,6 @@
       <element id="module-output" name="BUPTChildrenBank" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/junit/junit/4.13.1/junit-4.13.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/fastjson-1.2.68.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-core-2.1.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-databind-2.1.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackson-annotations-2.1.2.jar" path-in-jar="/" />
@@ -21,7 +20,7 @@
       <element id="file-copy" path="$PROJECT_DIR$/task.txt" />
       <element id="file-copy" path="$PROJECT_DIR$/currentuser.txt" />
       <element id="module-source" name="BUPTChildrenBank" />
-      <element id="dir-copy" path="$PROJECT_DIR$/LoginSystem" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/fastjson-1.2.78.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

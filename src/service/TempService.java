@@ -5,9 +5,10 @@ import util.JSONController;
 
 public class TempService {
     private Temp temp;
-    private JSONController json = new JSONController("temp.txt");
+    private JSONController json;
 
     public TempService() {
+        json = new JSONController("temp.txt");
         temp = (Temp) json.read(Temp.class);
     }
 
@@ -17,6 +18,11 @@ public class TempService {
 
     public Temp setTemp(Temp temp) {
         this.temp = temp;
+        json.write(temp);
         return temp;
+    }
+
+    public void clearTemp() {
+        json.write(new Temp());
     }
 }

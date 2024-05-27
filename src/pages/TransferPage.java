@@ -3,32 +3,26 @@ package pages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Account;
+import domain.Temp;
 import domain.Transaction;
 import domain.TransactionType;
 import service.UpdateAccountService;
 import util.BtnOrange;
 import util.GradientBackground;
 import util.JSONController;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static service.TransactionIdGenerateService.addTransaction;
 import static service.TransactionIdGenerateService.generateTransactionId;
-
 
 public class TransferPage extends JFrame {
     private JTextField textFieldToAccountNumber;
@@ -38,10 +32,9 @@ public class TransferPage extends JFrame {
 
     private TransferPage transferPage;
     private JFrame previousPage;
-//    private int accountId = 100;
 
-    private int userId ;
-    private String password ;
+    private int userId;
+    private String password;
 
     String accountType;
 
@@ -55,44 +48,26 @@ public class TransferPage extends JFrame {
 
     // 更新目标账户的余额
     private void updateAccountBalance(int accountId, double newBalance) {
-        // 从文本文件中读取账户数据
         List<Account> accounts = readAccountData();
-
-        // 遍历账户列表，找到目标账户并更新其余额
         for (Account account : accounts) {
             if (account.getAccountId() == accountId) {
                 account.setBalance(newBalance);
                 break;
             }
         }
-
-        // 将更新后的账户数据写入文本文件
         JSONController jsonAccount = new JSONController("account.txt");
         jsonAccount.writeArray(accounts);
     }
 
+    // 从 temp.txt 读取 userId
     private void readUserIdFromTemp() {
-        try {
-            List<String> lines = Files.readAllLines(Paths.get("temp.txt"));
-            for (String line : lines) {
-                if (line.contains("childId")) {
-                    String childIdStr = line.substring(line.indexOf("childId") + 9, line.indexOf(",", line.indexOf("childId")));
-                    int childId = Integer.parseInt(childIdStr);
-                    if (line.contains("\"isParent\":false")) {
-                        userId = childId;
-                    } else if (line.contains("\"isParent\":true")) {
-                        String parentIdStr = line.substring(line.indexOf("parentId") + 10, line.indexOf("}", line.indexOf("parentId")));
-                        int parentId = Integer.parseInt(parentIdStr);
-                        userId = parentId;
-                    }
-                    break;
-                }
-            }  System.out.println("Read userId: " + userId); // 在这里打印 userId
-        } catch (IOException e) {
-            e.printStackTrace();
+        JSONController jsonTemp = new JSONController("temp.txt");
+        Temp temp = (Temp) jsonTemp.read(Temp.class);
+        if (temp != null) {
+            userId = temp.isParent() ? temp.getParentId() : temp.getChildId();
         }
+        System.out.println("Read userId: " + userId);
     }
-
 
     public TransferPage() {
 
@@ -113,7 +88,7 @@ public class TransferPage extends JFrame {
         setContentPane(gradientBackground);
         setLayout(null);
 
-        //返回键
+        // 返回键
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false); // 移除按钮的焦点框
         backButton.setContentAreaFilled(false); // 不填充内容区域
@@ -152,10 +127,9 @@ public class TransferPage extends JFrame {
         mainPanel.setLayout(null);
         add(mainPanel);
 
-            //转出账户
-        JLabel lblAccountNumber1 = new JLabel( "Account-");
+        // 转出账户
+        JLabel lblAccountNumber1 = new JLabel("Account-");
         lblAccountNumber1.setFont(new Font("Arial", Font.PLAIN, 24));
-//        lblAccountNumber1.setBounds(180, 30, 200, 30);
         lblAccountNumber1.setBounds(180, 30, 200, 30);
         mainPanel.add(lblAccountNumber1);
 
@@ -164,12 +138,13 @@ public class TransferPage extends JFrame {
         textFieldFromAccountNumber.setBounds(280, 30, 200, 30);
         mainPanel.add(textFieldFromAccountNumber);
 
-        JLabel lblAccountNumber2 = new JLabel( ">>>>");
+        JLabel lblAccountNumber2 = new JLabel(">>>>");
         lblAccountNumber2.setFont(new Font("Arial", Font.PLAIN, 24));
         lblAccountNumber2.setBounds(500, 30, 100, 30);
         mainPanel.add(lblAccountNumber2);
-//转入的账户
-        JLabel lblAccountNumber3 = new JLabel( "Account-");
+
+        // 转入的账户
+        JLabel lblAccountNumber3 = new JLabel("Account-");
         lblAccountNumber3.setFont(new Font("Arial", Font.PLAIN, 24));
         lblAccountNumber3.setBounds(580, 30, 100, 30);
         mainPanel.add(lblAccountNumber3);
@@ -178,7 +153,6 @@ public class TransferPage extends JFrame {
         textFieldToAccountNumber.setBounds(680, 30, 200, 30);
         textFieldToAccountNumber.setFont(new Font("Arial", Font.PLAIN, 20));
         mainPanel.add(textFieldToAccountNumber);
-
 
         // 转账金额
         JLabel lblAmount = new JLabel("Transfer Amount");
@@ -208,7 +182,6 @@ public class TransferPage extends JFrame {
         btnTransfer.setBounds(400, 300, 200, 50);
         mainPanel.add(btnTransfer);
 
-
         btnTransfer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -217,10 +190,6 @@ public class TransferPage extends JFrame {
                 String toAccountId = textFieldToAccountNumber.getText();
                 String enteredPassword = String.valueOf(passwordField.getPassword());
                 String transferAmountString = textFieldAmount.getText();
-
-
-
-
 
                 // 转账金额转换为 double 类型
                 double transferAmount = 0;
@@ -231,9 +200,8 @@ public class TransferPage extends JFrame {
                     return; // 检查转账金额输入的是不是数字
                 }
 
-                // 读accout.txt
+                // 读 accout.txt
                 List<Account> accounts = readAccountData();
-
 
                 boolean isFromAccountValid = false;
                 double balance = 0.0;
@@ -241,6 +209,7 @@ public class TransferPage extends JFrame {
                     if (account.getUserId() == userId && textFieldFromAccountNumber.getText().equals(String.valueOf(account.getAccountId()))) {
                         balance = account.getBalance();
                         password = account.getPassword();
+                        System.out.println(password);
                         accountType = String.valueOf(account.getAccountType());
 
                         System.out.println("User ID: " + account.getUserId());
@@ -250,29 +219,26 @@ public class TransferPage extends JFrame {
                         System.out.println("accountType: " + account.getAccountType());
 
                         if ("SAVING_ACCOUNT".equals(accountType)) {
-
-                            //判断是不是还在封闭期内
+                            // 判断是不是还在封闭期内
                             String lockEndTimeStr = String.valueOf(account.getLockEndTime());
+                            LocalDateTime lockEndTime = LocalDateTime.parse(lockEndTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                            LocalDateTime now = LocalDateTime.now();
+                            System.out.println("Current Time: " + now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                            System.out.println("Lock End Time: " + lockEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
-                                LocalDateTime lockEndTime = LocalDateTime.parse(lockEndTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                                LocalDateTime now = LocalDateTime.now();
-                                System.out.println("Current Time: " + now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-                                System.out.println("Lock End Time: " + lockEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                            Duration duration = Duration.between(now, lockEndTime);
+                            Period period = Period.between(now.toLocalDate(), lockEndTime.toLocalDate());
 
-                                Duration duration = Duration.between(now, lockEndTime);
-                                Period period = Period.between(now.toLocalDate(), lockEndTime.toLocalDate());
+                            System.out.println("Time until lock period ends: " + duration.getSeconds() + " seconds");
+                            System.out.println("Period until lock period ends: " + period.getYears() + " years " + period.getMonths() + " months " + period.getDays() + " days");
 
-                                System.out.println("Time until lock period ends: " + duration.getSeconds() + " seconds");
-                                System.out.println("Period until lock period ends: " + period.getYears() + " years " + period.getMonths() + " months " + period.getDays() + " days");
-
-                                if (!duration.isNegative()) {
-                                    System.out.println("The lock period has not ended yet.");
-                                    JOptionPane.showMessageDialog(null, "The Account is still in lock period!", "Error", JOptionPane.ERROR_MESSAGE);
-                                    return;
-                                } else {
-                                    System.out.println("The lock period has ended.");
-                                }
-
+                            if (!duration.isNegative()) {
+                                System.out.println("The lock period has not ended yet.");
+                                JOptionPane.showMessageDialog(null, "The Account is still in lock period!", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            } else {
+                                System.out.println("The lock period has ended.");
+                            }
                         }
 
                         isFromAccountValid = true;
@@ -280,8 +246,7 @@ public class TransferPage extends JFrame {
                     }
                 }
 
-
-                if (!enteredPassword.equals(String.valueOf(password))) {
+                if (!enteredPassword.equals(password)) {
                     JOptionPane.showMessageDialog(null, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
                     return; // 密码
                 }
@@ -291,29 +256,16 @@ public class TransferPage extends JFrame {
                     return;
                 }
 
-                if ( fromAccountId.isEmpty()) {
+                if (fromAccountId.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter a source account!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (textFieldFromAccountNumber.getText().equals( textFieldToAccountNumber.getText())) {
+                if (textFieldFromAccountNumber.getText().equals(textFieldToAccountNumber.getText())) {
                     JOptionPane.showMessageDialog(null, "You cannot transfer to the same account!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                // Using getLockPeriod if the account is a saving account
 
-
-//                if ("SAVING_ACCOUNT".equals(selectedFromAccount.getAccountType())) {
-//                    LocalDateTime lockEndTime = LocalDateTime.parse(fromAccount.getLockEndTime());
-//                    if (lockEndTime.isAfter(LocalDateTime.now())) {
-//                        JOptionPane.showMessageDialog(null, "This saving account is currently locked until " + fromAccount.getLockEndTime(), "Error", JOptionPane.ERROR_MESSAGE);
-//                        return;
-//                    }
-//                }
-
-
-
-// 计算现在这个用户的所有账户的总金额
-
+                // 计算现在这个用户的所有账户的总金额
                 for (Account account : accounts) {
                     if (account.getUserId() == userId) {
                         totalBalance += account.getBalance();
@@ -335,29 +287,32 @@ public class TransferPage extends JFrame {
                     }
                 }
 
-
-
                 // 找到对应账户后
                 if (selectedToAccount != null) {
-                   //对比输入金额和实际余额
+                    // 对比输入金额和实际余额
                     if (transferAmount > selectedFromAccount.getBalance()) {
                         JOptionPane.showMessageDialog(null, "Insufficient balance!", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        //显示一些判断信息
+                        // 显示一些判断信息
                         String message = "The Transfer Account ID is: " + selectedToAccount.getAccountId() + "\n" +
                                 "Account Type is: " + selectedToAccount.getAccountType() + "\n" +
-                                " From Account Balance is: " + balance+ "\n"+
+                                " From Account Balance is: " + balance + "\n" +
                                 " To Account Balance is: " + selectedToAccount.getBalance() + "\n" +
-                                "User ID is: " + selectedToAccount.getUserId() + "\n" + "User password is: " + selectedToAccount.getPassword() + "\n" + "Are you sure to continue the transfer?";
-                                                // 弹出确认对话框
-                        int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);// 确保确认转账成功后执行以下操作
-// 用户确认转账并且转账逻辑执行成功后
+                                "User ID is: " + selectedToAccount.getUserId() + "\n" +
+                                "User password is: " + selectedToAccount.getPassword() + "\n" +
+                                "Are you sure to continue the transfer?";
+
+                        // 弹出确认对话框
+                        int option = JOptionPane.showConfirmDialog(null, message, "Confirm Transfer", JOptionPane.OK_CANCEL_OPTION);
+
+                        // 确保确认转账成功后执行以下操作
                         if (option == JOptionPane.OK_OPTION) {
                             double currentFromBalance = selectedFromAccount.getBalance();
                             selectedFromAccount.setBalance(currentFromBalance - transferAmount);
                             double currentToBalance = selectedToAccount.getBalance();
                             selectedToAccount.setBalance(currentToBalance + transferAmount);
-//成功转账，更新两个账户金额
+
+                            // 成功转账，更新两个账户金额
                             updateAccountBalance(selectedFromAccount.getAccountId(), selectedFromAccount.getBalance());
                             updateAccountBalance(selectedToAccount.getAccountId(), selectedToAccount.getBalance());
                             calculateAndUpdateTotalBalance();
@@ -379,12 +334,8 @@ public class TransferPage extends JFrame {
                             lblBalance.setText("Your total balance: $" + totalBalance);
                             JOptionPane.showMessageDialog(null, "Transfer successful!");
                         } else {
-                                // 用户点击了取消按钮，不执行任何操作
+                            // 用户点击了取消按钮，不执行任何操作
                         }
-
-
-
-
                     }
                 } else {
                     // 如果找不到对应的账户信息，弹窗
@@ -392,13 +343,13 @@ public class TransferPage extends JFrame {
                 }
             }
         });
+
         setVisible(true);
         setLocationRelativeTo(null);
     }
 
-
     private void calculateAndUpdateTotalBalance() {
-        //从account读数据，更新总金额
+        // 从 account.txt 读数据，更新总金额
         List<Account> accounts = readAccountData();
 
         // 计算总余额
@@ -417,7 +368,7 @@ public class TransferPage extends JFrame {
         SwingUtilities.invokeLater(() -> {
             TransferPage transferPage = new TransferPage();
             transferPage.setVisible(true);
-           transferPage.setLocationRelativeTo(null);
+            transferPage.setLocationRelativeTo(null);
         });
     }
 }
