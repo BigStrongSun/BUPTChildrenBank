@@ -2,6 +2,8 @@ package service;
 
 import domain.Temp;
 import util.JSONController;
+
+import java.sql.SQLOutput;
 import java.util.List;
 import domain.User;
 import util.WriteToTemp;
@@ -24,13 +26,16 @@ public class LoginService {
         temp.setName(name);
 
         int childOrParentId = 0;
+        userList = json2. readArray(User.class);
         for(User user: userList){
             if(user.getUsername().equals(username)){
                 childOrParentId = user.getChildOrParentId();
             }
         }
-
+        userList = json2. readArray(User.class);
+        System.out.println("1111111:" + childOrParentId);
         if (isParent) {//是家长
+            System.out.println("222222222222");
             temp.setParentId(userId);
             temp.setChildId(childOrParentId);
 
@@ -64,7 +69,7 @@ public class LoginService {
         return false;
     }
 
-    
+
     public static boolean validatePassword(String username, String password) {
         for(User user: userList){//check if the entered info match any info in the file
             if (user.getUsername().equals(username)) {

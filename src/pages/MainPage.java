@@ -12,14 +12,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import domain.Account;
-import domain.Temp;
+import service.TempService;
 import domain.Wish;
 import service.UpdateAccountService;
 import util.BtnOrange;
 import service.WishService;
 import service.UserService;
-import service.TempService;
-import service.ChangeChildService;
 import util.GradientBackground;
 import util.JSONController;
 import util.PageSwitcher;
@@ -53,7 +51,7 @@ public class MainPage extends JFrame {
         setLayout(null);
         mainPage = this;
 
-
+        this.tempService = new TempService();
         tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
@@ -70,6 +68,7 @@ public class MainPage extends JFrame {
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                tempService.deleteTemp();
                 mainPage.dispose();
                 new LoginPage();
             }
