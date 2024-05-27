@@ -1,7 +1,11 @@
 package service;
 
 import domain.Temp;
+import domain.Wish;
 import util.JSONController;
+
+import javax.swing.*;
+import java.util.Iterator;
 
 public class TempService {
     private Temp temp;
@@ -19,4 +23,25 @@ public class TempService {
         this.temp = temp;
         return temp;
     }
+
+    public void deleteTemp() {
+        // 检查任务列表是否为空
+        if (temp == null) {
+//            wishes = new ArrayList<>();
+            System.out.println("temp file is empty");
+            return;
+        }
+
+        // 遍历任务列表，查找指定的wishId
+
+
+                Temp temp1=new Temp();
+
+                json.write(temp1); // 更新任务列表到文件中
+                System.out.println("logout successfully！");
+                JOptionPane.showMessageDialog(null, "logout successfully！", "mention", JOptionPane.INFORMATION_MESSAGE);
+                return;
+
+    }
+
 }
