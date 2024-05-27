@@ -88,7 +88,7 @@ public class MainPage extends JFrame {
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
             displayParentView(parentId);
-            lblNameType.setText("<html>UserId:    " + parentName + "<br>Type: Parent</html>");
+            lblNameType.setText("<html>Name:    " + parentName + "<br>Type: Parent</html>");
 
         } else {
 
