@@ -132,6 +132,7 @@ public class WalletPage extends JFrame {
         add(backgroundPanel);
 
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private JPanel createUserInfoPanel() {
