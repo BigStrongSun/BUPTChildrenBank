@@ -16,6 +16,7 @@ import domain.Account;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -200,8 +201,10 @@ public class ChildMainPage extends JFrame {
         userDetailPanel.setOpaque(false);
 
         // 用户头像
-        ImageIcon icon = new ImageIcon(new ImageIcon("src/images/头像男.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
-        JLabel labelIcon = new JLabel(icon);
+        URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/头像男.png");
+        ImageIcon originalIcon = new ImageIcon(resourceUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);JLabel labelIcon = new JLabel(icon);
         labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
         // 添加鼠标点击事件

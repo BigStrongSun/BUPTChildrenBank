@@ -1,7 +1,10 @@
 package util;
 
+import pages.WalletPage;
+
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class BalancePanel extends JPanel {
     private JLabel balanceLabel;
@@ -12,7 +15,10 @@ public class BalancePanel extends JPanel {
         setOpaque(false);  // 设置背景透明
 
         // 图标
-        ImageIcon coinIcon = new ImageIcon(new ImageIcon("src/images/icon.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)); // 替换为实际的图标路径
+        URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/icon.png");
+        ImageIcon originalIcon = new ImageIcon(resourceUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon coinIcon = new ImageIcon(scaledImage);
         JLabel iconLabel = new JLabel(coinIcon);
 
         // 文本标签

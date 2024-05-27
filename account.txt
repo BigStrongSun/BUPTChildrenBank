@@ -190,4 +190,22 @@
   "lockPeriod" : 0,
   "password" : "123",
   "userId" : 10086
+}, {
+  "accountId" : 112,
+  "accountType" : "CURRENT_ACCOUNT",
+  "balance" : 0.0,
+  "inLockPeriod" : false,
+  "interestRate" : 0.0,
+  "lockPeriod" : 0,
+  "password" : "123",
+  "userId" : 12345
+}, {
+  "accountId" : 804,
+  "accountType" : "CURRENT_ACCOUNT",
+  "balance" : 9.9999999E7,
+  "inLockPeriod" : false,
+  "interestRate" : 0.0,
+  "lockPeriod" : 0,
+  "password" : "123",
+  "userId" : 123
 } ]

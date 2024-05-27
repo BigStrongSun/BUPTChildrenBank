@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -113,8 +114,10 @@ public class MainPage extends JFrame {
         userDetailPanel.setOpaque(false);
 
         // 用户头像
-        ImageIcon icon = new ImageIcon(new ImageIcon("src/images/头像男.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
-        JLabel labelIcon = new JLabel(icon);
+        URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/头像男.png");
+        ImageIcon originalIcon = new ImageIcon(resourceUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);JLabel labelIcon = new JLabel(icon);
         labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
         // 添加鼠标点击事件
@@ -124,6 +127,7 @@ public class MainPage extends JFrame {
                 if (isParent) {
                     ModifyInformation modifyInformation = new ModifyInformation();
                     modifyInformation.setVisible(true);
+                    dispose();
                 } else {
                     ChangePasswordOrNamePage changePage = new ChangePasswordOrNamePage();
                     changePage.setVisible(true);

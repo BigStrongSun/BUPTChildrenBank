@@ -20,6 +20,8 @@
       <element id="file-copy" path="$PROJECT_DIR$/temp.txt" />
       <element id="file-copy" path="$PROJECT_DIR$/task.txt" />
       <element id="file-copy" path="$PROJECT_DIR$/currentuser.txt" />
+      <element id="module-source" name="BUPTChildrenBank" />
+      <element id="dir-copy" path="$PROJECT_DIR$/LoginSystem" />
     </root>
   </artifact>
 </component>
