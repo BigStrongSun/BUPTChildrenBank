@@ -16,6 +16,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The WishPage class represents a JFrame that displays a list of wishes.
+ * It allows users to view the current wishes, create new wishes, and see the progress and details of existing wishes.
+ * The page shows the child's name, current balance, saving balance, and total target amount for all wishes.
+ * Parents can create new wishes for their children.
+ */
 public class WishPage extends JFrame {
     private WishPage wishPage;
     private List<Wish> wishes;
@@ -29,8 +35,8 @@ public class WishPage extends JFrame {
     UserService userService = new UserService();
 
     private String childName = "John";
-    private int parentId;//父母的Id
-    private int childId;//孩子的Id
+    private int parentId; // Parent's ID
+    private int childId; // Child's ID
     private boolean isParent;
 
     private JLabel lblTitle;
@@ -46,13 +52,17 @@ public class WishPage extends JFrame {
     private JButton btnCreate;
     private WishComponent wishComponent;
 
+    /**
+     * Constructs a new WishPage object that initializes the page layout and components.
+     * It retrieves the parent and child IDs, sets up the user interface, and loads the wish data.
+     */
     public WishPage() {
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         isParent = tempService.getTemp().isParent();
         wishPage = this;
         childName = userService.getChildNameById(childId);
-        setTitle("pages.WishPage");
+        setTitle("Wish Page");
         getContentPane().setBackground(new Color(255, 248, 239));
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,9 +71,9 @@ public class WishPage extends JFrame {
         setResizable(false);
 
         JButton backButton = new JButton("Back");
-        backButton.setFocusable(false); // 移除按钮的焦点框
-        backButton.setContentAreaFilled(false); // 不填充内容区域
-        backButton.setOpaque(true); // 不透明背景
+        backButton.setFocusable(false); // Remove focus border
+        backButton.setContentAreaFilled(false); // Do not fill content area
+        backButton.setOpaque(true); // Set background opaque
         backButton.setBounds(0, 0, 80, 30);
         getContentPane().add(backButton);
 
@@ -85,14 +95,12 @@ public class WishPage extends JFrame {
         lblChildName.setFont(new Font("Arial", Font.PLAIN, 50));
         lblChildName.setBounds(80, 120, 300, 40);
         lblChildName.setForeground(new Color(0, 0, 0));
-//        lblChildName.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         getContentPane().add(lblChildName);
 
         lblTitle = new JLabel("Wish Pool");
         lblTitle.setFont(new Font("Arial", Font.PLAIN, 50));
         lblTitle.setBounds(80, 180, 300, 40);
         lblTitle.setForeground(new Color(0, 0, 0));
-//        lblTitle.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         getContentPane().add(lblTitle);
 
         JPanel wishDifferencePanel = new JPanel();
@@ -101,42 +109,38 @@ public class WishPage extends JFrame {
         wishDifferencePanel.setLayout(null);
         getContentPane().add(wishDifferencePanel);
 
-        //后续读取真实的current money
         lblCurrentMoney = new JLabel("Current Balance : ");
         lblCurrentMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblCurrentMoney.setForeground(Color.WHITE);
         lblCurrentMoney.setBounds(20, 60, 200, 28);
         wishDifferencePanel.add(lblCurrentMoney);
-//        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         accounts = jsonAccount.readArray(Account.class);
         double currentBalance = 0;
         for (Account account : accounts) {
-            if ( account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
+            if (account.getUserId() == childId && account.getAccountType().equals(AccountType.CURRENT_ACCOUNT)) {
                 currentBalance += account.getBalance();
             }
         }
-        lblCurrentMoneyValue = new JLabel("$ "+String.valueOf(currentBalance));
+        lblCurrentMoneyValue = new JLabel("$ " + currentBalance);
         lblCurrentMoneyValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblCurrentMoneyValue.setForeground(Color.WHITE);
         lblCurrentMoneyValue.setBounds(180, 60, 150, 28);
         wishDifferencePanel.add(lblCurrentMoneyValue);
 
-        //后续读取真实的saving money
         lblSavingMoney = new JLabel("Saving Balance : ");
         lblSavingMoney.setFont(new Font("Arial", Font.PLAIN, 20));
         lblSavingMoney.setForeground(Color.WHITE);
         lblSavingMoney.setBounds(20, 120, 200, 28);
         wishDifferencePanel.add(lblSavingMoney);
-//        lblCurrentMoney.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         double savingBalance = 0;
         for (Account account : accounts) {
-            if ( account.getUserId() == childId && account.getAccountType().equals(AccountType.SAVING_ACCOUNT)) {
+            if (account.getUserId() == childId && account.getAccountType().equals(AccountType.SAVING_ACCOUNT)) {
                 savingBalance += account.getBalance();
             }
         }
-        lblSavingMoneyValue = new JLabel("$ "+String.valueOf(savingBalance));
+        lblSavingMoneyValue = new JLabel("$ " + savingBalance);
         lblSavingMoneyValue.setFont(new Font("Arial", Font.PLAIN, 25));
         lblSavingMoneyValue.setForeground(Color.WHITE);
         lblSavingMoneyValue.setBounds(180, 120, 150, 28);
@@ -147,7 +151,6 @@ public class WishPage extends JFrame {
         lblTotalTarget.setForeground(Color.WHITE);
         lblTotalTarget.setBounds(20, 180, 200, 28);
         wishDifferencePanel.add(lblTotalTarget);
-//        lblTotalTarget.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         lblTotalTargetValue = new JLabel("$ " + wishService.getTotalWishTargetBeforeDeadLine());
         lblTotalTargetValue.setFont(new Font("Arial", Font.PLAIN, 25));
@@ -171,6 +174,11 @@ public class WishPage extends JFrame {
             getContentPane().add(btnCreate);
         }
 
+        // Create right scroll panel
+        JPanel rightContentPanel = new JPanel();
+        rightContentPanel.setLayout(null);
+        rightContentPanel.setBackground(new Color(255, 248, 239));
+
         LocalDateTime now = LocalDateTime.now();
         wishes = jsonWish.readArray(Wish.class);
         int x = 0;
@@ -186,14 +194,20 @@ public class WishPage extends JFrame {
                     LocalDateTime dateTime = LocalDateTime.parse(wish.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                     if (dateTime.isAfter(now)) {
                         WishComponent wishComponent = new WishComponent(wish.getWishId(), this, isParent, true);
-                        wishComponent.setBounds(550, 50 + x, 670, 100);
-                        getContentPane().add(wishComponent);
+                        wishComponent.setBounds(0, 20 + x, 670, 100);
+                        rightContentPanel.add(wishComponent);
                         x += 120;
                     }
                 }
             }
         }
+        rightContentPanel.setPreferredSize(new Dimension(670, x + 40));
 
-
+        JScrollPane scrollPane = new JScrollPane(rightContentPanel);
+        scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI()); // Apply custom scroll bar UI
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(550, 20, 700, 660);
+        getContentPane().add(scrollPane);
     }
 }

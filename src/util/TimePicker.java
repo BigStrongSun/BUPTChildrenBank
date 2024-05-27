@@ -7,89 +7,98 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
-
 /**
  * <p>The util.TimePicker class represents a time selection dialog window. It allows the user
  * to select a specific date and time using dropdown menus for month, day, hour, and minute.
  * The selected time can be obtained through a callback listener.
- *
- * @author Yuxinyue Qian
  */
 public class TimePicker extends JFrame {
-    private TimePicker timePicker;
+    private JComboBox<Integer> monthComboBox;
     private JComboBox<Integer> dayComboBox;
     private JComboBox<Integer> hourComboBox;
     private JComboBox<Integer> minuteComboBox;
     private LocalDateTime currentTime = LocalDateTime.now();
     private int currentYear = currentTime.getYear();
-    private int currentMonth = currentTime.getMonthValue();
-    private int daysInMonth = YearMonth.of(currentYear, currentMonth).lengthOfMonth();
     private TimeSelectionListener timeSelectionListener;
 
     /**
      * Constructs a util.TimePicker dialog window.
      */
     public TimePicker() {
-        setTitle("时间选择器");
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setTitle("Time Picker");
+        setSize(350, 200);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setLayout(null);
 
-        //月
-        JLabel monthLabel = new JLabel(currentMonth + " 月");
-        monthLabel.setBounds(40, 20, 40, 20);
+        // Month
+        JLabel monthLabel = new JLabel("Month:");
+        monthLabel.setBounds(40, 20, 50, 20);
         getContentPane().add(monthLabel);
 
-        //日
-        dayComboBox = new JComboBox<>();
-        for (int i = 1; i <= daysInMonth; i++) {
-            dayComboBox.addItem(i);
+        monthComboBox = new JComboBox<>();
+        for (int i = 1; i <= 12; i++) {
+            monthComboBox.addItem(i);
         }
-        dayComboBox.setBounds(80, 20, 40, 20);
-        getContentPane().add(dayComboBox);
-        JLabel dayLabel = new JLabel("日");
-        dayLabel.setBounds(120, 20, 40, 20);
+        monthComboBox.setSelectedItem(currentTime.getMonthValue());
+        monthComboBox.setBounds(100, 20, 50, 20);
+        monthComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateDays();
+            }
+        });
+        getContentPane().add(monthComboBox);
+
+        // Day
+        JLabel dayLabel = new JLabel("Day:");
+        dayLabel.setBounds(160, 20, 30, 20);
         getContentPane().add(dayLabel);
 
-        //小时
+        dayComboBox = new JComboBox<>();
+        updateDays(); // 初始化天数
+        dayComboBox.setSelectedItem(currentTime.getDayOfMonth());
+        dayComboBox.setBounds(200, 20, 50, 20);
+        getContentPane().add(dayComboBox);
+
+        // Hour
+        JLabel hourLabel = new JLabel("Hour:");
+        hourLabel.setBounds(40, 50, 50, 20);
+        getContentPane().add(hourLabel);
+
         hourComboBox = new JComboBox<>();
         for (int i = 0; i < 24; i++) {
             hourComboBox.addItem(i);
         }
-        hourComboBox.setBounds(140, 20, 40, 20);
+        hourComboBox.setSelectedItem(currentTime.getHour());
+        hourComboBox.setBounds(100, 50, 50, 20);
         getContentPane().add(hourComboBox);
-        JLabel hourLabel = new JLabel("时");
-        hourLabel.setBounds(180, 20, 40, 20);
-        getContentPane().add(hourLabel);
 
-        //分钟
+        // Minute
+        JLabel minuteLabel = new JLabel("Minute:");
+        minuteLabel.setBounds(160, 50, 50, 20);
+        getContentPane().add(minuteLabel);
+
         minuteComboBox = new JComboBox<>();
         for (int i = 0; i < 60; i++) {
             minuteComboBox.addItem(i);
         }
-        minuteComboBox.setBounds(200, 20, 40, 20);
-        getContentPane().add(minuteComboBox);
-        JLabel minuteLabel = new JLabel("分");
-        minuteLabel.setBounds(240, 20, 40, 20);
-        getContentPane().add(minuteLabel);
-
-        // 设置下拉框的默认选项为当前时间
-        dayComboBox.setSelectedItem(currentTime.getDayOfMonth());
-        hourComboBox.setSelectedItem(currentTime.getHour());
         minuteComboBox.setSelectedItem(currentTime.getMinute());
+        minuteComboBox.setBounds(220, 50, 50, 20);
+        getContentPane().add(minuteComboBox);
 
         JButton selectButton = new JButton("Confirm");
-        selectButton.setBounds(95, 100, 100, 30);
+        selectButton.setBounds(125, 100, 100, 30);
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int month = (int) monthComboBox.getSelectedItem();
                 int day = (int) dayComboBox.getSelectedItem();
                 int hour = (int) hourComboBox.getSelectedItem();
                 int minute = (int) minuteComboBox.getSelectedItem();
 
                 LocalDateTime selectedTime = LocalDateTime.now()
+                        .withMonth(month)
                         .withDayOfMonth(day)
                         .withHour(hour)
                         .withMinute(minute);
@@ -103,9 +112,16 @@ public class TimePicker extends JFrame {
             }
         });
         getContentPane().add(selectButton);
-
     }
 
+    private void updateDays() {
+        int selectedMonth = (int) monthComboBox.getSelectedItem();
+        int daysInMonth = YearMonth.of(currentYear, selectedMonth).lengthOfMonth();
+        dayComboBox.removeAllItems();
+        for (int i = 1; i <= daysInMonth; i++) {
+            dayComboBox.addItem(i);
+        }
+    }
 
     public void setTimeSelectionListener(TimeSelectionListener listener) {
         timeSelectionListener = listener;
