@@ -1,7 +1,13 @@
 package service;
 
-import java.io.File;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import util.IOController;
+
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -9,19 +15,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-
 public class UpdateAccountService {
 
-    private static final File jsonFile = new File("account.txt");
+    private static final String FILENAME = "account.txt";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static IOController ioController = new IOController(FILENAME);
 
     private static ScheduledExecutorService scheduler;
 
@@ -34,8 +33,14 @@ public class UpdateAccountService {
     }
 
     private static void updateAccounts() {
+        if (!ioController.fileExists()) {
+            System.err.println("File not found: " + ioController.getFilePath());
+            return;
+        }
+
         try {
-            ArrayNode accounts = (ArrayNode) objectMapper.readTree(jsonFile);
+            String content = ioController.directRead();
+            ArrayNode accounts = (ArrayNode) objectMapper.readTree(content);
             for (int i = 0; i < accounts.size(); i++) {
                 ObjectNode account = (ObjectNode) accounts.get(i);
                 if ("SAVING_ACCOUNT".equals(account.get("accountType").asText())) {
@@ -43,14 +48,12 @@ public class UpdateAccountService {
                     updateLockTimes(account);
                 }
             }
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, accounts);
+            ioController.directWrite(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(accounts));
             System.out.println("Accounts updated successfully at " + LocalDateTime.now().format(formatter));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     private static void updateInterest(ObjectNode account) {
         double interestRate = 1.5;  // 假设年利率为1.5%
@@ -61,7 +64,7 @@ public class UpdateAccountService {
         if (daysSinceLastRead >= 1) {  // 至少一天后更新利息
             BigDecimal annualInterestRate = BigDecimal.valueOf(interestRate / 100);  // 年利率转为BigDecimal
             BigDecimal dailyInterestFactor = annualInterestRate.divide(BigDecimal.valueOf(365), 8, RoundingMode.HALF_UP);  // 每天的利息因子，保留8位小数以确保精确度
-            BigDecimal interest = balance.multiply(dailyInterestFactor);  // 计算一天的利息
+            BigDecimal interest = balance.multiply(dailyInterestFactor).multiply(BigDecimal.valueOf(daysSinceLastRead));  // 计算天数的利息
             balance = balance.add(interest).setScale(2, RoundingMode.HALF_UP);  // 将新余额加上利息并保留两位小数
 
             account.put("balance", balance.doubleValue());  // 将新余额更新回账户对象
@@ -69,8 +72,7 @@ public class UpdateAccountService {
         }
     }
 
-
-    public static void updateLockTimes(ObjectNode account) {
+    private static void updateLockTimes(ObjectNode account) {
         if (!account.has("depositTime")) {
             LocalDateTime depositTime = LocalDateTime.now();
             account.put("depositTime", depositTime.format(formatter));
@@ -81,5 +83,4 @@ public class UpdateAccountService {
             account.put("lockEndTime", depositTime.plusDays(7).format(formatter));  // 解封时间为七天后
         }
     }
-
 }

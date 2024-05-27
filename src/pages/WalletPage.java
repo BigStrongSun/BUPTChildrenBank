@@ -6,7 +6,10 @@ import service.TempService;
 import service.UpdateAccountService;
 
 import util.*;
-
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import java.awt.Image;
+import java.net.URL;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.*;
 import java.awt.*;
@@ -141,7 +144,10 @@ public class WalletPage extends JFrame {
         userDetailPanel.setOpaque(false);
 
         // 用户头像
-        ImageIcon icon = new ImageIcon(new ImageIcon("src/images/头像男.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+        URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/头像男.png");
+        ImageIcon originalIcon = new ImageIcon(resourceUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledImage);
         JLabel labelIcon = new JLabel(icon);
         labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
@@ -278,7 +284,11 @@ public class WalletPage extends JFrame {
         panel.setPreferredSize(new Dimension(300, 100)); // 设置卡片的大小
 
         // 银行卡图标，保持图标比例
-        ImageIcon cardIcon = new ImageIcon(new ImageIcon("src/images/银行卡logo.png").getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH)); // 调整图标大小为80x80
+
+        URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/银行卡logo.png");
+        ImageIcon originalIcon = new ImageIcon(resourceUrl);
+        Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+        ImageIcon cardIcon = new ImageIcon(scaledImage);
         JLabel cardLabel = new JLabel(cardIcon);
 
         // 账户ID标签
