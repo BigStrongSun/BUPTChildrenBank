@@ -1,20 +1,40 @@
 # BUPTChildrenBank
-This is CourseWork of EBU6304 Software Engineering 
-- 我才发现如果把这个clone下来是没有lib的，如果没有可以在src的同级目录下创建文件夹lib, 把projectRamen中的lib的fastjson-1.2.68.jar copy进来。然后再把整个lib Add as library就可以了。
 
-- BtnGray和BtnOrange定义好了橙色和灰色的按钮样式，可直接使用。
-  - 使用方法：JButton createTaskButton = new BtnOrange("BtnName");
+## Project Overview
 
-- IOController和JSONController是之间学长学姐写的，直接拿过来用了。
-  - 用来读取json格式的txt文件数据，支持读取单列表{}和数组[{},{},{}]
-  - 如果不会读写操作的，查看JSONController和JSONTest,JSONTest里的生成的666.txt对应的是JSON数组，777.txt对应的是JSON列表
+BUPTChildrenBank is a simulated children's banking system project that provides functionalities such as wallet management, transaction records, and account creation. The system allows users to switch between different cards within the same account, initiate transfers, create fixed-term accounts, and display each card's statement. The GUI is designed to be visually appealing and aligned with the prototype.
 
-- PageSwitcher是用来实现页面跳转的工具类，不能传参。
-  - 使用方法：PageSwitcher.switchPages(frameToClose, new frameToOpen);
+## System Requirements
 
-- TopPanel是写好的标题栏，包含返回按钮和标题名称。
-  - 使用方法：TopPanel topPanel = new TopPanel("title", frameToClose, new frameToOpen);
+- Java 8 or higher
+- Operating System: Windows, macOS, Linux
 
-- TimePicker是时间选择器，仅仅展示弹窗页面，如需让选择的时间显示在另一页面上，需调用TimeSelectionListener接口。
-  - 使用方法：TimePicker timePicker = new TimePicker();
+## How to Run
 
+1. **Ensure Java Runtime Environment is Installed**
+
+   Make sure Java 8 or higher is installed on your system. You can check by running:
+
+      ```sh
+   java -version
+      ```
+
+2. **Download the project files from GitHub and extract them to a local directory.**
+
+   [PressHere](https://github.com/BigStrongSun/BUPTChildrenBank)
+
+3. **Run the JAR File**
+
+Open a command line window, navigate to the directory containing the JAR file, and 	run the following command to start the program:
+
+  ```sh
+  java -jar BUPTChildrenBank.jar
+  ```
+
+4.**Using the Application**
+
+​	After starting the program, follow the on-screen instructions to register, log in, 		manage the wallet, create accounts, etc.
+
+## Contributing
+
+Contributions are welcome! Please submit a Pull Request or report Issues.
