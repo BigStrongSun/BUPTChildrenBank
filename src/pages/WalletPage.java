@@ -237,7 +237,7 @@ public class WalletPage extends JFrame {
         // 转账按钮的监听器
         btnTransferTapTo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PageSwitcher.switchPages(walletPage,new TransferPage());
+                PageSwitcher.switchPages(walletPage, new TransferPage(selectedAccountId)); // 传递 selectedAccountId
             }
         });
 

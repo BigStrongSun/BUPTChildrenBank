@@ -1,7 +1,5 @@
 package pages;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Account;
 import domain.Temp;
 import domain.Transaction;
@@ -10,16 +8,17 @@ import service.UpdateAccountService;
 import util.BtnOrange;
 import util.GradientBackground;
 import util.JSONController;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static service.TransactionIdGenerateService.addTransaction;
 import static service.TransactionIdGenerateService.generateTransactionId;
@@ -35,6 +34,8 @@ public class TransferPage extends JFrame {
 
     private int userId;
     private String password;
+
+    private int selectedAccountId;
 
     String accountType;
 
@@ -69,7 +70,8 @@ public class TransferPage extends JFrame {
         System.out.println("Read userId: " + userId);
     }
 
-    public TransferPage() {
+    public TransferPage(int selectedAccountId) {
+        this.selectedAccountId = selectedAccountId; // 初始化 selectedAccountId
 
         transferPage = this;
         UpdateAccountService.startScheduledUpdates();
@@ -133,9 +135,10 @@ public class TransferPage extends JFrame {
         lblAccountNumber1.setBounds(180, 30, 200, 30);
         mainPanel.add(lblAccountNumber1);
 
-        JTextField textFieldFromAccountNumber = new JTextField();
+        JTextField textFieldFromAccountNumber = new JTextField(String.valueOf(selectedAccountId)); // 默认填入 selectedAccountId
         textFieldFromAccountNumber.setFont(new Font("Arial", Font.PLAIN, 24));
         textFieldFromAccountNumber.setBounds(280, 30, 200, 30);
+        textFieldFromAccountNumber.setEditable(false); // 不允许编辑
         mainPanel.add(textFieldFromAccountNumber);
 
         JLabel lblAccountNumber2 = new JLabel(">>>>");
@@ -206,7 +209,7 @@ public class TransferPage extends JFrame {
                 boolean isFromAccountValid = false;
                 double balance = 0.0;
                 for (Account account : accounts) {
-                    if (account.getUserId() == userId && textFieldFromAccountNumber.getText().equals(String.valueOf(account.getAccountId()))) {
+                    if (account.getAccountId() == selectedAccountId) {
                         balance = account.getBalance();
                         password = account.getPassword();
                         System.out.println(password);
@@ -366,7 +369,7 @@ public class TransferPage extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TransferPage transferPage = new TransferPage();
+            TransferPage transferPage = new TransferPage(0); // 修改这里以适应构造函数
             transferPage.setVisible(true);
             transferPage.setLocationRelativeTo(null);
         });
