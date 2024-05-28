@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import util.*;
 
+import static service.LoginService.refreshUserList;
+
 public class LoginPageForAll extends JFrame {
     private LoginPageForAll loginPageForAll;
     private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class LoginPageForAll extends JFrame {
         float[] fractions = {0.0f, 0.2f, 0.8f, 1.0f};
         GradientBackground gradientBackground = new GradientBackground(colors, fractions);
         setContentPane(gradientBackground);
-
+        refreshUserList();
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false);
         backButton.setContentAreaFilled(false);
@@ -124,7 +126,7 @@ public class LoginPageForAll extends JFrame {
                 JOptionPane.showMessageDialog(null, "UserID or password cannot be empty");
             } else {
                 // 刷新用户列表，确保读取最新数据
-                LoginService.refreshUserList();
+                refreshUserList();
 
                 if (!LoginService.usernameExist(username) ||
                         !LoginService.validatePassword(username, password) ||

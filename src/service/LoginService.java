@@ -4,10 +4,14 @@ import domain.Temp;
 import util.IOController;
 import util.JSONController;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import domain.User;
 
@@ -48,6 +52,7 @@ public class LoginService {
     }
 
     public static void saveUser(String username, String password, String identity, String name) {
+        refreshUserList();
         User newUser = new User(username, password, identity, 0, name);
         boolean userExists = false;
 
@@ -58,10 +63,11 @@ public class LoginService {
                 user.setIdentity(identity);
                 user.setName(name); // 更新用户的名称
                 userExists = true;
+                System.out.println("user exists "+user.ToStringABC());
                 break;
             }
         }
-
+        System.out.println("user latest "+userList.get(userList.size()-1));
         if (!userExists) {
             userList.add(newUser);
         }
@@ -69,10 +75,13 @@ public class LoginService {
         json2.writeArray(userList);
         try {
             saveFilesBackToJar();
+            System.out.println("success save user txt to jar");
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
         // 刷新用户数据
+
+
         refreshUserList();
     }
 

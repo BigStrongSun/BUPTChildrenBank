@@ -8,11 +8,21 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import service.LoginService;
 import service.TempService;
 import util.*;
 
@@ -33,7 +43,9 @@ public class LoginPage {
         TempService tempService = new TempService();
         tempService.clearTemp(); // 清空temp.txt文件内容
 //    	frame.setTitle("Identity selection");
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setSize(1280, 720);
     	frame.setLocationRelativeTo(null);
     	frame.setLayout(null);
@@ -84,5 +96,9 @@ public class LoginPage {
         });
 
         frame.setVisible(true);
+    }
+    private static String getJarDir() throws URISyntaxException {
+        String jarPath = LoginPage.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+        return new File(jarPath).getParent();
     }
 }

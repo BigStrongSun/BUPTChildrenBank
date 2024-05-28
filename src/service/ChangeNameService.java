@@ -4,6 +4,8 @@ import java.util.List;
 import domain.*;
 import util.*;
 
+import static service.LoginService.refreshUserList;
+
 public class ChangeNameService {
 
     public static void changeName(String newName) {
@@ -27,6 +29,7 @@ public class ChangeNameService {
             }
 
             jsonUser.writeArray(userList);
+            refreshUserList();
         } else {
             System.err.println("Current user not found, name change failed.");
         }
