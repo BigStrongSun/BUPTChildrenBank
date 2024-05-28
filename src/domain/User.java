@@ -77,4 +77,13 @@ public class User {
         this.identity = identity;
         this.childOrParentId = childOrParentId;
     }
+    public  String ToStringABC(){
+        return "User{" +"userName(ID)=" + username +
+                ",password=" + password +
+                ", identity=" + identity +
+                ", ChildorParentID'" + childOrParentId +
+                ", Name=" + name +'\'' +
+                '}';
+    }
+
 }

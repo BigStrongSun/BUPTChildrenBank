@@ -46,7 +46,6 @@ public class ChildMainPage extends JFrame {
 
         tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
-        childId = tempService.getTemp().getChildId();
 
         childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);

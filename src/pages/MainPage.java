@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.List;
-
+import domain.User;
 import domain.Account;
 import domain.Temp;
 import domain.Wish;
@@ -50,10 +50,9 @@ public class MainPage extends JFrame {
         this.tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
-        System.out.println(childId);
         isParent = tempService.getTemp().isParent();
-        childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);
+        childName = userService.getChildNameById(childId);
 
         JButton backButton = new JButton("Logout");
         backButton.setFocusable(false); // 移除按钮的焦点框
@@ -71,7 +70,7 @@ public class MainPage extends JFrame {
             }
         });
 
-        System.out.println("aaaa" + childName);
+        System.out.println("child name is" + childName);
         System.out.println("aaaa" + parentName);
 
         JLabel lblNameType = new JLabel();
@@ -82,14 +81,15 @@ public class MainPage extends JFrame {
 
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
-            displayParentView(parentId);
-            lblNameType.setText("<html>Name:    " + parentName + "<br>Type: Parent</html>");
+            childName = userService.getChildNameById(childId); // 从user.txt中读取孩子的名字
+            displayParentView(parentId, childName);
+            lblNameType.setText("<html>Name: " + parentName + "<br>Type: Parent</html>");
         } else {
             displayChildView(childId);
-            lblNameType.setText("<html>Name:    " + childName + "<br>Type: Child</html>");
+            lblNameType.setText("<html>Name: " + childName + "<br>Type: " + getUserIdentityById(childId) + "</html>");
         }
 
-        setupUserIcon();
+        setupUserIcon(isParent);
         setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -97,7 +97,7 @@ public class MainPage extends JFrame {
         UpdateAccountService.startScheduledUpdates();
     }
 
-    private void setupUserIcon() {
+    private void setupUserIcon(boolean isParent) {
         JPanel userInfoPanel = new JPanel(new BorderLayout());
         userInfoPanel.setOpaque(false);
         JPanel userDetailPanel = new JPanel(new BorderLayout());
@@ -120,7 +120,7 @@ public class MainPage extends JFrame {
                     modifyInformation.setVisible(true);
                     dispose();
                 } else {
-                    ChangePasswordOrNamePage changePage = new ChangePasswordOrNamePage();
+                    ChangePasswordOrNamePage changePage = new ChangePasswordOrNamePage(false);
                     changePage.setVisible(true);
                     dispose();
                 }
@@ -133,7 +133,7 @@ public class MainPage extends JFrame {
         userInfoPanel.setBounds(900, 20, 100, 100);
     }
 
-    private void displayParentView(int parentId) {
+    private void displayParentView(int parentId, String childName) {
         JPanel parentPanel = new JPanel();
         parentPanel.setBackground(new Color(255, 255, 255, 0));
         parentPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 50));
@@ -323,6 +323,16 @@ public class MainPage extends JFrame {
 
         // 更新UI显示
         lblTotalGoal.setText("Total Target: $" + formattedTotal);
+    }
+
+    private String getUserIdentityById(int userId) {
+        List<User> users = userService.getUserlist();
+        for (User user : users) {
+            if (Integer.parseInt(user.getUsername()) == userId) {
+                return user.getIdentity();
+            }
+        }
+        return "Unknown";
     }
 
     public static void main(String[] args) {

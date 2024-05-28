@@ -8,8 +8,6 @@ import domain.User;
 import static java.lang.Integer.parseInt;
 
 public class LoginService {
-    private static TempService tempService = new TempService();
-    private static Temp temp = tempService.getTemp();
     private static JSONController json2 = new JSONController("user.txt");
     private static JSONController json = new JSONController("temp.txt");
     static List<User> userList = json2.readArray(User.class);
@@ -21,7 +19,7 @@ public class LoginService {
 
         temp.setParent(isParent);
         temp.setName(name);
-        System.out.println("temp when logging in: " + temp);
+        System.out.println("temp when logging in: " + temp.toStringABC());
 
         int childOrParentId = 0;
         userList = json2. readArray(User.class);
@@ -31,7 +29,6 @@ public class LoginService {
                 childOrParentId = user.getChildOrParentId();
             }
         }
-        userList = json2. readArray(User.class);
 
         if (isParent) { // 是家长
             temp.setParentId(userId);
@@ -40,8 +37,8 @@ public class LoginService {
             temp.setChildId(userId);
             temp.setParentId(childOrParentId);
         }
-
-        json.write(temp); // 向temp.txt里写入
+        tempService.setTemp(temp);
+        System.out.println("write to temp is"+temp.toStringABC());
     }
 
     public static void saveUser(String username, String password, String identity) {

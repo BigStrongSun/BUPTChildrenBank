@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import service.ChangeNameService;
 import util.JSONController;
+
 import java.util.List;
 
 /**
@@ -40,19 +41,26 @@ public class ChangeNameServiceTest {
     public void testChangeName() {
         // Prepare test data
         String newName = "NewUserName";
-        User currentUser = ChangeNameService.findCurrentUser();
-        
+        User currentUser = ChangeNameService.findCurrentUser(userList, temp);
+
         // Ensure the current user is not null
         assertNotNull(currentUser);
-        
+
         // Execute the method to change the name
         ChangeNameService.changeName(newName);
-        
+
         // Verify that the Temp file content has been updated
-        assertEquals(newName, temp.getName());
-        
+        Temp updatedTemp = (Temp) jsonTemp.read(Temp.class);
+        assertEquals(newName, updatedTemp.getName());
+
         // Verify that the current user's name in userList has been updated
-        assertEquals(newName, currentUser.getName());
+        userList = jsonUser.readArray(User.class);
+        for (User user : userList) {
+            if (user.getUsername().equals(currentUser.getUsername())) {
+                assertEquals(newName, user.getName());
+                break;
+            }
+        }
     }
 
     /**
@@ -62,7 +70,7 @@ public class ChangeNameServiceTest {
     public void testFindCurrentId() {
         // Verify the correctness of findCurrentId method based on the Temp file content
         int expectedId = temp.isParent() ? temp.getParentId() : temp.getChildId();
-        int actualId = ChangeNameService.findCurrentId();
+        int actualId = ChangeNameService.findCurrentId(temp);
         assertEquals(expectedId, actualId);
     }
 
@@ -74,12 +82,12 @@ public class ChangeNameServiceTest {
         // Find the current user and verify
         User expectedUser = null;
         for (User user : userList) {
-            if (user.getUsername().equals(String.valueOf(ChangeNameService.findCurrentId()))) {
+            if (user.getUsername().equals(String.valueOf(ChangeNameService.findCurrentId(temp)))) {
                 expectedUser = user;
                 break;
             }
         }
-        User actualUser = ChangeNameService.findCurrentUser();
+        User actualUser = ChangeNameService.findCurrentUser(userList, temp);
         assertEquals(expectedUser, actualUser);
     }
 
@@ -90,6 +98,6 @@ public class ChangeNameServiceTest {
     public void testFindCurrentName() {
         // Verify that the findCurrentName method correctly returns the current user name
         String actualName = ChangeNameService.findCurrentName();
-        assertEquals("NewUserName", actualName);
+        assertEquals(temp.getName(), actualName);
     }
 }

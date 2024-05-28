@@ -1,4 +1,5 @@
 import pages.LoginPage;
+import service.TempService;
 import util.IOController;
 
 import java.io.File;
@@ -22,7 +23,8 @@ public class Main {
                     e.printStackTrace();
                 }
             }));
-
+            TempService tempService = new TempService();
+            tempService.clearTemp(); // 清空temp.txt文件内容
             // 启动应用
             new LoginPage();
         } catch (Exception e) {

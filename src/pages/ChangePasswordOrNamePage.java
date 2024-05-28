@@ -18,9 +18,11 @@ import util.BtnOrange;
 public class ChangePasswordOrNamePage extends JFrame {
     private TempService tempService = new TempService();
     private Temp temp = tempService.getTemp();
+    boolean isParent;
 
-    public ChangePasswordOrNamePage() {
-        setTitle("Change Password or Name");
+    public ChangePasswordOrNamePage(boolean isParent) {
+        this.isParent = isParent;
+        setTitle("Change Password or Name"+ isParent);
         setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -45,7 +47,7 @@ public class ChangePasswordOrNamePage extends JFrame {
         backButton.setBounds(20, 20, 80, 30);
         backButton.addActionListener(e -> {
             dispose();
-            if (temp.isParent()) {
+            if (isParent) {
                 new ModifyInformation().setVisible(true); // If the user is a parent, return to ModifyInformation
             } else {
                 new MainPage().setVisible(true); // If the user is not a parent, return to MainPage
@@ -93,7 +95,7 @@ public class ChangePasswordOrNamePage extends JFrame {
                 ChangePasswordService.changeUserPassword(username, newPassword);
                 JOptionPane.showMessageDialog(null, "Password changed successfully");
                 dispose();
-                new ChangePasswordOrNamePage();
+                new ChangePasswordOrNamePage(isParent);
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid old password");
             }
@@ -115,11 +117,13 @@ public class ChangePasswordOrNamePage extends JFrame {
             ChangeNameService.changeName(newName);
             JOptionPane.showMessageDialog(null, "Name changed to " + newName);
             dispose();
-            new ChangePasswordOrNamePage();
+            new ChangePasswordOrNamePage(temp.isParent());
         });
     }
 
     public static void main(String[] args) {
-        new ChangePasswordOrNamePage();
+        TempService tempService = new TempService();
+        boolean isParent = tempService.getTemp().isParent();
+        new ChangePasswordOrNamePage(isParent);
     }
 }

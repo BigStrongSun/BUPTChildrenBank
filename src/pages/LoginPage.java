@@ -12,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import service.TempService;
 import util.*;
 
 public class LoginPage {
@@ -28,7 +30,8 @@ public class LoginPage {
 	public LoginPage() {
         frame = new JFrame("Identity selection");
 		LoginPage = this;
-    	
+        TempService tempService = new TempService();
+        tempService.clearTemp(); // 清空temp.txt文件内容
 //    	frame.setTitle("Identity selection");
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setSize(1280, 720);

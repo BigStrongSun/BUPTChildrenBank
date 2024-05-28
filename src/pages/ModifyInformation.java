@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 
 public class ModifyInformation extends JFrame {
+    static boolean isParent = true;
     public ModifyInformation() {
         setTitle("Modify Information");
         setSize(1280, 720);
@@ -61,7 +62,7 @@ public class ModifyInformation extends JFrame {
         btnChangePassword.setBounds(470, 350, 300, 70);
         btnChangePassword.addActionListener(e -> {
             dispose();
-            ChangePasswordOrNamePage changePasswordOrNamePage = new ChangePasswordOrNamePage();
+            ChangePasswordOrNamePage changePasswordOrNamePage = new ChangePasswordOrNamePage(isParent);
             changePasswordOrNamePage.setVisible(true);
         });
 
