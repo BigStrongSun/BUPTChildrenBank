@@ -94,10 +94,15 @@ public class TaskPage extends JFrame {
         JButton createTaskButton = new BtnOrange("Create task");
         createTaskButton.addActionListener(new ActionListener() {//给按钮添加了一个ActionListener
             public void actionPerformed(ActionEvent e) {
-                TaskCreateAndModifyPage window =
-                        new TaskCreateAndModifyPage(taskService.getMaxTaskId() + 1, true, false);
-                window.setVisible(true);
-                taskPage.dispose();
+                if(parentId == 0){
+                    JOptionPane.showMessageDialog(null, "Please bind child before set a task", "Tips", JOptionPane.WARNING_MESSAGE);
+                } else if(childId == 0){
+                    JOptionPane.showMessageDialog(null, "Please bind parent before set a task", "Tips", JOptionPane.WARNING_MESSAGE);
+                }else {
+                    TaskCreateAndModifyPage window = new TaskCreateAndModifyPage(taskService.getMaxTaskId() + 1, true, false);
+                    window.setVisible(true);
+                    taskPage.dispose();
+                }
             }
         });
 

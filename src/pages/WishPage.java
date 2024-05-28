@@ -57,9 +57,11 @@ public class WishPage extends JFrame {
      * It retrieves the parent and child IDs, sets up the user interface, and loads the wish data.
      */
     public WishPage() {
-        parentId = tempService.getTemp().getParentId();
-        childId = tempService.getTemp().getChildId();
-        isParent = tempService.getTemp().isParent();
+        if(tempService.getTemp()!=null){
+            parentId = tempService.getTemp().getParentId();
+            childId = tempService.getTemp().getChildId();
+            isParent = tempService.getTemp().isParent();
+        }
         wishPage = this;
         childName = userService.getChildNameById(childId);
         setTitle("Wish Page");
@@ -164,9 +166,15 @@ public class WishPage extends JFrame {
 
         btnCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                WishCreateAndModifyPage window = new WishCreateAndModifyPage(wishService.getMaxWishId() + 1, true, false);
-                window.setVisible(true);
-                wishPage.dispose();
+                if(parentId == 0){
+                    JOptionPane.showMessageDialog(null, "Please bind child before set a wish", "Tips", JOptionPane.WARNING_MESSAGE);
+                } else if(childId == 0){
+                    JOptionPane.showMessageDialog(null, "Please bind parent before set a wish", "Tips", JOptionPane.WARNING_MESSAGE);
+                }else{
+                    WishCreateAndModifyPage window = new WishCreateAndModifyPage(wishService.getMaxWishId() + 1, true, false);
+                    window.setVisible(true);
+                    wishPage.dispose();
+                }
             }
         });
 
