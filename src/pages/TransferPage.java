@@ -46,6 +46,8 @@ public class TransferPage extends JFrame {
     String accountType;
 
     double totalBalance = 0.0;
+    private boolean isParent = false;  // Add this at the class level
+
 
     // 从文本文件中读取账户数据
     private List<Account> readAccountData() {
@@ -80,18 +82,22 @@ public class TransferPage extends JFrame {
                     int childId = Integer.parseInt(childIdStr);
                     if (line.contains("\"isParent\":false")) {
                         userId = childId;
+                        isParent = false;
                     } else if (line.contains("\"isParent\":true")) {
                         String parentIdStr = line.substring(line.indexOf("parentId") + 10, line.indexOf("}", line.indexOf("parentId")));
                         int parentId = Integer.parseInt(parentIdStr);
                         userId = parentId;
+                        isParent = true;
                     }
                     break;
                 }
-            }  System.out.println("Read userId: " + userId); // 在这里打印 userId
+            }
+            System.out.println("Read userId: " + userId + "; Is Parent: " + isParent);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     public TransferPage() {
@@ -190,6 +196,29 @@ public class TransferPage extends JFrame {
         textFieldAmount.setBounds(480, 105, 200, 30);
         textFieldAmount.setFont(new Font("Arial", Font.PLAIN, 20));
         mainPanel.add(textFieldAmount);
+
+        List<Account> accounts = readAccountData();
+        Account parentAccount = null;
+
+        // Loop through the list of accounts to find the first one with the given userId
+        for (Account account : accounts) {
+            if (account.getUserId() == userId) {
+                parentAccount = account;
+                break; // Stop searching once the first match is found
+            }
+        }
+
+        if (parentAccount != null&& isParent) {
+            System.out.println("Found parent account with ID: " + parentAccount.getAccountId());
+            JLabel lblParentAccountId = new JLabel("Your Account ID: " + parentAccount.getAccountId());
+            lblParentAccountId.setFont(new Font("Arial", Font.PLAIN, 20));
+            lblParentAccountId.setForeground(new Color(45, 107, 28, 204)); // Dark blue color
+            lblParentAccountId.setBounds(900, 120, 250, 30);
+            add(lblParentAccountId);
+        } else {
+            System.out.println("No parent account found for user ID: " + userId);
+        }
+
 
         // 密码框
         JLabel lblPassword = new JLabel("Password confirm");
