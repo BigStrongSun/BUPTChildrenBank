@@ -73,7 +73,8 @@ public class LoginServiceTest {
         String username = "newuser";
         String password = "newpassword";
         String identity = "child";
-        LoginService.saveUser(username, password, identity);
+        String name = "New User";
+        LoginService.saveUser(username, password, identity, name);
 
         // Verify that the new user is correctly saved
         User newUser = getUserByUsername(username);
@@ -81,6 +82,7 @@ public class LoginServiceTest {
         assertEquals(username, newUser.getUsername());
         assertEquals(password, newUser.getPassword());
         assertEquals(identity, newUser.getIdentity());
+        assertEquals(name, newUser.getName());
     }
 
     /**
