@@ -103,7 +103,7 @@ public class ChangeChildPage extends JFrame {
                     ChangeChildService.changeChild(currentId, parseInt(childId));
                     temp.setChildId(parseInt(childId));
                     temp.setParent(true);
-                    WriteToTemp.writeToTempFile(parseInt(childId), temp.getName(), true, currentId);
+                    WriteToTemp.writeToTempFile(currentId,parseInt(childId), true, temp.getName());
                     JOptionPane.showMessageDialog(null, "Information updated");
                     exist = true;
                     dispose();
@@ -123,7 +123,7 @@ public class ChangeChildPage extends JFrame {
         // Implementation for deleting the child
         if (temp.getChildId() != 0) {
             ChangeChildService.clearAssociation(temp.getParentId(), temp.getChildId());
-            WriteToTemp.writeToTempFile(0, temp.getName(), true, currentId);
+            WriteToTemp.writeToTempFile(currentId,0,  true, temp.getName());
             JOptionPane.showMessageDialog(null, "Child cleared");
             dispose();
             new ChangeChildPage().setVisible(true);

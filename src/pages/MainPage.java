@@ -7,17 +7,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import domain.Account;
-import service.TempService;
+import domain.Temp;
 import domain.Wish;
 import service.UpdateAccountService;
 import util.BtnOrange;
 import service.WishService;
 import service.UserService;
+import service.TempService;
+import service.ChangeChildService;
 import util.GradientBackground;
 import util.JSONController;
 import util.PageSwitcher;
@@ -34,11 +34,8 @@ public class MainPage extends JFrame {
     private JSONController jsonUser = new JSONController("user.txt");
     UserService userService = new UserService();
     private String childName;
-
-
     private String parentName;
     public MainPage mainPage;
-
 
     public MainPage() {
         setTitle("Main Page");
@@ -50,11 +47,10 @@ public class MainPage extends JFrame {
         setContentPane(gradientBackground);
         setLayout(null);
         mainPage = this;
-
         this.tempService = new TempService();
-        tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
+        System.out.println(childId);
         isParent = tempService.getTemp().isParent();
         childName = userService.getChildNameById(childId);
         parentName = userService.getParentNameById(parentId);
@@ -68,6 +64,7 @@ public class MainPage extends JFrame {
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                tempService.clearTemp(); // 清空temp.txt文件内容
                 tempService.deleteTemp();
                 mainPage.dispose();
                 new LoginPage();
@@ -77,31 +74,25 @@ public class MainPage extends JFrame {
         System.out.println("aaaa" + childName);
         System.out.println("aaaa" + parentName);
 
-
         JLabel lblNameType = new JLabel();
         lblNameType.setBounds(1000, 40, 250, 50);
         Font font = new Font("Arial", Font.BOLD, 18);
         lblNameType.setFont(font);
         add(lblNameType);
 
-
         if (isParent) {
             // 如果用户是家长，显示孩子的按钮列表
             displayParentView(parentId);
             lblNameType.setText("<html>Name:    " + parentName + "<br>Type: Parent</html>");
-
         } else {
-
             displayChildView(childId);
             lblNameType.setText("<html>Name:    " + childName + "<br>Type: Child</html>");
         }
-
 
         setupUserIcon();
         setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
-
 
         UpdateAccountService.startScheduledUpdates();
     }
@@ -116,7 +107,8 @@ public class MainPage extends JFrame {
         URL resourceUrl = WalletPage.class.getClassLoader().getResource("images/头像男.png");
         ImageIcon originalIcon = new ImageIcon(resourceUrl);
         Image scaledImage = originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-        ImageIcon icon = new ImageIcon(scaledImage);JLabel labelIcon = new JLabel(icon);
+        ImageIcon icon = new ImageIcon(scaledImage);
+        JLabel labelIcon = new JLabel(icon);
         labelIcon.setHorizontalAlignment(JLabel.CENTER);
 
         // 添加鼠标点击事件
@@ -152,7 +144,6 @@ public class MainPage extends JFrame {
         Color buttonColor = new Color(215, 231, 252);
         Color textColor = new Color(62, 90, 206, 204);
 
-
         if (childId != 0) {
             JButton btnChild = new BtnOrange(" " + childName);
             btnChild.setPreferredSize(new Dimension(200, 100));
@@ -170,11 +161,6 @@ public class MainPage extends JFrame {
             });
             parentPanel.add(btnChild);
         } else {
-//            JLabel noChildLabel = new JLabel("You haven't bound any child.");
-//            noChildLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-//            noChildLabel.setForeground(textColor);
-//            noChildLabel.setBounds(200, 100, 300, 50);
-//            parentPanel.add(noChildLabel);
             JButton btnChild = new BtnOrange("<html> Click here<br> to bound a child.</html>");
             btnChild.setPreferredSize(new Dimension(200, 100));
             btnChild.setFont(new Font("Arial", Font.PLAIN, 25));
@@ -190,10 +176,8 @@ public class MainPage extends JFrame {
                 }
             });
             parentPanel.add(btnChild);
-
         }
     }
-
 
     private void openChildMainPage(int childId) {
         ChildMainPage childMainPage = new ChildMainPage(childId, this);
@@ -201,22 +185,18 @@ public class MainPage extends JFrame {
     }
 
     private void openChangeChildPage(int parentId) {
-
         ChangeChildPage changeChildPage = new ChangeChildPage();
         changeChildPage.setVisible(true);
     }
-
 
     private void displayChildView(int childId) {
         // 创建 WishService 实例
         WishService wishService = new WishService();
 
-
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(255, 255, 255, 200));
         topPanel.setBounds(525, 60, 250, 70);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
         lblCurrentMoney = new JLabel("Current Money: $" + totalBalance);
@@ -226,9 +206,6 @@ public class MainPage extends JFrame {
         lblTotalGoal = new JLabel("Total Target: $" + totalTarget);
         lblTotalGoal.setFont(new Font("Arial", Font.PLAIN, 20));
         topPanel.add(lblTotalGoal);
-
-        add(topPanel);
-
 
         add(topPanel);
 
@@ -295,7 +272,6 @@ public class MainPage extends JFrame {
     }
 
     private void calculateAndUpdateTotalBalance() {
-
         System.out.println("Child ID: " + childId);
 
         List<Account> accounts = readAccountData();
@@ -317,7 +293,6 @@ public class MainPage extends JFrame {
         // 更新UI显示
         lblCurrentMoney.setText("Current Money: $" + formattedTotal);
     }
-
 
     private List<Wish> readWishData() {
         JSONController jsonWish = new JSONController("wish.txt");
@@ -350,7 +325,6 @@ public class MainPage extends JFrame {
         lblTotalGoal.setText("Total Target: $" + formattedTotal);
     }
 
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             MainPage mainPage = new MainPage();
@@ -358,4 +332,3 @@ public class MainPage extends JFrame {
         });
     }
 }
-

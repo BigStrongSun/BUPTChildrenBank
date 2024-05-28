@@ -32,6 +32,7 @@ public class ChangeChildService {
             if(user.getUsername().equals(String.valueOf(toChangeId))){
                 user.setChildOrParentId(currentUserId);
                 break;
+
             }
         }
         for(User user: userList){//给前用户加上要绑定的用户的id
@@ -40,6 +41,6 @@ public class ChangeChildService {
             }
         }
         jsonUser.writeArray(userList);//更新信息到user.txt文件
-
+        System.out.println("child updated" );
     }
 }

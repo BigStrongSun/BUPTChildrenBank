@@ -25,15 +25,15 @@ BUPTChildrenBank is a simulated children's banking system project that provides 
 
 3. **Run the JAR File**
 
-Open a command line window, navigate to the directory containing the JAR file, and 	run the following command to start the program:
+   Open a command line window, navigate to the directory containing the JAR file, and run the following command to start the program:
 
-  ```sh
-  java -jar BUPTChildrenBank.jar
-  ```
+   ```sh
+   java -jar BUPTChildrenBank.jar
+   ```
 
-4.**Using the Application**
+4. **Using the Application**
 
-​	After starting the program, follow the on-screen instructions to register, log in, 		manage the wallet, create accounts, etc.
+	After starting the program, follow the on-screen instructions to register, log in, manage the wallet, create accounts, etc.
 
 ## Contributing
 

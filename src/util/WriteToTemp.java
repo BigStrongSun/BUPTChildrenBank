@@ -1,28 +1,26 @@
 package util;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import domain.Temp;
 
 public class WriteToTemp {
-    //向temp.txt中写信息
-    public static void writeToTempFile(int childId, String name, boolean isParent, int parentId) {
-        // 定义要写入文件的内容
-        String content = "{\"childId\":" + childId + "," +
-                "\"name\":" + "\"" + name + "\"" + "," +
-                "\"isParent\":" + isParent + "," +
-                "\"parentId\":" + parentId + "}";
+    // 向 temp.txt 中写信息
+    public static void writeToTempFile(int parentId, int childId, boolean isParent, String name) {
+        // 创建 Temp 对象
+        Temp temp = new Temp(parentId, childId, isParent, name);
 
-        // 定义文件名
-        String fileName = "temp.txt";
+        // 定义 JSONController
+        JSONController jsonController = new JSONController("temp.txt");
 
-        try (FileWriter fileWriter = new FileWriter(fileName)) {
-            // 将内容写入文件
-            fileWriter.write(content);
-            System.out.println("信息已成功写入 " + fileName);
-        } catch (IOException e) {
-            // 处理可能发生的 IO 异常
+        try {
+            // 将 Temp 对象写入 temp.txt
+            jsonController.write(temp);
+
+            // 输出成功写入的信息
+            System.out.println("信息已成功写入 temp.txt: " + temp.toStringABC());
+        } catch (Exception e) {
+            // 处理可能发生的异常
+            System.err.println("Error writing to temp.txt: " + e.getMessage());
             e.printStackTrace();
         }
     }
 }
-

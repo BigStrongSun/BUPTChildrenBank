@@ -113,7 +113,7 @@ private static final long serialVersionUID = 1L;
                 try {
                     // 尝试将字符串转换为int
                     int input = Integer.parseInt(username);
-                    //System.out.println("Integer value: " + input);
+                    System.out.println("UserID input value: " + input);
                 } catch (NumberFormatException ex) {
                     // 如果转换失败，显示错误提示
                     //JOptionPane.showMessageDialog(null, "Error: UserId must be integer");
@@ -157,18 +157,20 @@ private static final long serialVersionUID = 1L;
                 String password = new String(passwordText.getPassword());
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Username or password cannot be empty");
+                    JOptionPane.showMessageDialog(null, "UserID or password cannot be empty");
                 } else if (!LoginService.usernameExist(username) ||
                         !LoginService.validatePassword(username, password)
                         || ((LoginService.checkIfIsParent(username)+"").equals((!isParent)+""))) {
-                    JOptionPane.showMessageDialog(null, "Invalid username or password");
+                    JOptionPane.showMessageDialog(null, "Invalid userID or password");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Login successful");
+
                     if (!isParent) {
                         LoginService.saveCurrentUser(username,false,LoginService.findName(username));
                     } else {
                         LoginService.saveCurrentUser(username,true,LoginService.findName(username));
                     }
+
+                    JOptionPane.showMessageDialog(null, "Login successful");
                     PageSwitcher.switchPages(loginPageForAll ,new MainPage());
                 }
             }

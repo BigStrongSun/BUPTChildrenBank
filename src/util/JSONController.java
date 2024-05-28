@@ -18,17 +18,18 @@ import com.alibaba.fastjson.parser.Feature;
  * <p>
  * The class uses the Fastjson library for JSON parsing and serialization.
  * It also uses IOController for file operations.
- * </p>
  * @version 1.2
  */
 public class JSONController {
     private IOController io;
+    private String filename;
 
     /**
-     * Constructor of JSONController
-     * @param filename the name of the JSON file which needs to be I/O.
+     * JSONController的构造函数
+     * @param filename 需要进行I/O操作的JSON文件的名称
      */
     public JSONController(String filename) {
+        this.filename = filename;
         io = new IOController(filename);
         configureJSONParser();
         if (!io.fileExists()) {
@@ -39,7 +40,7 @@ public class JSONController {
     }
 
     /**
-     * Configures the Fastjson parser with various features.
+     * 配置Fastjson解析器的各种功能
      */
     private void configureJSONParser() {
         int features = 0;
@@ -54,10 +55,10 @@ public class JSONController {
     }
 
     /**
-     * Reads an array of objects from the JSON file.
-     * @param tClass the class information of the objects in the file
-     * @param <T> Any javabean object
-     * @return the array containing the objects which are read from the file
+     * 从JSON文件中读取对象数组
+     * @param tClass 文件中对象的类信息
+     * @param <T> 任何JavaBean对象
+     * @return 包含从文件中读取的对象的数组
      */
     public <T> List<T> readArray(Class<T> tClass) {
         try {
@@ -70,9 +71,9 @@ public class JSONController {
     }
 
     /**
-     * Writes an array of objects to the JSON file.
-     * @param objectList the List containing the objects which will be written to the file
-     * @return Whether the write operation was successful
+     * 将对象数组写入JSON文件
+     * @param objectList 包含将写入文件的对象的列表
+     * @return 写入操作是否成功
      */
     public boolean writeArray(List<?> objectList) {
         try {
@@ -85,9 +86,9 @@ public class JSONController {
     }
 
     /**
-     * Reads a single object from the JSON file.
-     * @param tClass the class information of the object
-     * @return the object which is read from the file
+     * 从JSON文件中读取单个对象
+     * @param tClass 对象的类信息
+     * @return 从文件中读取的对象
      */
     public <T> T read(Class<T> tClass) {
         try {
@@ -100,9 +101,9 @@ public class JSONController {
     }
 
     /**
-     * Writes a single object to the JSON file.
-     * @param x the object which needs to be written to the file
-     * @return Whether the write operation was successful
+     * 将单个对象写入JSON文件
+     * @param x 需要写入文件的对象
+     * @return 写入操作是否成功
      */
     public boolean write(Object x) {
         try {

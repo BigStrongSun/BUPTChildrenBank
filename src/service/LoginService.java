@@ -2,11 +2,8 @@ package service;
 
 import domain.Temp;
 import util.JSONController;
-
-import java.sql.SQLOutput;
 import java.util.List;
 import domain.User;
-import util.WriteToTemp;
 
 import static java.lang.Integer.parseInt;
 
@@ -14,54 +11,48 @@ public class LoginService {
     private static TempService tempService = new TempService();
     private static Temp temp = tempService.getTemp();
     private static JSONController json2 = new JSONController("user.txt");
-    static List<User> userList = json2. readArray(User.class);
+    private static JSONController json = new JSONController("temp.txt");
+    static List<User> userList = json2.readArray(User.class);
 
-    public static void saveCurrentUser(String username,boolean isParent, String name){//这里传入的isParent不是temp中的
+    public static void saveCurrentUser(String username, boolean isParent, String name) {
         int userId = parseInt(username);
-        //Temp temp = new Temp(userId,0,isParent,name);//childid为0代表尚未绑定孩子
         TempService tempService = new TempService();
-        Temp temp =tempService.getTemp();
+        Temp temp = tempService.getTemp();
 
         temp.setParent(isParent);
         temp.setName(name);
+        System.out.println("temp when logging in: " + temp);
 
         int childOrParentId = 0;
         userList = json2. readArray(User.class);
-        for(User user: userList){
-            if(user.getUsername().equals(username)){
+        for (User user : userList) {
+            if (user.getUsername().equals(username)) {
+                System.out.println("ChildOrParentId: " + user.getChildOrParentId());
                 childOrParentId = user.getChildOrParentId();
             }
         }
         userList = json2. readArray(User.class);
-        System.out.println("1111111:" + childOrParentId);
-        if (isParent) {//是家长
-            System.out.println("222222222222");
+
+        if (isParent) { // 是家长
             temp.setParentId(userId);
             temp.setChildId(childOrParentId);
-
-        } else {//是孩子
+        } else { // 是孩子
             temp.setChildId(userId);
             temp.setParentId(childOrParentId);
         }
 
-        //json.write(temp);//向temp.txt里写入
-        //以下是强制向temp.txt中写。与以上信息无关
-        if (isParent) {
-            WriteToTemp.writeToTempFile(childOrParentId, name, true, userId);
-        } else {
-            WriteToTemp.writeToTempFile(userId, name, false, childOrParentId);
-        }
+        json.write(temp); // 向temp.txt里写入
     }
 
     public static void saveUser(String username, String password, String identity) {
         User newUser = new User(username, password, identity, 0, "name");
         userList.add(newUser);
         json2.writeArray(userList);
-
     }
 
     public static boolean usernameExist(String username) {
-        for(User user: userList){
+        System.out.println(username);
+        for (User user : userList) {
             if (user.getUsername().equals(username)) {
                 return true;
             }
@@ -69,9 +60,8 @@ public class LoginService {
         return false;
     }
 
-
     public static boolean validatePassword(String username, String password) {
-        for(User user: userList){//check if the entered info match any info in the file
+        for (User user : userList) { // 检查输入的信息是否匹配文件中的信息
             if (user.getUsername().equals(username)) {
                 return user.getPassword().equals(password);
             }
@@ -79,21 +69,20 @@ public class LoginService {
         return false;
     }
 
-    public static boolean checkIfIsParent(String username){//check if the username is a parent's username, return true
-        for(User user: userList) {
-            if (user.getUsername().equals(username)) {//username is unique, so we only need to use the username to identify
+    public static boolean checkIfIsParent(String username) { // 检查用户名是否是家长用户名
+        for (User user : userList) {
+            if (user.getUsername().equals(username)) { // 用户名是唯一的，所以只需要使用用户名来识别
                 if (user.getIdentity().equals("parent")) {
                     return true;
                 }
             }
         }
         return false;
-
     }
 
-    public static String findName(String userId){//通过userId,找到对应user的name，并返回
-        for(User user: userList){
-            if(user.getUsername().equals(userId)){
+    public static String findName(String userId) { // 通过userId找到对应用户的名字并返回
+        for (User user : userList) {
+            if (user.getUsername().equals(userId)) {
                 return user.getName();
             }
         }
