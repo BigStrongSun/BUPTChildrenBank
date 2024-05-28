@@ -24,12 +24,14 @@ public class LoginService {
         System.out.println("temp when logging in: " + temp);
 
         int childOrParentId = 0;
+        userList = json2. readArray(User.class);
         for (User user : userList) {
             if (user.getUsername().equals(username)) {
                 System.out.println("ChildOrParentId: " + user.getChildOrParentId());
                 childOrParentId = user.getChildOrParentId();
             }
         }
+        userList = json2. readArray(User.class);
 
         if (isParent) { // 是家长
             temp.setParentId(userId);

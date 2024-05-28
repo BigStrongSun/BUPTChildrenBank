@@ -47,8 +47,7 @@ public class MainPage extends JFrame {
         setContentPane(gradientBackground);
         setLayout(null);
         mainPage = this;
-
-        tempService = new TempService();
+        this.tempService = new TempService();
         parentId = tempService.getTemp().getParentId();
         childId = tempService.getTemp().getChildId();
         System.out.println(childId);
@@ -66,6 +65,7 @@ public class MainPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tempService.clearTemp(); // 清空temp.txt文件内容
+                tempService.deleteTemp();
                 mainPage.dispose();
                 new LoginPage();
             }
