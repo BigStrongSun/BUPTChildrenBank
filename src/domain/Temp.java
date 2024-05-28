@@ -18,7 +18,6 @@ public class Temp {
         this.isParent = isParent;
         this.name = name;
     }
-    public Temp(){}
 
     public String getName() {
         return name;

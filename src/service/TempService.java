@@ -3,6 +3,8 @@ package service;
 import domain.Temp;
 import util.JSONController;
 
+import javax.swing.*;
+
 public class TempService {
     private Temp temp;
     private JSONController json;
@@ -48,5 +50,3 @@ public class TempService {
 
 }
 
-
-}
