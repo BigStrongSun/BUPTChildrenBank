@@ -27,7 +27,10 @@ public class WalletPage extends JFrame {
     private JSONController jsonAccount = new JSONController("account.txt"); // 处理账户数据的JSON控制器
     private JSONController jsonTemp = new JSONController("temp.txt"); // 处理临时数据的JSON控制器
     private JSONController jsonTrans = new JSONController("transaction.txt"); // 处理交易数据的JSON控制器
+    private JSONController jsonUser = new JSONController("user.txt"); // 处理交易数据的JSON控制器
+
     List<Account> accounts = jsonAccount.readArray(Account.class); // 从文件中读取账户数据
+    List<User> users = jsonAccount.readArray(User.class); // 从文件中读取账户数据
     private int userId; // 当前用户的ID
     private static int currentAccountId; // 当前活期账户的ID
     private int selectedAccountId; // 当前选中账户的ID
@@ -155,7 +158,7 @@ public class WalletPage extends JFrame {
         // 用户名标签
         TempService tempService = new TempService();
         Temp temp = tempService.getTemp();
-        JLabel userNameLabel = new JLabel(temp.getName(), SwingConstants.CENTER);
+        JLabel userNameLabel = new JLabel(new UserService().getChildNameById(temp.getChildId()), SwingConstants.CENTER);
         userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         userDetailPanel.add(labelIcon, BorderLayout.CENTER);
